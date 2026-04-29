@@ -23,7 +23,7 @@ public class TestClavier {
         System.out.println("Vous avez entre : " + unBooleen);
         
         System.out.println("Veuillez entrer une coordonée : ");
-        Coord uneCoordonée = Clavier.getCoord2();
+        Coord uneCoordonée = Clavier.getCoord();
         System.out.println("Vous avez entre : " + uneCoordonée);
     }
     

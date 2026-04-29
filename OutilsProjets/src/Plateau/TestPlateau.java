@@ -24,7 +24,8 @@ public class TestPlateau {
         while (continuer) {
             System.out.println("\nQue voulez-vous faire ?");
             System.out.println("1 - Jouer un coup");
-            System.out.println("2 - Quitter");
+            System.out.println("2 - Liste des echanges possibles");
+            System.out.println("3 - Quitter");
             System.out.print("Votre choix : ");
 
             int choix = Clavier.Clavier.getInt();
@@ -32,10 +33,15 @@ public class TestPlateau {
             if (choix == 1) {
                 plateau.jouerUnCoup();
                 System.out.println(plateau.afficher());
-            } else {
-                continuer = false;
-                System.out.println("Merci d'avoir joue :) ");
             }
+            if (choix == 2) {
+                System.out.println(plateau.afficher());
+                System.out.print(plateau.listMatchs());
+            }
+//            else {
+//                continuer = false;
+//                System.out.println("Merci d'avoir joue :) ");
+//            }
         }
     }
 

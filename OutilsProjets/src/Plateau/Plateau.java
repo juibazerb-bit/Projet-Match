@@ -243,21 +243,12 @@ public class Plateau {
     // Demande au joueur les coordonnées de deux tuiles à échanger et effectue l'échange
     public void jouerUnCoup() {
         System.out.println("Entrez les coordonnees de la premiere tuile :");
-//        System.out.print("  Colonne : ");
-        Coord c1= Clavier.getCoord();
-//        int col1 = Clavier.getInt();
-//        System.out.print("  Ligne   : ");
-//        int lig1 = Clavier.getInt();
+
+        Coord c1 = Clavier.getCoord();
 
         System.out.println("Entrez les coordonnees de la deuxieme tuile :");
-//        System.out.print("  Colonne : ");
-        Coord c2= Clavier.getCoord();
-//        int col2 = Clavier.getInt();
-//        System.out.print("  Ligne   : ");
-//        int lig2 = Clavier.getInt();
 
-//        Coord c1 = new Coord(col1, lig1);
-//        Coord c2 = new Coord(col2, lig2);
+        Coord c2 = Clavier.getCoord();
 
         boolean echangeOk = this.echangerTuiles(c1, c2);
 
@@ -272,6 +263,83 @@ public class Plateau {
                 this.echangerTuiles(c2, c1);
             }
         }
+    }
+
+    // -------------------------------------------------------------------------
+    // AIDE ORDINATEUR
+    // -------------------------------------------------------------------------
+    public String listMatchs() { // PAS FINI NE LES DONNE PAS TOUS
+        ArrayList<Coord> matchs = new ArrayList<>();
+
+        // Vérification de création de matchs par des echange verticale
+        for (int ordonnee = 0; ordonnee < nbLig-1; ordonnee++) {
+            for (int abscisse = 0; abscisse < nbCol; abscisse++) {
+                Coord coord1 = new Coord(abscisse, ordonnee);
+                Coord coord2 = new Coord(abscisse, ordonnee + 1);
+                echangerTuiles(coord1, coord2);
+
+                // si matchs ajout a la liste
+                if (this.existeMatchVertical(coord1)
+                        || this.existeMatchVertical(coord2)
+                        || this.existeMatchHorizontal(coord1)
+                        || this.existeMatchHorizontal(coord2)) {
+                    // Verification que la paire de coord n'est pas deja dans la liste
+                        boolean paireDejaPresente = false;
+                        int i=0;
+                        while (!paireDejaPresente && i<matchs.size()){ 
+                            if (matchs.get(i).equals(coord1) && matchs.get(i + 1).equals(coord2)){ 
+                                paireDejaPresente = true;
+                            }
+                            i+=2;
+                            }
+                if (!paireDejaPresente){
+                    matchs.add(coord1);
+                    matchs.add(coord2);
+                        }
+                    }
+                // on remet en place les Tuiles
+                echangerTuiles(coord1, coord2);
+            }
+        }
+
+        // Vérification de création de matchs par des echange horizontale
+        for (int abscisse = 0; abscisse < nbCol-1; abscisse++) {
+            for (int ordonnee = 0; ordonnee < nbLig; ordonnee++) {
+                Coord coord1 = new Coord(abscisse, ordonnee);
+                Coord coord2 = new Coord(abscisse + 1, ordonnee);
+                echangerTuiles(coord1, coord2);
+
+                if (this.existeMatchVertical(coord1)
+                        || this.existeMatchVertical(coord2)
+                        || this.existeMatchHorizontal(coord1)
+                        || this.existeMatchHorizontal(coord2)) {
+                    
+                        boolean paireDejaPresente = false;
+                        int i=0;
+                        while (!paireDejaPresente && i<matchs.size()){ 
+                            if (matchs.get(i).equals(coord1) && matchs.get(i + 1).equals(coord2)){ 
+                                paireDejaPresente = true;
+                            }
+                            i+=2;
+                            }
+                        if (!paireDejaPresente){
+                    matchs.add(coord1);
+                    matchs.add(coord2);
+                        }
+                }
+                // on remet en place les Tuiles
+                echangerTuiles(coord1, coord2);
+            }
+        }
+        String res = "Liste des echanges possibles";
+        if (matchs.isEmpty()) {
+            return res += ": \n Aucun";
+        }
+        for (int i = 0; i < matchs.size(); i += 2) {
+            res += " entre: \n (" + matchs.get(i) + ") et (" + matchs.get(i + 1) + ") \n";
+        }
+
+        return res;
     }
 
     // -------------------------------------------------------------------------
