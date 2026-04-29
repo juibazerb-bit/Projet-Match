@@ -35,16 +35,19 @@ public class Coord {
     }
 
     public boolean estVoisine(Coord c) {
-        // Calcul de la différence entre les absisses et les ordonnées
+        // Calcul de la différence entre les abscisses et les ordonnées
         int diffabs = Math.abs(this.abscisse - c.getAbscisse());
         int difford = Math.abs(this.ordonnee - c.getOrdonnee());
 
         // Deux cases sont voisines si :
-        // (différence de X est 1 ET différence de Y est 0) 
+        // (différence de X est 1 ET différence de Y est 0)
         // OU (différence de X est 0 ET différence de Y est 1)
         return (diffabs == 1 && difford == 0) || (diffabs == 0 && difford == 1);
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "(" + this.abscisse + ", " + this.ordonnee + ")";
+    }
 
 }

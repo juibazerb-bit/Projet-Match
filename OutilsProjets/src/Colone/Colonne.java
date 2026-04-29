@@ -14,17 +14,38 @@ import java.util.ArrayList;
 public class Colonne {
 
     private ArrayList<Tuile> colonne;
+    private int nbTypes;
 
     public Colonne(int nbLignes, int nbTypes) {
+        this.nbTypes = nbTypes;
+        this.colonne = new ArrayList<>();
         for (int i = 0; i < nbLignes; i++) {
-            this.colonne.set(i, new Tuile(nbTypes));
+            this.colonne.add(new Tuile(nbTypes, true));
         }
     }
 
     public ArrayList<Tuile> getColonne() {
         return colonne;
     }
-    
-    
+
+    public Tuile getTuile(int ligne) {
+        return this.colonne.get(ligne);
+    }
+
+    // Supprime la tuile à la ligne donnée et ajoute une nouvelle tuile aléatoire en haut
+    public void supprimerTuile(int ligne) {
+        this.colonne.remove(ligne);
+        this.colonne.add(new Tuile(this.nbTypes, true));
+    }
+
+    // Supprime toutes les tuiles aux lignes indiquées (liste triée par ordre croissant)
+    public void supprimerTuiles(ArrayList<Integer> lignes) {
+        for (int i = lignes.size() - 1; i >= 0; i--) {
+            this.colonne.remove((int) lignes.get(i));
+        }
+        for (int i = 0; i < lignes.size(); i++) {
+            this.colonne.add(new Tuile(this.nbTypes, true));
+        }
+    }
 
 }

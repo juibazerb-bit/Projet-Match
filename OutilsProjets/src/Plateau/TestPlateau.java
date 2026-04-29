@@ -14,7 +14,29 @@ public class TestPlateau {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        // Création d'un plateau de 10 colonnes, 10 lignes, 5 types de tuiles
+        Plateau plateau = new Plateau(5, 5, 4);
+
+        System.out.println("=== Jeu de Match 3 ===");
+        System.out.println(plateau.afficher());
+
+        boolean continuer = true;
+        while (continuer) {
+            System.out.println("\nQue voulez-vous faire ?");
+            System.out.println("1 - Jouer un coup");
+            System.out.println("2 - Quitter");
+            System.out.print("Votre choix : ");
+
+            int choix = Clavier.Clavier.getInt();
+
+            if (choix == 1) {
+                plateau.jouerUnCoup();
+                System.out.println(plateau.afficher());
+            } else {
+                continuer = false;
+                System.out.println("Merci d'avoir joue !");
+            }
+        }
     }
-    
+
 }
