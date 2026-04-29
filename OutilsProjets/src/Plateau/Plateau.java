@@ -185,14 +185,14 @@ public class Plateau {
         while (fin + 1 < this.nbCol && getTuile(col, fin + 1).equals(getTuile(col, lig))) {
             fin++;
         }
-        
+
         // Pour chaque colonne concernée, on supprime la tuile à la ligne lig
         for (int c = debut; c <= fin; c++) {
             ArrayList<Integer> lignesASupprimer = new ArrayList<>();
             lignesASupprimer.add(lig);
             this.lesColonnes[c].supprimerTuiles(lignesASupprimer);
         }
-        return fin-debut+1;
+        return fin - debut + 1;
     }
 
     // Supprime tous les matchs en cascade jusqu'à ce qu'il n'y en ait plus
@@ -264,8 +264,8 @@ public class Plateau {
         if (echangeOk) {
             if (this.existeUnMatch()) {
                 System.out.println("echange effectue ! ");
-                int nbPoints = this.supprimerTousLesMatchs()*100;
-                System.out.println("nombre de points:"+nbPoints);
+                int nbPoints = this.supprimerTousLesMatchs() * 100;
+                System.out.println("nombre de points:" + nbPoints);
             } else {
                 // Pas de match créé : on annule l'échange
                 System.out.println("Cet échange ne crée pas de match, annulation.");
