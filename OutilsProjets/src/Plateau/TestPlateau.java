@@ -17,7 +17,7 @@ public class TestPlateau {
         // Création d'un plateau de 10 colonnes, 10 lignes, 5 types de tuiles
         Plateau plateau = new Plateau(5, 5, 4);
 
-        System.out.println("=== Jeu de Match 3 ===");
+        System.out.println("=== Jeu de Match // CandyCruch ===");
         System.out.println(plateau.afficher());
 
         boolean continuer = true;
@@ -34,7 +34,7 @@ public class TestPlateau {
                 System.out.println(plateau.afficher());
             } else {
                 continuer = false;
-                System.out.println("Merci d'avoir joue !");
+                System.out.println("Merci d'avoir joue :) ");
             }
         }
     }
