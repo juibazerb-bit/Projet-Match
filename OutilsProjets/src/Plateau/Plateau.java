@@ -243,19 +243,21 @@ public class Plateau {
     // Demande au joueur les coordonnées de deux tuiles à échanger et effectue l'échange
     public void jouerUnCoup() {
         System.out.println("Entrez les coordonnees de la premiere tuile :");
-        System.out.print("  Colonne : ");
-        int col1 = Clavier.getInt();
-        System.out.print("  Ligne   : ");
-        int lig1 = Clavier.getInt();
+//        System.out.print("  Colonne : ");
+        Coord c1= Clavier.getCoord();
+//        int col1 = Clavier.getInt();
+//        System.out.print("  Ligne   : ");
+//        int lig1 = Clavier.getInt();
 
         System.out.println("Entrez les coordonnees de la deuxieme tuile :");
-        System.out.print("  Colonne : ");
-        int col2 = Clavier.getInt();
-        System.out.print("  Ligne   : ");
-        int lig2 = Clavier.getInt();
+//        System.out.print("  Colonne : ");
+        Coord c2= Clavier.getCoord();
+//        int col2 = Clavier.getInt();
+//        System.out.print("  Ligne   : ");
+//        int lig2 = Clavier.getInt();
 
-        Coord c1 = new Coord(col1, lig1);
-        Coord c2 = new Coord(col2, lig2);
+//        Coord c1 = new Coord(col1, lig1);
+//        Coord c2 = new Coord(col2, lig2);
 
         boolean echangeOk = this.echangerTuiles(c1, c2);
 

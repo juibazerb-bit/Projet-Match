@@ -1,5 +1,6 @@
 package Clavier;
 
+import Coordonnées.Coord;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
@@ -115,5 +116,37 @@ public class Clavier {
         }
         return retourString;
     }
+    
+    
+    
+static public Coord getCoord() {
+    Coord retourCoord = new Coord(0, 0);
+    boolean saisieOk = false;
 
+    while (saisieOk == false) {
+        try {
+            BufferedReader inr = new BufferedReader(new InputStreamReader(System.in));
+            System.out.println("Entrez deux entiers séparés par un espace (exemple pour colonne 1 et ligne 3 : 1 3 ) :");
+            String s = inr.readLine();
+
+            // On découpe la ligne en morceaux séparés par un espace
+            String[] parties = s.split(" ");
+
+            // On vérifie qu'il y a bien exactement 2 valeurs
+            if (parties.length != 2) {
+                throw new Exception("Il faut exactement 2 entiers");
+            }
+
+            retourCoord.setAbscisse(Integer.parseInt(parties[0]));
+            retourCoord.setOrdonnee(Integer.parseInt(parties[1]));
+            saisieOk = true;
+
+        } catch (Exception e) {
+            System.out.println("Erreur de saisie : veuillez entrer deux entiers séparés par un espace");
+        }
+    }
+    return retourCoord;
+
+
+}
 }

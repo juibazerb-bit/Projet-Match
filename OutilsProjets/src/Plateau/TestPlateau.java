@@ -14,7 +14,7 @@ public class TestPlateau {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // Création d'un plateau de 10 colonnes, 10 lignes, 5 types de tuiles
+        // Création d'un plateau de 10 colonnes, 10 lignes, 4 types de tuiles
         Plateau plateau = new Plateau(5, 5, 4);
 
         System.out.println("=== Jeu de Match // CandyCruch ===");

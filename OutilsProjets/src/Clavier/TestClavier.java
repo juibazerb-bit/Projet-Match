@@ -1,5 +1,7 @@
 package Clavier;
 
+import Coordonnées.Coord;
+
 /**
  *
  * @author guillaume.laurent
@@ -20,6 +22,9 @@ public class TestClavier {
         boolean unBooleen = Clavier.getBoolean();
         System.out.println("Vous avez entre : " + unBooleen);
         
+        System.out.println("Veuillez entrer une coordonée : ");
+        Coord uneCoordonée = Clavier.getCoord2();
+        System.out.println("Vous avez entre : " + uneCoordonée);
     }
     
 }
