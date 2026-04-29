@@ -17,9 +17,9 @@ public enum TypeTuile {
     CYAN("\u001B[36m", "o"),
     BLANC("\u001B[37m", "o");
 
-    private final String RESET = "\u001B[0m";
-    private final String couleur;
-    private final String symbole;
+    private String RESET = "\u001B[0m";
+    private String couleur;
+    private String symbole;
     private int type;
 
     TypeTuile(String couleur, String symbole) {
