@@ -287,8 +287,8 @@ public class Plateau {
 
                 if (t != null) {
                     // Calcul de la position : on utilise la TAILLE de la tuile 
-                    int posX =  col * Tuile.TAILLE;
-                    int posY =this.nbLig*Tuile.TAILLE - lig * Tuile.TAILLE;
+                    int posX = 200+ col * Tuile.TAILLE;
+                    int posY =200+this.nbLig*Tuile.TAILLE - lig * Tuile.TAILLE;
 
                     // On met à jour les coordonnées internes de la tuile si besoin
                     t.setCoordTuile(new Coord(posX, posY));

@@ -19,7 +19,7 @@ public class TestPlateau {
         // 1. Initialisation des paramètres
         int nbLignes = 5;
         int nbCol = 5;
-        int nbTypes = 4;
+        int nbTypes = 5;
 
         // 2. Création du plateau
         Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes);
@@ -28,7 +28,7 @@ public class TestPlateau {
         // On calcule la taille en fonction du nombre de tuiles (50 pixels par tuile)
         int largeur = nbCol * 50;
         int hauteur = nbLignes * 50;
-        FenetreGraphique fenetre = new FenetreGraphique("Candy Crush - Mode Graphique", largeur, hauteur);
+        FenetreGraphique fenetre = new FenetreGraphique("Candy Crush - Mode Graphique", largeur+200, hauteur+200);
 
         System.out.println("=== Jeu de Match // CandyCruch ===");
         System.out.println(plateau.afficher()); // Console
