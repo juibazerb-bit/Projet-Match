@@ -9,6 +9,8 @@ import Coordonnées.Coord;
 import Tuile.Tuile;
 import java.util.ArrayList;
 import Clavier.Clavier;
+import FenetreGraphique.FenetreGraphique;
+import java.awt.Color;
 
 /**
  *
@@ -244,21 +246,20 @@ public class Plateau {
     public void jouerUnCoup() {
         System.out.println("Entrez les coordonnees de la premiere tuile :");
 //        System.out.print("  Colonne : ");
-        Coord c1= Clavier.getCoord();
+        Coord c1 = Clavier.getCoord();
 //        int col1 = Clavier.getInt();
 //        System.out.print("  Ligne   : ");
 //        int lig1 = Clavier.getInt();
 
         System.out.println("Entrez les coordonnees de la deuxieme tuile :");
 //        System.out.print("  Colonne : ");
-        Coord c2= Clavier.getCoord();
+        Coord c2 = Clavier.getCoord();
 //        int col2 = Clavier.getInt();
 //        System.out.print("  Ligne   : ");
 //        int lig2 = Clavier.getInt();
 
 //        Coord c1 = new Coord(col1, lig1);
 //        Coord c2 = new Coord(col2, lig2);
-
         boolean echangeOk = this.echangerTuiles(c1, c2);
 
         if (echangeOk) {
@@ -277,6 +278,17 @@ public class Plateau {
     // -------------------------------------------------------------------------
     // AFFICHAGE GRAPHIQUE
     // -------------------------------------------------------------------------
-    
-    
+    public void afficherPlateau() {
+        FenetreGraphique fenetre = new FenetreGraphique("plateau", 1000, 1000);
+
+        for (int lig = 0; lig < this.nbLig + 1; lig++) {
+            for (int col = 0; col < this.nbCol + 1; col++) {
+                Coord coord = this.lesColonnes[col].getTuile(lig).getCoordTuile();
+                fenetre.getGraphics2D().setColor(Color.RED);
+                
+            }
+        }
+
+    }
+
 }

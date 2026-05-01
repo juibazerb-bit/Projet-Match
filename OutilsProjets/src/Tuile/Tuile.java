@@ -4,6 +4,7 @@
  */
 package Tuile;
 
+import Coordonnées.Coord;
 import TypeTuile.TypeTuile;
 
 /**
@@ -13,7 +14,11 @@ import TypeTuile.TypeTuile;
 public class Tuile {
 
     private int type;
+    private Coord coordTuile;
 
+    // -------------------------------------------------------------------------
+    // TYPES TUILES
+    // -------------------------------------------------------------------------
     public Tuile(int typeTuile) {
         this.type = typeTuile;
     }
@@ -52,4 +57,16 @@ public class Tuile {
         return this.type == other.type;
     }
 
+    // -------------------------------------------------------------------------
+    // COORDONNEES TUILE
+    // -------------------------------------------------------------------------
+    public Coord getCoordTuile() {
+        return coordTuile;
+    }
+
+    public void setCoordTuile(Coord coordTuile) {
+        this.coordTuile = coordTuile;
+    }
+    
+    
 }
