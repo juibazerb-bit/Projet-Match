@@ -5,14 +5,17 @@
 package Tuile;
 
 import Coordonnées.Coord;
+import FenetreGraphique.FenetreGraphique;
 import TypeTuile.TypeTuile;
+import java.awt.Graphics2D;
 
 /**
  *
  * @author fpauvert
  */
 public class Tuile {
-
+    //taille des images  = 50px de hauteur et de largeur
+    public static final int TAILLE = 20;
     private int type;
     private Coord coordTuile;
 
@@ -67,6 +70,21 @@ public class Tuile {
     public void setCoordTuile(Coord coordTuile) {
         this.coordTuile = coordTuile;
     }
-    
-    
+    // -------------------------------------------------------------------------
+    // DESSINER TUILE
+    // -------------------------------------------------------------------------
+
+    public void dessiner(FenetreGraphique fenetre, int x, int y) {
+        // 1. On récupère l'énumération correspondante au type de cette tuile
+        TypeTuile[] valeurs = TypeTuile.values();
+        TypeTuile monType = valeurs[this.type % valeurs.length];
+
+        // 2. On récupère l'image associée à ce type (via le getter que tu as ajouté)
+        java.awt.Image img = monType.getImage();
+
+        // 3. On dessine l'image aux coordonnées demandées
+        // x et y sont généralement : colonne * TAILLE et ligne * TAILLE
+        fenetre.getGraphics2D().drawImage(img, x, y, TAILLE, TAILLE, null);
+    }
+
 }

@@ -278,16 +278,28 @@ public class Plateau {
     // -------------------------------------------------------------------------
     // AFFICHAGE GRAPHIQUE
     // -------------------------------------------------------------------------
-    public void afficherPlateau() {
-        FenetreGraphique fenetre = new FenetreGraphique("plateau", 1000, 1000);
+    public void afficherPlateau(FenetreGraphique fenetre) {
+     
 
-        for (int lig = 0; lig < this.nbLig + 1; lig++) {
-            for (int col = 0; col < this.nbCol + 1; col++) {
-                Coord coord = this.lesColonnes[col].getTuile(lig).getCoordTuile();
-                fenetre.getGraphics2D().setColor(Color.RED);
-                
+        for (int lig = this.nbLig - 1; lig >= 0; lig--) {
+            for (int col = 0; col < this.nbCol; col++) {
+                Tuile t = this.lesColonnes[col].getTuile(lig);
+
+                if (t != null) {
+                    // Calcul de la position : on utilise la TAILLE de la tuile 
+                    int posX =  col * Tuile.TAILLE;
+                    int posY =this.nbLig*Tuile.TAILLE - lig * Tuile.TAILLE;
+
+                    // On met à jour les coordonnées internes de la tuile si besoin
+                    t.setCoordTuile(new Coord(posX, posY));
+
+                    // On dessine
+                    t.dessiner(fenetre, posX, posY);
+                }
+
             }
         }
+        fenetre.actualiser();
 
     }
 

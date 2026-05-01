@@ -4,6 +4,8 @@
  */
 package Plateau;
 
+import FenetreGraphique.FenetreGraphique;
+
 /**
  *
  * @author fpauvert
@@ -14,11 +16,25 @@ public class TestPlateau {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // Création d'un plateau de 10 colonnes, 10 lignes, 4 types de tuiles
-        Plateau plateau = new Plateau(5, 5, 4);
+        // 1. Initialisation des paramètres
+        int nbLignes = 5;
+        int nbCol = 5;
+        int nbTypes = 4;
+
+        // 2. Création du plateau
+        Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes);
+
+        // 3. Création de la fenêtre graphique
+        // On calcule la taille en fonction du nombre de tuiles (50 pixels par tuile)
+        int largeur = nbCol * 50;
+        int hauteur = nbLignes * 50;
+        FenetreGraphique fenetre = new FenetreGraphique("Candy Crush - Mode Graphique", largeur, hauteur);
 
         System.out.println("=== Jeu de Match // CandyCruch ===");
-        System.out.println(plateau.afficher());
+        System.out.println(plateau.afficher()); // Console
+
+        // Premier affichage graphique
+        plateau.afficherPlateau(fenetre);
 
         boolean continuer = true;
         while (continuer) {
@@ -31,10 +47,18 @@ public class TestPlateau {
 
             if (choix == 1) {
                 plateau.jouerUnCoup();
+
+                // Mise à jour de l'affichage Console
                 System.out.println(plateau.afficher());
+
+                // Mise à jour de l'affichage Graphique
+                plateau.afficherPlateau(fenetre);
+
             } else {
                 continuer = false;
                 System.out.println("Merci d'avoir joue :) ");
+                // Optionnel : fermer la fenêtre à la fin
+                fenetre.dispose();
             }
         }
     }
