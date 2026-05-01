@@ -126,7 +126,7 @@ static public Coord getCoord() {
     while (saisieOk == false) {
         try {
             BufferedReader inr = new BufferedReader(new InputStreamReader(System.in));
-            System.out.println("Entrez deux entiers séparés par un espace (exemple pour colonne 1 et ligne 3 : 1 3 ) :");
+            System.out.println("Entrez deux entiers séparés par un espace d'abord colonne puis ligne :");
             String s = inr.readLine();
 
             // On découpe la ligne en morceaux séparés par un espace

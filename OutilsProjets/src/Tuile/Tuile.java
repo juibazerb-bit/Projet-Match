@@ -7,7 +7,6 @@ package Tuile;
 import Coordonnées.Coord;
 import FenetreGraphique.FenetreGraphique;
 import TypeTuile.TypeTuile;
-import java.awt.Graphics2D;
 
 /**
  *
