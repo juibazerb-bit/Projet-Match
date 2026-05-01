@@ -9,6 +9,8 @@ import Coordonnées.Coord;
 import Tuile.Tuile;
 import java.util.ArrayList;
 import Clavier.Clavier;
+import FenetreGraphique.FenetreGraphique;
+import java.awt.Color;
 
 /**
  *
@@ -32,6 +34,45 @@ public class Plateau {
         // On s'assure qu'il n'y a pas de match dans l'état initial
         this.supprimerTousLesMatchs();
     }
+    
+    public Plateau copy(){
+        Plateau copy= new Plateau(this.nbCol, this.nbLig, this.nbTypesTuile);
+        copy.setLesColonnes(this.getLesColonnes());
+        return copy;
+    }
+
+    public Colonne[] getLesColonnes() {
+        return lesColonnes;
+    }
+
+    public int getNbCol() {
+        return nbCol;
+    }
+
+    public int getNbLig() {
+        return nbLig;
+    }
+
+    public void setLesColonnes(Colonne[] lesColonnes) {
+        this.lesColonnes = lesColonnes;
+    }
+
+    public void setNbCol(int nbCol) {
+        this.nbCol = nbCol;
+    }
+
+    public void setNbLig(int nbLig) {
+        this.nbLig = nbLig;
+    }
+
+    public void setNbTypesTuile(int nbTypesTuile) {
+        this.nbTypesTuile = nbTypesTuile;
+    }
+
+    public int getNbTypesTuile() {
+        return nbTypesTuile;
+    }
+
 
     public Tuile getTuile(int colonne, int ligne) {
         return this.lesColonnes[colonne].getTuile(ligne);
@@ -64,33 +105,64 @@ public class Plateau {
     // DETECTION DE MATCHS
     // -------------------------------------------------------------------------
     // Vérifie s'il existe un match vertical à partir de la coordonnée donnée
-    public boolean existeMatchVertical(Coord coordonnee) {
+        public boolean existeMatchVertical(Coord coordonnee) {
         int col = coordonnee.getAbscisse();
         int lig = coordonnee.getOrdonnee();
-
+        int typeSource = getTuile(col, lig).getType();
+        int typeHaut1 = -1;
+        int typeHaut2 = -1;
+        int typeBas1 = -1;
+        int typeBas2 = -1;
+//      On attribut des types au 2 case au dessus et en dessous s'il existe
+//      Sinon on leurs donne la valeur -1 
         if (lig + 2 < this.nbLig) {
-            int typeSource = getTuile(col, lig).getType();
-            int typeSuivant1 = getTuile(col, lig + 1).getType();
-            int typeSuivant2 = getTuile(col, lig + 2).getType();
-            return (typeSource == typeSuivant1 && typeSource == typeSuivant2);
+            typeHaut1 = getTuile(col, lig + 1).getType();
+            typeHaut2 = getTuile(col, lig + 2).getType();    
+        } else if (lig + 1 < this.nbLig) {
+            typeHaut1 = getTuile(col, lig + 1).getType();
         }
-        return false;
+        if (lig - 2 >= 0) {
+            typeBas1 = getTuile(col, lig - 1).getType();
+            typeBas2 = getTuile(col, lig - 2).getType();
+        }else if (lig - 1 >= 0) {
+            typeBas1 = getTuile(col, lig - 1).getType();
+        }
+        return (typeSource == typeHaut1 && typeSource == typeHaut2 
+             || typeSource == typeBas1 && typeSource == typeBas2
+             || typeSource == typeBas1 && typeSource == typeHaut1);
     }
-
+    
+    
     // Vérifie s'il existe un match horizontal à partir de la coordonnée donnée
-    public boolean existeMatchHorizontal(Coord coordonnee) {
+            public boolean existeMatchHorizontal(Coord coordonnee) {
         int col = coordonnee.getAbscisse();
         int lig = coordonnee.getOrdonnee();
-
+        int typeSource = getTuile(col, lig).getType();
+        int typeDroite1 = -1;
+        int typeDroite2 = -1;
+        int typeGauche1 = -1;
+        int typeGauche2 = -1;
+        
+//      On attribut des types aux 2 case a droite et a gauche s'il existe
+//      Sinon on leurs donne la valeur -1
         if (col + 2 < this.nbCol) {
-            int typeSource = getTuile(col, lig).getType();
-            int typeSuivant1 = getTuile(col + 1, lig).getType();
-            int typeSuivant2 = getTuile(col + 2, lig).getType();
-            return (typeSource == typeSuivant1 && typeSource == typeSuivant2);
+            typeDroite1 = getTuile(col + 1, lig ).getType();
+            typeDroite2 = getTuile(col + 2, lig ).getType();    
+        } else if (col + 1 < this.nbCol) {
+            typeDroite1 = getTuile(col + 1, lig ).getType();
         }
-        return false;
+        if (col - 2 >= 0) {
+            typeGauche1 = getTuile(col - 1, lig ).getType();
+            typeGauche2 = getTuile(col - 2, lig ).getType();
+        }else if (col - 1 >= 0) {
+            typeGauche1 = getTuile(col - 1, lig ).getType();
+        }
+        return (typeSource == typeDroite1 && typeSource == typeDroite2 
+             || typeSource == typeGauche1 && typeSource == typeGauche2
+             || typeSource == typeGauche1 && typeSource == typeDroite1);
+ 
     }
-
+            
     // Retourne la position du premier match vertical trouvé, ou (-1,-1) si aucun
     public Coord posMatchVertical() {
         Coord pos = new Coord(-1, -1);
@@ -244,6 +316,7 @@ public class Plateau {
     public void jouerUnCoup() {
         System.out.println("Entrez les coordonnees de la premiere tuile :");
 
+
         Coord c1 = Clavier.getCoord();
 
         System.out.println("Entrez les coordonnees de la deuxieme tuile :");
@@ -268,7 +341,23 @@ public class Plateau {
     // -------------------------------------------------------------------------
     // AIDE ORDINATEUR
     // -------------------------------------------------------------------------
-    public String listMatchs() { // PAS FINI NE LES DONNE PAS TOUS
+    
+    public String listMatchs(){
+        ArrayList<Coord> matchs = this.listEchange();
+        String res = "Liste des echanges possibles";
+        if (matchs.isEmpty()) {
+            return res += ": \n Aucun";
+        }
+        res+= " entre:";
+        for (int i = 0; i < matchs.size(); i += 2) {
+            res += " \n " + matchs.get(i) + " et " + matchs.get(i + 1);
+        }
+
+        return res;
+    }
+    
+    
+    public ArrayList<Coord> listEchange() { 
         ArrayList<Coord> matchs = new ArrayList<>();
 
         // Vérification de création de matchs par des echange verticale
@@ -331,20 +420,54 @@ public class Plateau {
                 echangerTuiles(coord1, coord2);
             }
         }
-        String res = "Liste des echanges possibles";
-        if (matchs.isEmpty()) {
-            return res += ": \n Aucun";
+        return matchs;
+    }
+    
+    // à faire (Ayoub) avec une boucle reccursif
+    public ArrayList<Coord> aideOrdi(){
+        ArrayList<Coord> matchs=this.listEchange();
+        Plateau copy=this.copy();
+        ArrayList<Coord> meilleurMatchs= new ArrayList<Coord>();
+        int meilleurScore=0;
+        for (int i=0;i< matchs.size();i+=2){
+            copy.echangerTuiles(matchs.get(i), matchs.get(i+1));
+            int scoreCopy= copy.supprimerTousLesMatchs() * 100;
+            if (scoreCopy>meilleurScore){
+                meilleurMatchs.clear();
+                meilleurMatchs.add(matchs.get(i));
+                meilleurMatchs.add(matchs.get(i+1));
+                meilleurScore= scoreCopy;
+            }
         }
-        for (int i = 0; i < matchs.size(); i += 2) {
-            res += " entre: \n (" + matchs.get(i) + ") et (" + matchs.get(i + 1) + ") \n";
-        }
-
-        return res;
+        return meilleurMatchs;
     }
 
     // -------------------------------------------------------------------------
     // AFFICHAGE GRAPHIQUE
     // -------------------------------------------------------------------------
-    
-    
+    public void afficherPlateau(FenetreGraphique fenetre) {
+     
+
+        for (int lig = this.nbLig - 1; lig >= 0; lig--) {
+            for (int col = 0; col < this.nbCol; col++) {
+                Tuile t = this.lesColonnes[col].getTuile(lig);
+
+                if (t != null) {
+                    // Calcul de la position : on utilise la TAILLE de la tuile 
+                    int posX = 200+ col * Tuile.TAILLE;
+                    int posY =200+this.nbLig*Tuile.TAILLE - lig * Tuile.TAILLE;
+
+                    // On met à jour les coordonnées internes de la tuile si besoin
+                    t.setCoordTuile(new Coord(posX, posY));
+
+                    // On dessine
+                    t.dessiner(fenetre, posX, posY);
+                }
+
+            }
+        }
+        fenetre.actualiser();
+
+    }
+
 }
