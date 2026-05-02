@@ -295,7 +295,7 @@ public class Plateau {
     }
 
     // Collecte toutes les positions à supprimer (vertical + horizontal) sans rien supprimer
-    private ArrayList<Coord> collecterToutesLesTuilesASupprimer() {
+    public ArrayList<Coord> collecterToutesLesTuilesASupprimer() {
         ArrayList<Coord> aSupprimer = new ArrayList<>();
 
         // Matchs verticaux
@@ -344,7 +344,7 @@ public class Plateau {
     }
 
     // Vérifie si une Coord est déjà dans la liste (pour éviter les doublons)
-    private boolean contient(ArrayList<Coord> liste, Coord c) {
+    public boolean contient(ArrayList<Coord> liste, Coord c) {
         boolean flag = false;
         for (Coord coord : liste) {
             if (coord.equals(c)) {
@@ -355,7 +355,7 @@ public class Plateau {
     }
 
     // Supprime toutes les tuiles collectées en une seule passe
-    private int supprimerCoords(ArrayList<Coord> aSupprimer) {
+    public int supprimerCoords(ArrayList<Coord> aSupprimer) {
         for (int col = 0; col < this.nbCol; col++) {
             ArrayList<Integer> lignesASupprimer = new ArrayList<>();
             for (Coord c : aSupprimer) {
