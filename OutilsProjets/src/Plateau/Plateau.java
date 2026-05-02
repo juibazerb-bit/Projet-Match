@@ -34,30 +34,15 @@ public class Plateau {
         this.score = 0;
         this.lesColonnes = new Colonne[nbColonnes];
         for (int i = 0; i < nbColonnes; i++) {
-            this.lesColonnes[i] = new Colonne(nbLignes, nbTypes, false);
+            this.lesColonnes[i] = new Colonne(nbLignes, nbTypes);
         }
         System.out.println("Colonnes creees, suppression des matchs...");
-        this.supprimerTousLesMatchs();
-        System.out.println("Plateau prêt !");
-    }
-
-    public Plateau(int nbColonnes, int nbLignes, int nbTypes, long seed) {
-        this.nbCol = nbColonnes;
-        this.nbLig = nbLignes;
-        this.nbTypesTuile = nbTypes;
-        this.score = 0;
-        this.lesColonnes = new Colonne[nbColonnes];
-
-        Random rand = new Random(seed); // UNE seule instance pour tout le plateau
-        for (int i = 0; i < nbColonnes; i++) {
-            this.lesColonnes[i] = new Colonne(nbLignes, nbTypes, rand);
-        }
-        this.supprimerTousLesMatchs();
+        this.supprimerTousLesMatchs(new Random());
+        System.out.println("Plateau pret !");
     }
 
     public Plateau copy() {
         Plateau copy = new Plateau(this.nbCol, this.nbLig, this.nbTypesTuile);
-//        copy.setLesColonnes(this.getLesColonnes());
         Colonne[] copyColonne = new Colonne[nbCol];
         for (int i = 0; i < nbCol; i++) {
             Colonne copyCol = new Colonne();
@@ -71,7 +56,26 @@ public class Plateau {
         copy.setLesColonnes(copyColonne);
         return copy;
     }
+    // -------------------------------------------------------------------------
+    // PLATEAU ALEATOIRE MAIS PAS VRAIMENT
+    // -------------------------------------------------------------------------
 
+    public Plateau(int nbColonnes, int nbLignes, int nbTypes, long seed) {
+        this.nbCol = nbColonnes;
+        this.nbLig = nbLignes;
+        this.nbTypesTuile = nbTypes;
+        this.score = 0;
+        this.lesColonnes = new Colonne[nbColonnes];
+        Random rand = new Random(seed);
+        for (int i = 0; i < nbColonnes; i++) {
+            this.lesColonnes[i] = new Colonne(nbLignes, nbTypes, rand);
+        }
+        this.supprimerTousLesMatchs(rand); // on passe le même rand
+    }
+
+    // -------------------------------------------------------------------------
+    // GETTER ET SETTER
+    // -------------------------------------------------------------------------
     public Colonne[] getLesColonnes() {
         return lesColonnes;
     }
@@ -240,60 +244,7 @@ public class Plateau {
 
     // -------------------------------------------------------------------------
     // SUPPRESSION DES MATCHS ET CHUTE DES TUILES
-    // -------------------------------------------------------------------------
-    public int supprimerMatchVertical(Coord pos) {
-        int col = pos.getAbscisse();
-        int lig = pos.getOrdonnee();
-
-        // On collecte toutes les lignes à supprimer dans cette colonne
-        ArrayList<Integer> lignesASupprimer = new ArrayList<>();
-
-        // On remonte pour trouver toutes les tuiles du même type alignées
-        //On regarde d'abord si il y a des tuiles de meme type en dessous 
-        //(normalement non car posMatchVertical revoir la position du premier en bas) 
-        int debut = lig;
-        while (debut > 0 && getTuile(col, debut - 1).equals(getTuile(col, lig))) {
-            debut--;
-        }
-        // On regarde ensuite les Tuiles du dessus
-        int fin = lig + 2;
-        while (fin + 1 < this.nbLig && getTuile(col, fin + 1).equals(getTuile(col, lig))) {
-            fin++;
-        }
-        // on ajoute les lignes a supprimer dans la liste des lignes a supprimer
-        for (int i = debut; i <= fin; i++) {
-            lignesASupprimer.add(i);
-        }
-
-        // On supprime ces lignes
-        this.lesColonnes[col].supprimerTuiles(lignesASupprimer);
-        return lignesASupprimer.size();
-    }
-
-    // Supprime toutes les tuiles qui font partie d'un match horizontal à partir de pos
-    public int supprimerMatchHorizontal(Coord pos) {
-        int col = pos.getAbscisse();
-        int lig = pos.getOrdonnee();
-
-        // On remonte à gauche pour trouver le début du match
-        int debut = col;
-        while (debut > 0 && getTuile(debut - 1, lig).equals(getTuile(col, lig))) {
-            debut--;
-        }
-        int fin = col + 2;
-        while (fin + 1 < this.nbCol && getTuile(col, fin + 1).equals(getTuile(col, lig))) {
-            fin++;
-        }
-
-        // Pour chaque colonne concernée, on supprime la tuile à la ligne lig
-        for (int c = debut; c <= fin; c++) {
-            ArrayList<Integer> lignesASupprimer = new ArrayList<>();
-            lignesASupprimer.add(lig);
-            this.lesColonnes[c].supprimerTuiles(lignesASupprimer);
-        }
-        return fin - debut + 1;
-    }
-
+    // ------------------------------------------------------------------------
     // Collecte toutes les positions à supprimer (vertical + horizontal) sans rien supprimer
     public ArrayList<Coord> collecterToutesLesTuilesASupprimer() {
         ArrayList<Coord> aSupprimer = new ArrayList<>();
@@ -354,8 +305,21 @@ public class Plateau {
         return flag;
     }
 
-    // Supprime toutes les tuiles collectées en une seule passe
-    public int supprimerCoords(ArrayList<Coord> aSupprimer) {
+    public int supprimerTousLesMatchs(Random rand) {
+        int totalSupprimees = 0;
+        boolean matchTrouve = true;
+        while (matchTrouve) {
+            ArrayList<Coord> aSupprimer = collecterToutesLesTuilesASupprimer();
+            if (aSupprimer.isEmpty()) {
+                matchTrouve = false;
+            } else {
+                totalSupprimees += supprimerCoords(aSupprimer, rand);
+            }
+        }
+        return totalSupprimees;
+    }
+
+    private int supprimerCoords(ArrayList<Coord> aSupprimer, Random rand) {
         for (int col = 0; col < this.nbCol; col++) {
             ArrayList<Integer> lignesASupprimer = new ArrayList<>();
             for (Coord c : aSupprimer) {
@@ -364,27 +328,11 @@ public class Plateau {
                 }
             }
             if (!lignesASupprimer.isEmpty()) {
-                // Tri CROISSANT — supprimerTuiles parcourt en sens inverse donc elle a besoin du croissant
                 lignesASupprimer.sort((a, b) -> a - b);
-                this.lesColonnes[col].supprimerTuiles(lignesASupprimer);
+                this.lesColonnes[col].supprimerTuiles(lignesASupprimer, rand);
             }
         }
         return aSupprimer.size();
-    }
-
-    // Supprime tous les matchs en cascade
-    public int supprimerTousLesMatchs() {
-        int totalSupprimees = 0;
-        boolean matchTrouve = true;
-        while (matchTrouve) {
-            ArrayList<Coord> aSupprimer = collecterToutesLesTuilesASupprimer();
-            if (aSupprimer.isEmpty()) {
-                matchTrouve = false;
-            } else {
-                totalSupprimees += supprimerCoords(aSupprimer);
-            }
-        }
-        return totalSupprimees;
     }
 
     // -------------------------------------------------------------------------
@@ -426,10 +374,10 @@ public class Plateau {
         if (echangeOk) {
             if (this.existeUnMatch()) {
                 System.out.println("echange effectue ! ");
-                this.score += this.supprimerTousLesMatchs() * 100;
+                this.score += this.supprimerTousLesMatchs(new Random()) * 100;
                 System.out.println("Score total : " + this.score);
             } else {
-                System.out.println("Cet échange ne crée pas de match, annulation.");
+                System.out.println("Cet echange ne cree pas de match, annulation.");
                 this.echangerTuiles(c2, c1);
             }
         }
@@ -440,10 +388,10 @@ public class Plateau {
         if (echangeOk) {
             if (this.existeUnMatch()) {
                 System.out.println("echange effectue ! ");
-                this.score += this.supprimerTousLesMatchs() * 100;
+                this.score += this.supprimerTousLesMatchs(new Random()) * 100;
                 System.out.println("Score total : " + this.score);
             } else {
-                System.out.println("Cet échange ne crée pas de match, annulation.");
+                System.out.println("Cet echange ne cree pas de match, annulation.");
                 this.echangerTuiles(c2, c1);
             }
         }
@@ -540,7 +488,7 @@ public class Plateau {
         int meilleurScore = 0;
         for (int i = 0; i < matchs.size(); i += 2) {
             copy.echangerTuiles(matchs.get(i), matchs.get(i + 1));
-            int scoreCopy = copy.supprimerTousLesMatchs() * 100;
+            int scoreCopy = copy.supprimerTousLesMatchs(new Random()) * 100;
             if (scoreCopy > meilleurScore) {
                 meilleurMatchs.clear();
                 meilleurMatchs.add(matchs.get(i));
@@ -568,12 +516,30 @@ public class Plateau {
         return null;
     }
 
-    public Coord attendreClic(FenetreGraphique fenetre, int margeX, int margeY) {
+    public Coord attendreClicOuBouton(FenetreGraphique fenetre, int margeX, int margeY) {
+        // Valeurs spéciales retournées pour les boutons :
+        // (-2, 0) = Coups possibles
+        // (-3, 0) = Nouvelle partie  
+        // (-4, 0) = Quitter
+        // Coord valide = clic sur la grille
+        int boutonX = margeX + this.nbCol * Tuile.TAILLE + 20;
+
         while (true) {
             if (fenetre.unClicAEuLieu()) {
                 int clicX = fenetre.getXDernierClic();
                 int clicY = fenetre.getYDernierClic();
                 fenetre.effacerDernierClic();
+
+                if (boutonClique(clicX, clicY, boutonX, 60, 160, 30)) {
+                    return new Coord(-2, 0);
+                }
+                if (boutonClique(clicX, clicY, boutonX, 100, 160, 30)) {
+                    return new Coord(-3, 0);
+                }
+                if (boutonClique(clicX, clicY, boutonX, 140, 160, 30)) {
+                    return new Coord(-4, 0);
+                }
+
                 Coord coord = clicVersCoord(clicX, clicY, margeX, margeY);
                 if (coord != null) {
                     return coord;
@@ -628,10 +594,6 @@ public class Plateau {
                     return 4; // Quitter
                 }
             }
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-            }
         }
     }
 
@@ -660,8 +622,7 @@ public class Plateau {
         }
 
         // Dessin des boutons à droite de la grille
-        int boutonX = 20 + this.nbCol * Tuile.TAILLE + 20;
-        dessinerBouton(fenetre, "Jouer un coup", boutonX, 20, 160, 30);
+        int boutonX = 150 + this.nbCol * Tuile.TAILLE;
         dessinerBouton(fenetre, "Coups possibles", boutonX, 60, 160, 30);
         dessinerBouton(fenetre, "Nouvelle partie", boutonX, 100, 160, 30);
         dessinerBouton(fenetre, "Quitter", boutonX, 140, 160, 30);
@@ -672,11 +633,11 @@ public class Plateau {
 
     public void echangerTuile(FenetreGraphique fenetre, int margeX, int margeY) {
         System.out.println("Cliquez sur la premiere tuile...");
-        Coord c1 = attendreClic(fenetre, margeX, margeY);
+        Coord c1 = attendreClicOuBouton(fenetre, margeX, margeY);
         System.out.println("Premier clic : " + c1);
 
         System.out.println("Cliquez sur la deuxieme tuile...");
-        Coord c2 = attendreClic(fenetre, margeX, margeY);
+        Coord c2 = attendreClicOuBouton(fenetre, margeX, margeY);
         System.out.println("Deuxième clic : " + c2);
 
         this.jouerUnCoup(c1, c2);

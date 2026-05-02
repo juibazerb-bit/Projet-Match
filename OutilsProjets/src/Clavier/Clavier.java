@@ -126,7 +126,7 @@ static public Coord getCoord() {
     while (saisieOk == false) {
         try {
             BufferedReader inr = new BufferedReader(new InputStreamReader(System.in));
-            System.out.println("Entrez deux entiers séparés par un espace d'abord colonne puis ligne :");
+            System.out.println("Entrez deux entiers separes par un espace d'abord colonne puis ligne :");
             String s = inr.readLine();
 
             // On découpe la ligne en morceaux séparés par un espace
@@ -142,7 +142,7 @@ static public Coord getCoord() {
             saisieOk = true;
 
         } catch (Exception e) {
-            System.out.println("Erreur de saisie : veuillez entrer deux entiers séparés par un espace");
+            System.out.println("Erreur de saisie : veuillez entrer deux entiers separes par un espace");
         }
     }
     return retourCoord;

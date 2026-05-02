@@ -26,7 +26,7 @@ public class TestTuile {
         Tuile t1 = new Tuile(0);
 
         // Une tuile aléatoire parmi les 7 types disponibles
-        Tuile t2 = new Tuile(7, true);
+        Tuile t2 = new Tuile(7, new Random());
 
         System.out.println("Test Console :");
         System.out.println("Tuile 1 (type 0) : " + t1.toString());

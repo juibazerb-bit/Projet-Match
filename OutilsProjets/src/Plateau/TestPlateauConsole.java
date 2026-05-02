@@ -37,7 +37,7 @@ public class TestPlateauConsole {
                 System.out.print(plateau.listMatchs());
             } else if (choix == 3) {
                 continuer = false;
-                System.out.println("Merci d'avoir joué :) ");
+                System.out.println("Merci d'avoir joue :) ");
             }
         }
     }

@@ -4,6 +4,7 @@
  */
 package Plateau;
 
+import Coordonnees.Coord;
 import FenetreGraphique.FenetreGraphique;
 import Tuile.Tuile;
 
@@ -14,37 +15,47 @@ import Tuile.Tuile;
 public class TestPlateauFenetreGraphique {
 
     public static void main(String[] args) {
-        int nbLignes = 5;
-        int nbCol = 5;
+        int nbLignes = 20;
+        int nbCol = 20;
         int nbTypes = 5;
-        int margeX = 200;
-        int margeY = 200;
+        int margeX = 100;
+        int margeY = 100;
 
-        Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes, 42L); // 42 = graine fixe
+        Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes,42L); // 42 = graine fixe
 
-        int largeur = nbCol * Tuile.TAILLE + 400;
-        int hauteur = nbLignes * Tuile.TAILLE + 400;
+        int largeur = nbCol * Tuile.TAILLE + 300;
+        int hauteur = nbLignes * Tuile.TAILLE + 300;
         FenetreGraphique fenetre = new FenetreGraphique("Candy Crush - Mode Graphique", largeur, hauteur);
 
         System.out.println("=== Jeu de Match // CandyCrush ===");
         plateau.afficherPlateau(fenetre, margeX, margeY);
 
+        Coord premierClic = null;
         boolean continuer = true;
-        while (continuer) {
-            int choix = plateau.lireChoix(fenetre);
 
-            if (choix == 1) {
-                plateau.echangerTuile(fenetre, margeX, margeY);
-                plateau.afficherPlateau(fenetre, margeX, margeY);
-            } else if (choix == 2) {
+        while (continuer) {
+            Coord clic = plateau.attendreClicOuBouton(fenetre, margeX, margeY);
+
+            if (clic.getAbscisse() == -2) {
                 System.out.println(plateau.listMatchs());
-            } else if (choix == 3) {
-                fenetre.effacer();
+                premierClic = null;
+            } else if (clic.getAbscisse() == -3) {
                 plateau = new Plateau(nbLignes, nbCol, nbTypes);
                 plateau.afficherPlateau(fenetre, margeX, margeY);
-            } else if (choix == 4) {
+                premierClic = null;
+            } else if (clic.getAbscisse() == -4) {
                 continuer = false;
                 fenetre.dispose();
+            } else {
+                // Clic sur la grille
+                if (premierClic == null) {
+                    premierClic = clic;
+                    System.out.println("Premier clic : " + premierClic);
+                } else {
+                    plateau.jouerUnCoup(premierClic, clic);
+                    plateau.afficherPlateau(fenetre, margeX, margeY);
+                    premierClic = null;
+                }
             }
         }
 
