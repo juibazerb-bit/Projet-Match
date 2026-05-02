@@ -20,7 +20,7 @@ public class TestPlateauFenetreGraphique {
         int margeX = 200;
         int margeY = 200;
 
-        Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes);
+        Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes, 42L); // 42 = graine fixe
 
         int largeur = nbCol * Tuile.TAILLE + 400;
         int hauteur = nbLignes * Tuile.TAILLE + 400;
@@ -32,10 +32,11 @@ public class TestPlateauFenetreGraphique {
         boolean continuer = true;
         while (continuer) {
             int choix = plateau.lireChoix(fenetre);
-            
-            plateau.echangerTuile(fenetre, margeX, margeY);
-            plateau.afficherPlateau(fenetre, margeX, margeY);
-            if (choix == 2) {
+
+            if (choix == 1) {
+                plateau.echangerTuile(fenetre, margeX, margeY);
+                plateau.afficherPlateau(fenetre, margeX, margeY);
+            } else if (choix == 2) {
                 System.out.println(plateau.listMatchs());
             } else if (choix == 3) {
                 fenetre.effacer();

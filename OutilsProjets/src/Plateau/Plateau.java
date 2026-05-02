@@ -13,6 +13,7 @@ import FenetreGraphique.FenetreGraphique;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.util.Random;
 
 /**
  *
@@ -30,11 +31,27 @@ public class Plateau {
         this.nbCol = nbColonnes;
         this.nbLig = nbLignes;
         this.nbTypesTuile = nbTypes;
+        this.score = 0;
         this.lesColonnes = new Colonne[nbColonnes];
         for (int i = 0; i < nbColonnes; i++) {
             this.lesColonnes[i] = new Colonne(nbLignes, nbTypes, false);
         }
-        // On s'assure qu'il n'y a pas de match dans l'état initial
+        System.out.println("Colonnes creees, suppression des matchs...");
+        this.supprimerTousLesMatchs();
+        System.out.println("Plateau prêt !");
+    }
+
+    public Plateau(int nbColonnes, int nbLignes, int nbTypes, long seed) {
+        this.nbCol = nbColonnes;
+        this.nbLig = nbLignes;
+        this.nbTypesTuile = nbTypes;
+        this.score = 0;
+        this.lesColonnes = new Colonne[nbColonnes];
+
+        Random rand = new Random(seed); // UNE seule instance pour tout le plateau
+        for (int i = 0; i < nbColonnes; i++) {
+            this.lesColonnes[i] = new Colonne(nbLignes, nbTypes, rand);
+        }
         this.supprimerTousLesMatchs();
     }
 
@@ -622,7 +639,7 @@ public class Plateau {
     // AFFICHAGE GRAPHIQUE PLATEAU
     // -------------------------------------------------------------------------
     public void afficherPlateau(FenetreGraphique fenetre, int margeX, int margeY) {
-
+        fenetre.effacer();
         for (int lig = this.nbLig - 1; lig >= 0; lig--) {
             for (int col = 0; col < this.nbCol; col++) {
                 Tuile t = this.lesColonnes[col].getTuile(lig);
