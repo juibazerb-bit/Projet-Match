@@ -1,6 +1,6 @@
 package Clavier;
 
-import Coordonnées.Coord;
+import Coordonnees.Coord;
 
 /**
  *

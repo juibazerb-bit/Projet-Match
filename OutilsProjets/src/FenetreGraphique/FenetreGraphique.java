@@ -210,6 +210,9 @@ public class FenetreGraphique extends JFrame implements MouseListener, KeyListen
     public boolean unClicAEuLieu() {
         return unClicAEuLieu;
     }
+    public void effacerDernierClic() {
+    this.unClicAEuLieu = false;
+}
 
     public boolean uneToucheAEtePressee() {
         return uneToucheAEtePressee;

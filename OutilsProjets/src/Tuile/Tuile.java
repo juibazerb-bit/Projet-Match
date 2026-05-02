@@ -4,7 +4,7 @@
  */
 package Tuile;
 
-import Coordonnées.Coord;
+import Coordonnees.Coord;
 import FenetreGraphique.FenetreGraphique;
 import TypeTuile.TypeTuile;
 
