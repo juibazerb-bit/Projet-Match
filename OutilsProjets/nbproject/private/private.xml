@@ -5,15 +5,14 @@
         <group>
             <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/Plateau/Plateau.java</file>
             <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/Colone/Colonne.java</file>
-            <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/Coordonnées/Coord.java</file>
+            <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/Coordonnees/Coord.java</file>
             <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/Tuile/Tuile.java</file>
             <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/Tuile/TestTuile.java</file>
-            <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/Plateau/TestPlateau.java</file>
+            <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/Plateau/TestPlateauFenetreGraphique.java</file>
             <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/TypeTuile/TypeTuile.java</file>
             <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/FenetreGraphique/FenetreGraphique.java</file>
-            <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/FenetreGraphique/TestFenetreGraphique.java</file>
-            <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/FenetreGraphique/TestImage.java</file>
-            <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/Clavier/Clavier.java</file>
+            <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/FenetreGraphique/TestClavierSouris.java</file>
+            <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/Plateau/TestPlateauConsole.java</file>
         </group>
     </open-files>
 </project-private>
