@@ -28,7 +28,7 @@ public class TestPlateau {
         // On calcule la taille en fonction du nombre de tuiles (50 pixels par tuile)
         int largeur = nbCol * 50;
         int hauteur = nbLignes * 50;
-        FenetreGraphique fenetre = new FenetreGraphique("Candy Crush - Mode Graphique", largeur+200, hauteur+200);
+        FenetreGraphique fenetre = new FenetreGraphique("Candy Crush - Mode Graphique", largeur + 200, hauteur + 200);
 
         System.out.println("=== Jeu de Match // CandyCruch ===");
         System.out.println(plateau.afficher()); // Console
@@ -53,11 +53,19 @@ public class TestPlateau {
                 // Mise à jour de l'affichage Console
                 System.out.println(plateau.afficher());
 
-
                 // Mise à jour de l'affichage Graphique
                 plateau.afficherPlateau(fenetre);
 
+
             } else if (choix == 2) {
+
+            } else {
+                continuer = false;
+                System.out.println("Merci d'avoir joue :) ");
+                // Optionnel : fermer la fenêtre à la fin
+
+            }
+            if (choix == 2) {
                 System.out.println(plateau.afficher());
                 System.out.print(plateau.listMatchs());
             } 

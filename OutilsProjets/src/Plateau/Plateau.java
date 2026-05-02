@@ -10,7 +10,6 @@ import Tuile.Tuile;
 import java.util.ArrayList;
 import Clavier.Clavier;
 import FenetreGraphique.FenetreGraphique;
-import java.awt.Color;
 
 /**
  *
@@ -215,7 +214,6 @@ public class Plateau {
     public int supprimerMatchVertical(Coord pos) {
         int col = pos.getAbscisse();
         int lig = pos.getOrdonnee();
-        int typeMatch = getTuile(col, lig).getType();
 
         // On collecte toutes les lignes à supprimer dans cette colonne
         ArrayList<Integer> lignesASupprimer = new ArrayList<>();
@@ -246,7 +244,6 @@ public class Plateau {
     public int supprimerMatchHorizontal(Coord pos) {
         int col = pos.getAbscisse();
         int lig = pos.getOrdonnee();
-        int typeMatch = getTuile(col, lig).getType();
 
         // On remonte à gauche pour trouver le début du match
         int debut = col;
@@ -316,12 +313,14 @@ public class Plateau {
     public void jouerUnCoup() {
         System.out.println("Entrez les coordonnees de la premiere tuile :");
 
-
         Coord c1 = Clavier.getCoord();
 
         System.out.println("Entrez les coordonnees de la deuxieme tuile :");
 
         Coord c2 = Clavier.getCoord();
+
+        System.out.println("Entrez les coordonnees de la deuxieme tuile :");
+
 
         boolean echangeOk = this.echangerTuiles(c1, c2);
 
@@ -361,7 +360,7 @@ public class Plateau {
         ArrayList<Coord> matchs = new ArrayList<>();
 
         // Vérification de création de matchs par des echange verticale
-        for (int ordonnee = 0; ordonnee < nbLig-1; ordonnee++) {
+        for (int ordonnee = 0; ordonnee < nbLig - 1; ordonnee++) {
             for (int abscisse = 0; abscisse < nbCol; abscisse++) {
                 Coord coord1 = new Coord(abscisse, ordonnee);
                 Coord coord2 = new Coord(abscisse, ordonnee + 1);
@@ -373,26 +372,26 @@ public class Plateau {
                         || this.existeMatchHorizontal(coord1)
                         || this.existeMatchHorizontal(coord2)) {
                     // Verification que la paire de coord n'est pas deja dans la liste
-                        boolean paireDejaPresente = false;
-                        int i=0;
-                        while (!paireDejaPresente && i<matchs.size()){ 
-                            if (matchs.get(i).equals(coord1) && matchs.get(i + 1).equals(coord2)){ 
-                                paireDejaPresente = true;
-                            }
-                            i+=2;
-                            }
-                if (!paireDejaPresente){
-                    matchs.add(coord1);
-                    matchs.add(coord2);
+                    boolean paireDejaPresente = false;
+                    int i = 0;
+                    while (!paireDejaPresente && i < matchs.size()) {
+                        if (matchs.get(i).equals(coord1) && matchs.get(i + 1).equals(coord2)) {
+                            paireDejaPresente = true;
                         }
+                        i += 2;
                     }
+                    if (!paireDejaPresente) {
+                        matchs.add(coord1);
+                        matchs.add(coord2);
+                    }
+                }
                 // on remet en place les Tuiles
                 echangerTuiles(coord1, coord2);
             }
         }
 
         // Vérification de création de matchs par des echange horizontale
-        for (int abscisse = 0; abscisse < nbCol-1; abscisse++) {
+        for (int abscisse = 0; abscisse < nbCol - 1; abscisse++) {
             for (int ordonnee = 0; ordonnee < nbLig; ordonnee++) {
                 Coord coord1 = new Coord(abscisse, ordonnee);
                 Coord coord2 = new Coord(abscisse + 1, ordonnee);
@@ -402,19 +401,19 @@ public class Plateau {
                         || this.existeMatchVertical(coord2)
                         || this.existeMatchHorizontal(coord1)
                         || this.existeMatchHorizontal(coord2)) {
-                    
-                        boolean paireDejaPresente = false;
-                        int i=0;
-                        while (!paireDejaPresente && i<matchs.size()){ 
-                            if (matchs.get(i).equals(coord1) && matchs.get(i + 1).equals(coord2)){ 
-                                paireDejaPresente = true;
-                            }
-                            i+=2;
-                            }
-                        if (!paireDejaPresente){
-                    matchs.add(coord1);
-                    matchs.add(coord2);
+
+                    boolean paireDejaPresente = false;
+                    int i = 0;
+                    while (!paireDejaPresente && i < matchs.size()) {
+                        if (matchs.get(i).equals(coord1) && matchs.get(i + 1).equals(coord2)) {
+                            paireDejaPresente = true;
                         }
+                        i += 2;
+                    }
+                    if (!paireDejaPresente) {
+                        matchs.add(coord1);
+                        matchs.add(coord2);
+                    }
                 }
                 // on remet en place les Tuiles
                 echangerTuiles(coord1, coord2);
@@ -446,7 +445,7 @@ public class Plateau {
     // AFFICHAGE GRAPHIQUE
     // -------------------------------------------------------------------------
     public void afficherPlateau(FenetreGraphique fenetre) {
-     
+
 
         for (int lig = this.nbLig - 1; lig >= 0; lig--) {
             for (int col = 0; col < this.nbCol; col++) {
@@ -454,8 +453,8 @@ public class Plateau {
 
                 if (t != null) {
                     // Calcul de la position : on utilise la TAILLE de la tuile 
-                    int posX = 200+ col * Tuile.TAILLE;
-                    int posY =200+this.nbLig*Tuile.TAILLE - lig * Tuile.TAILLE;
+                    int posX = 200 + col * Tuile.TAILLE;
+                    int posY = 200 + this.nbLig * Tuile.TAILLE - lig * Tuile.TAILLE;
 
                     // On met à jour les coordonnées internes de la tuile si besoin
                     t.setCoordTuile(new Coord(posX, posY));
