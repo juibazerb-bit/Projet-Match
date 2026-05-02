@@ -28,7 +28,7 @@ public class Plateau {
         this.nbTypesTuile = nbTypes;
         this.lesColonnes = new Colonne[nbColonnes];
         for (int i = 0; i < nbColonnes; i++) {
-            this.lesColonnes[i] = new Colonne(nbLignes, nbTypes);
+            this.lesColonnes[i] = new Colonne(nbLignes, nbTypes, false);
         }
         // On s'assure qu'il n'y a pas de match dans l'état initial
         this.supprimerTousLesMatchs();
@@ -36,7 +36,18 @@ public class Plateau {
     
     public Plateau copy(){
         Plateau copy= new Plateau(this.nbCol, this.nbLig, this.nbTypesTuile);
-        copy.setLesColonnes(this.getLesColonnes());
+//        copy.setLesColonnes(this.getLesColonnes());
+        Colonne[] copyColonne= new Colonne[nbCol];
+            for(int i=0; i<nbCol;i++){
+                Colonne copyCol= new Colonne();
+                copyCol.setNbTypes(this.nbTypesTuile);
+                for(int j=0; j<nbLig;j++){
+                    int type = this.lesColonnes[i].getTuile(j).getType();
+                    copyCol.setTuile(new Tuile(type));
+                }
+                copyColonne[i]=copyCol;
+            }
+        copy.setLesColonnes(copyColonne);
         return copy;
     }
 

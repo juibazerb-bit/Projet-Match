@@ -6,6 +6,7 @@ package Colone;
 
 import Tuile.Tuile;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
@@ -16,18 +17,61 @@ public class Colonne {
     private ArrayList<Tuile> colonne;
     private int nbTypes;
 
-    public Colonne(int nbLignes, int nbTypes) {
+    public Colonne(){
+        this.colonne= new ArrayList<Tuile>(); 
+    }
+    
+//    public Colonne(int nbLignes, int nbTypes) {
+//        this.nbTypes = nbTypes;
+//        this.colonne = new ArrayList<>();
+//        
+//        for (int i = 0; i < nbLignes; i++) {
+//            this.colonne.add(new Tuile(nbTypes, true));
+//        }
+//    }
+    
+    
+    // c'est pour faire un random déterminer
+        long seed = 0;
+        Random rng= new Random(seed);
+        
+    public Colonne(int nbLignes, int nbTypes, boolean random){
         this.nbTypes = nbTypes;
         this.colonne = new ArrayList<>();
-        for (int i = 0; i < nbLignes; i++) {
+        
+        if (random== true){
+            for (int i = 0; i < nbLignes; i++) {
             this.colonne.add(new Tuile(nbTypes, true));
         }
-    }
+        } else {
 
+
+        
+        for (int i = 0; i < nbLignes; i++) {
+            this.colonne.add(new Tuile(nbTypes,rng));
+        }
+        
+        }
+    }
+    
+    public void setTuile(Tuile tuile){
+        colonne.add(tuile);
+        
+    }
     public ArrayList<Tuile> getColonne() {
         return colonne;
     }
 
+    public int getNbTypes() {
+        return nbTypes;
+    }
+
+    public void setNbTypes(int nbTypes) {
+        this.nbTypes = nbTypes;
+    }
+
+    
+    
     public Tuile getTuile(int ligne) {
         return this.colonne.get(ligne);
     }
@@ -35,7 +79,7 @@ public class Colonne {
     // Supprime la tuile à la ligne donnée et ajoute une nouvelle tuile aléatoire en haut
     public void supprimerTuile(int ligne) {
         this.colonne.remove(ligne);
-        this.colonne.add(new Tuile(this.nbTypes, true));
+        this.colonne.add(new Tuile(this.nbTypes, rng));
     }
 
     // Supprime toutes les tuiles aux lignes indiquées (liste triée par ordre croissant)
@@ -44,7 +88,7 @@ public class Colonne {
             this.colonne.remove((int) lignes.get(i));
         }
         for (int i = 0; i < lignes.size(); i++) {
-            this.colonne.add(new Tuile(this.nbTypes, true));
+            this.colonne.add(new Tuile(this.nbTypes, rng));
         }
     }
 

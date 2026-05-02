@@ -34,7 +34,7 @@ public class TestPlateau {
         System.out.println(plateau.afficher()); // Console
 
         // Premier affichage graphique
-        plateau.afficherPlateau(fenetre);
+//        plateau.afficherPlateau(fenetre);
 
         boolean continuer = true;
         while (continuer) {
@@ -54,26 +54,18 @@ public class TestPlateau {
                 System.out.println(plateau.afficher());
 
                 // Mise à jour de l'affichage Graphique
-                plateau.afficherPlateau(fenetre);
+//                plateau.afficherPlateau(fenetre);
 
-
-            } else if (choix == 2) {
-
-            } else {
-                continuer = false;
-                System.out.println("Merci d'avoir joue :) ");
-                // Optionnel : fermer la fenêtre à la fin
 
             }
-            if (choix == 2) {
+            else if (choix == 2) {
                 System.out.println(plateau.afficher());
                 System.out.print(plateau.listMatchs());
             } 
-//            Ne touche pas à ça
-//            else if (choix == 3){
-//                System.out.println("Voici le meilleur coups d'après moi même:");
-//                System.out.println(plateau.aideOrdi());
-//            } 
+            else if (choix == 3){
+                System.out.println("Voici le meilleur coups d'après moi même:");
+                System.out.println(plateau.aideOrdi());
+            } 
             else  {
                 continuer = false;
                 System.out.println("Merci d'avoir joue :) ");

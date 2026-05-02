@@ -7,7 +7,7 @@ package Tuile;
 import Coordonnees.Coord;
 import FenetreGraphique.FenetreGraphique;
 import TypeTuile.TypeTuile;
-
+import java.util.Random;
 /**
  *
  * @author fpauvert
@@ -28,6 +28,11 @@ public class Tuile {
     // Constructeur pour créer une tuile aléatoire
     public Tuile(int nbTuiles, boolean aleatoire) {
         this.type = (int) (Math.random() * nbTuiles);
+    }
+    
+    // Constructeur pour créer une tuille aléatoire déterminer
+    public Tuile(int nbTuiles, Random rng){
+        this.type=rng.nextInt(nbTuiles);
     }
 
     public int getType() {

@@ -6,6 +6,7 @@ package Tuile;
 
 import FenetreGraphique.FenetreGraphique;
 import java.awt.Color;
+import java.util.Random;
 
 /**
  *
@@ -30,7 +31,14 @@ public class TestTuile {
         System.out.println("Test Console :");
         System.out.println("Tuile 1 (type 0) : " + t1.toString());
         System.out.println("Tuile 2 (aleatoire) : " + t2.toString());
-
+        
+        // test de génération déterministe
+        long seed = 0;
+        Random rng= new Random(seed);
+        for (int i=0; i<5;i++){
+            System.out.println("Tuile " + i + " (aleatoire) : " + new Tuile(2,rng));
+        }
+        
         // 3. Boucle d'affichage
         while (true) {
             fen.effacer(Color.WHITE); // Fond blanc pour bien voir les gemmes
