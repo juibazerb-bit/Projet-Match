@@ -5,7 +5,7 @@
 package Plateau;
 
 import Colone.Colonne;
-import Coordonnées.Coord;
+import Coordonnees.Coord;
 import Tuile.Tuile;
 import java.util.ArrayList;
 import Clavier.Clavier;
@@ -337,6 +337,23 @@ public class Plateau {
         }
     }
 
+    public void jouerUnCoup(Coord c1, Coord c2) {
+
+        boolean echangeOk = this.echangerTuiles(c1, c2);
+
+        if (echangeOk) {
+            if (this.existeUnMatch()) {
+                System.out.println("echange effectue ! ");
+                int nbPoints = this.supprimerTousLesMatchs() * 100;
+                System.out.println("nombre de points:" + nbPoints);
+            } else {
+                // Pas de match créé : on annule l'échange
+                System.out.println("Cet échange ne crée pas de match, annulation.");
+                this.echangerTuiles(c2, c1);
+            }
+        }
+    }
+
     // -------------------------------------------------------------------------
     // AIDE ORDINATEUR
     // -------------------------------------------------------------------------
@@ -442,10 +459,44 @@ public class Plateau {
     }
 
     // -------------------------------------------------------------------------
+    // METHODES SUR CLIC
+    // -------------------------------------------------------------------------
+    private Coord clicVersCoord(int clicX, int clicY, int margeX, int margeY) {
+        int col = (clicX - margeX) / Tuile.TAILLE;
+        int basGrille = margeY + (this.nbLig + 1) * Tuile.TAILLE; // +1 pour le décalage
+        int lig = (basGrille - clicY) / Tuile.TAILLE;
+
+        System.out.println("Clic pixels : (" + clicX + ", " + clicY + ")");
+        System.out.println("Converti en : col=" + col + ", lig=" + lig);
+
+        if (col >= 0 && col < nbCol && lig >= 0 && lig < nbLig) {
+            return new Coord(col, lig);
+        }
+        return null;
+    }
+
+    private Coord attendreClic(FenetreGraphique fenetre,int margeX,int margeY) {
+        while (true) {
+            if (fenetre.unClicAEuLieu()) {
+                int clicX = fenetre.getXDernierClic();
+                int clicY = fenetre.getYDernierClic();
+                fenetre.effacerDernierClic();
+                Coord coord = clicVersCoord(clicX, clicY, margeX, margeY);
+                if (coord != null) {
+                    return coord;
+                }
+            }
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+            }
+        }
+    }
+
+    // -------------------------------------------------------------------------
     // AFFICHAGE GRAPHIQUE
     // -------------------------------------------------------------------------
-    public void afficherPlateau(FenetreGraphique fenetre) {
-
+    public void afficherPlateau(FenetreGraphique fenetre,int margeX,int margeY) {
 
         for (int lig = this.nbLig - 1; lig >= 0; lig--) {
             for (int col = 0; col < this.nbCol; col++) {
@@ -453,8 +504,8 @@ public class Plateau {
 
                 if (t != null) {
                     // Calcul de la position : on utilise la TAILLE de la tuile 
-                    int posX = 200 + col * Tuile.TAILLE;
-                    int posY = 200 + this.nbLig * Tuile.TAILLE - lig * Tuile.TAILLE;
+                    int posX = margeX + col * Tuile.TAILLE;
+                    int posY = margeY + this.nbLig * Tuile.TAILLE - lig * Tuile.TAILLE;
 
                     // On met à jour les coordonnées internes de la tuile si besoin
                     t.setCoordTuile(new Coord(posX, posY));
@@ -469,4 +520,18 @@ public class Plateau {
 
     }
 
+    public void echangerTuile(FenetreGraphique fenetre,int margeX,int margeY) {
+        System.out.println("Cliquez sur la premiere tuile...");
+        Coord c1 = attendreClic(fenetre,margeX,margeY);
+        System.out.println("Premier clic : " + c1);
+
+        System.out.println("Cliquez sur la deuxieme tuile...");
+        Coord c2 = attendreClic(fenetre,margeX,margeY);
+        System.out.println("Deuxième clic : " + c2);
+
+        this.jouerUnCoup(c1, c2);
+
+        fenetre.effacer();
+        this.afficherPlateau(fenetre,margeX,margeY);
+    }
 }
