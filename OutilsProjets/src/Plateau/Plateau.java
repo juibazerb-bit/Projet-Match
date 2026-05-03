@@ -602,6 +602,8 @@ public class Plateau {
     // -------------------------------------------------------------------------
     public void afficherPlateau(FenetreGraphique fenetre, int margeX, int margeY) {
         fenetre.effacer();
+        int largeurPlateau = this.nbCol * Tuile.TAILLE;
+        int hauteurPlateau = this.nbLig * Tuile.TAILLE;
         for (int lig = this.nbLig - 1; lig >= 0; lig--) {
             for (int col = 0; col < this.nbCol; col++) {
                 Tuile t = this.lesColonnes[col].getTuile(lig);
@@ -609,7 +611,7 @@ public class Plateau {
                 if (t != null) {
                     // Calcul de la position : on utilise la TAILLE de la tuile 
                     int posX = margeX + col * Tuile.TAILLE;
-                    int posY = margeY + this.nbLig * Tuile.TAILLE - lig * Tuile.TAILLE;
+                    int posY = margeY + hauteurPlateau - lig * Tuile.TAILLE;
 
                     // On met à jour les coordonnées internes de la tuile si besoin
                     t.setCoordTuile(new Coord(posX, posY));
@@ -627,6 +629,18 @@ public class Plateau {
         dessinerBouton(fenetre, "Nouvelle partie", boutonX, 100, 160, 30);
         dessinerBouton(fenetre, "Quitter", boutonX, 140, 160, 30);
 
+        //grille de jeu
+        // Dessine les lignes HORIZONTALES (de gauche à droite)
+        for (int i = 0; i <= this.nbLig; i++) {
+            int y = margeY + (i+1) * Tuile.TAILLE;
+            fenetre.getGraphics2D().drawLine(margeX, y, margeX + largeurPlateau, y);
+        }
+
+        // Dessine les lignes VERTICALES (de haut en bas)
+        for (int j = 0; j <= this.nbCol; j++) {
+            int x = margeX + j * Tuile.TAILLE;
+            fenetre.getGraphics2D().drawLine(x, margeY+Tuile.TAILLE, x, margeY + hauteurPlateau+Tuile.TAILLE);
+        }
         fenetre.actualiser();
 
     }

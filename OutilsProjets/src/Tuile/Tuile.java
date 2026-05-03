@@ -55,6 +55,6 @@ public class Tuile {
 
     public void dessiner(FenetreGraphique fenetre, int x, int y) {
         TypeTuile monType = TypeTuile.values()[this.type % TypeTuile.values().length];
-        fenetre.getGraphics2D().drawImage(monType.getImage(), x, y, TAILLE, TAILLE, null);
+        fenetre.getGraphics2D().drawImage(monType.getImage(), x , y , TAILLE, TAILLE, null);
     }
 }
