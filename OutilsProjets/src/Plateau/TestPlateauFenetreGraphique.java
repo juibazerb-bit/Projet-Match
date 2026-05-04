@@ -15,13 +15,13 @@ import Tuile.Tuile;
 public class TestPlateauFenetreGraphique {
 
     public static void main(String[] args) {
-        int nbLignes = 10;
-        int nbCol = 10;
+        int nbLignes = 5;
+        int nbCol = 5;
         int nbTypes = 5;
         int margeX = 100;
         int margeY = 100;
 
-        Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes,42L); // 42 = graine fixe
+        Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes, 42L); // 42 = graine fixe
 
         int largeur = nbCol * Tuile.TAILLE + 300;
         int hauteur = nbLignes * Tuile.TAILLE + 300;
