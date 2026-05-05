@@ -259,8 +259,11 @@ public class Plateau {
                     while (fin + 1 < this.nbLig && getTuile(col, fin + 1).equals(getTuile(col, lig))) {
                         fin++;
                     }
-                    for (int i = lig; i <= fin; i++) {
-                        Coord c = new Coord(col, i);
+                    int taille = fin - lig + 1;
+
+                    // Collecte les tuiles selon l'effet
+                    ArrayList<Coord> effet = appliquerEffetPoint(col, lig, fin, taille, true);
+                    for (Coord c : effet) {
                         if (!contient(aSupprimer, c)) {
                             aSupprimer.add(c);
                         }
@@ -280,10 +283,12 @@ public class Plateau {
                     while (fin + 1 < this.nbCol && getTuile(fin + 1, lig).equals(getTuile(col, lig))) {
                         fin++;
                     }
-                    for (int c = col; c <= fin; c++) {
-                        Coord coord = new Coord(c, lig);
-                        if (!contient(aSupprimer, coord)) {
-                            aSupprimer.add(coord);
+                    int taille = fin - col + 1;
+
+                    ArrayList<Coord> effet = appliquerEffetPoint(col, lig, fin, taille, false);
+                    for (Coord c : effet) {
+                        if (!contient(aSupprimer, c)) {
+                            aSupprimer.add(c);
                         }
                     }
                     col = fin;
@@ -291,6 +296,82 @@ public class Plateau {
             }
         }
 
+        return aSupprimer;
+    }
+
+// Retourne les tuiles à supprimer selon la taille du match
+// vertical=true pour un match vertical, false pour horizontal
+    private ArrayList<Coord> appliquerEffetPoint(int debut, int lig, int fin, int taille, boolean vertical) {
+        ArrayList<Coord> aSupprimer = new ArrayList<>();
+
+        if (taille >= 8) {
+            // Tout le plateau
+            this.score += 5000;
+            System.out.println("COMBO x8 ! ET le plateau disparait ! +5000 pts");
+            for (int c = 0; c < this.nbCol; c++) {
+                for (int l = 0; l < this.nbLig; l++) {
+                    aSupprimer.add(new Coord(c, l));
+                }
+            }
+
+        } else if (taille == 7) {
+            // Explosion rayon 2 ( à modifier si on veut)
+            this.score += 2000;
+            System.out.println("COMBO x7 ! Macron EXPLOSION ! +2000 pts");
+            int centreCol = vertical ? debut : (debut + fin) / 2; //condition ? valeur si vrai : valeur si faux
+            int centreLig = vertical ? (debut + fin) / 2 : lig; // lig ici = la ligne du match horizontal
+            for (int c = centreCol - 2; c <= centreCol + 2; c++) {
+                for (int l = centreLig - 2; l <= centreLig + 2; l++) {
+                    if (c >= 0 && c < nbCol && l >= 0 && l < nbLig) { // test si on est bien sur le plateau pour les bords
+                        aSupprimer.add(new Coord(c, l));
+                    }
+                }
+            }
+
+        } else if (taille == 6) {
+            // Ligne + colonne entière
+            this.score += 1000;
+            System.out.println("COMBO x6 ! GIGA FUSEE ! +1000 pts");
+            int centreCol = vertical ? debut : (debut + fin) / 2;
+            int centreLig = vertical ? (debut + fin) / 2 : lig;
+            // toute la ligne
+            for (int c = 0; c < this.nbCol; c++) {
+                aSupprimer.add(new Coord(c, centreLig));
+            }
+            // toute la colonne
+            for (int l = 0; l < this.nbLig; l++) {
+                aSupprimer.add(new Coord(centreCol, l));
+            }
+
+        } else if (taille == 5) {
+            // Toute la ligne
+            this.score += 500;
+            System.out.println("COMBO x5 ! Petite fusee ! +500 pts");
+            int centreLig = vertical ? (debut + fin) / 2 : lig;
+            for (int c = 0; c < this.nbCol; c++) {
+                aSupprimer.add(new Coord(c, centreLig));
+            }
+
+        } else {
+            // Match normal 3-4 tuiles
+            this.score += taille * 100;
+            System.out.println("Match x" + taille + " ! +" + (taille * 100) + " pts");
+
+            if (vertical) {
+                // On boucle de la ligne du début : lig jusqu'à la fin 
+                // On reste dans la même colonne : debut
+                for (int l = lig; l <= fin; l++) {
+                    aSupprimer.add(new Coord(debut, l));
+                }
+            } else {
+                // On boucle de la colonne du début jusqu'à la fin 
+                // On reste sur la même ligne 
+                for (int c = debut; c <= fin; c++) {
+                    aSupprimer.add(new Coord(c, lig));
+                }
+            }
+
+        }
         return aSupprimer;
     }
 
@@ -373,8 +454,8 @@ public class Plateau {
 
         if (echangeOk) {
             if (this.existeUnMatch()) {
-                System.out.println("echange effectue ! ");
-                this.score += this.supprimerTousLesMatchs(new Random()) * 100;
+                System.out.println("Echange effectue !");
+                this.supprimerTousLesMatchs(new Random());
                 System.out.println("Score total : " + this.score);
             } else {
                 System.out.println("Cet echange ne cree pas de match, annulation.");
@@ -388,7 +469,7 @@ public class Plateau {
         if (echangeOk) {
             if (this.existeUnMatch()) {
                 System.out.println("echange effectue ! ");
-                this.score += this.supprimerTousLesMatchs(new Random()) * 100;
+                this.supprimerTousLesMatchs(new Random());
                 System.out.println("Score total : " + this.score);
             } else {
                 System.out.println("Cet echange ne cree pas de match, annulation.");
@@ -632,14 +713,14 @@ public class Plateau {
         //grille de jeu
         // Dessine les lignes HORIZONTALES (de gauche à droite)
         for (int i = 0; i <= this.nbLig; i++) {
-            int y = margeY + (i+1) * Tuile.TAILLE;
+            int y = margeY + (i + 1) * Tuile.TAILLE;
             fenetre.getGraphics2D().drawLine(margeX, y, margeX + largeurPlateau, y);
         }
 
         // Dessine les lignes VERTICALES (de haut en bas)
         for (int j = 0; j <= this.nbCol; j++) {
             int x = margeX + j * Tuile.TAILLE;
-            fenetre.getGraphics2D().drawLine(x, margeY+Tuile.TAILLE, x, margeY + hauteurPlateau+Tuile.TAILLE);
+            fenetre.getGraphics2D().drawLine(x, margeY + Tuile.TAILLE, x, margeY + hauteurPlateau + Tuile.TAILLE);
         }
         fenetre.actualiser();
 
@@ -658,6 +739,110 @@ public class Plateau {
 
         fenetre.effacer();
         this.afficherPlateau(fenetre, margeX, margeY);
+    }
+    // -------------------------------------------------------------------------
+    // CHUTTE TUILE (REELLE)
+    // -------------------------------------------------------------------------
+
+    public void fixerPositionsActuelles(int margeY) {
+        int hauteurPlateau = this.nbLig * Tuile.TAILLE;
+        for (int col = 0; col < nbCol; col++) {
+            for (int lig = 0; lig < nbLig; lig++) {
+                Tuile t = getTuile(col, lig);
+                if (t != null) {
+                    // On enregistre sa position Y actuelle en pixels
+                    int yActuel = margeY + hauteurPlateau - (lig * Tuile.TAILLE);
+                    t.setPosYVisuelle(yActuel);
+                }
+            }
+        }
+    }
+
+    public void animerChute(FenetreGraphique fenetre, int margeX, int margeY) {
+        int hauteurPlateau = this.nbLig * Tuile.TAILLE;
+        boolean enMouvement = true;
+
+        // Paramètres de vitesse
+        double vitesseBase = 0.1;
+        double boostParLigne = 0.2; // Plus ce chiffre est haut, plus l'écart de vitesse est grand 
+        //ce qui permet aux tuiles de ne pas se superposer en tombant
+
+        while (enMouvement) {
+            enMouvement = false;
+
+            for (int col = 0; col < this.nbCol; col++) {
+                for (int lig = 0; lig < this.nbLig; lig++) {
+                    Tuile t = this.getTuile(col, lig);
+                    if (t == null) {
+                        continue;
+                    }
+
+                    int yCible = margeY + hauteurPlateau - (lig * Tuile.TAILLE);
+
+                    // Si lig = 0 (tout en bas), la vitesse est maximale.
+                    // Si lig = nbLig-1 (en haut), la vitesse est minimale.
+                    double vitesseTuile = vitesseBase + ((this.nbLig - lig) * boostParLigne);
+
+                    // Initialisation pour les nouvelles tuiles
+                    if (t.getPosYVisuelle() == -1) {
+                        t.setPosYVisuelle(margeY - Tuile.TAILLE);
+                        enMouvement = true;
+                    }
+
+                    // Déplacement
+                    if (t.getPosYVisuelle() < yCible) {
+                        // On avance selon la vitesse propre à cette ligne
+                        t.setPosYVisuelle(Math.min(yCible, t.getPosYVisuelle() + vitesseTuile));
+                        enMouvement = true;
+                    }
+                }
+            }
+
+            this.afficherPlateau(fenetre, margeX, margeY);
+            try {
+                Thread.sleep(12);
+            } catch (InterruptedException e) {
+            }
+        }
+    }
+
+    public void reinitialiserPositionsVisuelles() {
+        for (int col = 0; col < nbCol; col++) {
+            for (int lig = 0; lig < nbLig; lig++) {
+                getTuile(col, lig).setPosYVisuelle(-1);
+            }
+        }
+    }
+
+    public void jouerUnCoup(FenetreGraphique fenetre, int margeX, int margeY) {
+        System.out.println("Entrez les coordonnees de la premiere tuile :");
+
+        Coord c1 = Clavier.getCoord();
+
+        System.out.println("Entrez les coordonnees de la deuxieme tuile :");
+        Coord c2 = Clavier.getCoord();
+
+        System.out.println("Entrez les coordonnees de la deuxieme tuile :");
+
+        boolean echangeOk = this.echangerTuiles(c1, c2);
+
+        if (echangeOk) {
+            if (this.existeUnMatch()) {
+                System.out.println("Echange effectue !");
+
+                // 1. On calcule la suppression et le remplissage (logique interne)
+                this.supprimerTousLesMatchs(new Random());
+
+                // 2. On lance l'animation visuelle de la chute
+                // (Assure-toi d'avoir accès à 'fenetre', 'margeX' et 'margeY' ici)
+                this.animerChute(fenetre, margeX, margeY);
+
+                System.out.println("Score total : " + this.score);
+            } else {
+                System.out.println("Cet echange ne cree pas de match, annulation.");
+                this.echangerTuiles(c2, c1);
+            }
+        }
     }
 
 }

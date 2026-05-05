@@ -47,17 +47,22 @@ public class TestPlateauFenetreGraphique {
                 continuer = false;
                 fenetre.dispose();
             } else {
-                // Clic sur la grille
                 if (premierClic == null) {
                     premierClic = clic;
-                    System.out.println("Premier clic : " + premierClic);
                 } else {
+                    // 1. On "mémorise" où sont les tuiles AVANT le mouvement
+                    plateau.fixerPositionsActuelles(margeY);
+
+                    // 2. On fait le calcul logique (suppression/descente dans les listes)
                     plateau.jouerUnCoup(premierClic, clic);
-                    plateau.afficherPlateau(fenetre, margeX, margeY);
+
+                    // 3. On anime le passage de l'ancienne position à la nouvelle
+                    plateau.animerChute(fenetre, margeX, margeY);
+
                     premierClic = null;
                 }
             }
         }
-
     }
+
 }
