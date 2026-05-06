@@ -123,13 +123,20 @@ public class GestionMatchs {
                     while (fin + 1 < plateau.getNbLig() && plateau.getTuile(col, fin + 1).equals(plateau.getTuile(col, lig))) {
                         fin++;
                     }
-                    int taille = fin - lig + 1;
-                    ArrayList<Coord> effet = appliquerEffetPoint(plateau, col, lig, fin, taille, true);
-                    for (Coord c : effet) {
+//                    int taille = fin - lig + 1;
+//                    ArrayList<Coord> effet = appliquerEffetPoint(plateau, col, lig, fin, taille, true);
+//                    for (Coord c : effet) {
+//                        if (!contient(aSupprimer, c)) {
+//                            aSupprimer.add(c);
+//                        }
+//                    }
+                    for (int i = lig; i <= fin; i++) {
+                        Coord c = new Coord(col, i);
                         if (!contient(aSupprimer, c)) {
                             aSupprimer.add(c);
                         }
                     }
+                    
                     lig = fin;
                 }
             }
@@ -144,11 +151,17 @@ public class GestionMatchs {
                     while (fin + 1 < plateau.getNbCol() && plateau.getTuile(fin + 1, lig).equals(plateau.getTuile(col, lig))) {
                         fin++;
                     }
-                    int taille = fin - col + 1;
-                    ArrayList<Coord> effet = appliquerEffetPoint(plateau, col, lig, fin, taille, false);
-                    for (Coord c : effet) {
-                        if (!contient(aSupprimer, c)) {
-                            aSupprimer.add(c);
+//                    int taille = fin - col + 1;
+//                    ArrayList<Coord> effet = appliquerEffetPoint(plateau, col, lig, fin, taille, false);
+//                    for (Coord c : effet) {
+//                        if (!contient(aSupprimer, c)) {
+//                            aSupprimer.add(c);
+//                        }
+//                    }
+                    for (int c = col; c <= fin; c++) {
+                        Coord coord = new Coord(c, lig);
+                        if (!contient(aSupprimer, coord)) {
+                            aSupprimer.add(coord);
                         }
                     }
                     col = fin;
@@ -202,17 +215,17 @@ public class GestionMatchs {
                 aSupprimer.add(new Coord(centreCol, l));
             }
 
-        } else if (taille == 5) {
+        } else if (taille == 4) {
             // Toute la ligne
             plateau.ajouterScore(500);
-            System.out.println("COMBO x5 ! Petite fusee ! +500 pts");
+            System.out.println("COMBO x4 ! Petite fusee ! +500 pts");
             int centreLig = vertical ? (debut + fin) / 2 : lig;
             for (int c = 0; c < plateau.getNbCol(); c++) {
                 aSupprimer.add(new Coord(c, centreLig));
             }
 
         } else {
-            // Match normal 3-4 tuiles
+            // Match normal 3 tuiles
             plateau.ajouterScore(taille * 100);
             System.out.println("Match x" + taille + " ! +" + (taille * 100) + " pts");
 

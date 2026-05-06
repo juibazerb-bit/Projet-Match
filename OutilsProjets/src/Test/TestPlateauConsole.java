@@ -59,7 +59,7 @@ public class TestPlateauConsole {
                 System.out.print(ia.listMatchs(plateau));
             } else if (choix == 3) {
                 System.out.println("Voici le meilleur coups d'après moi même:");
-                System.out.println(ia.aideOrdi(plateau));
+                System.out.println(ia.aideOrdi(plateau,3));
             } else {
                 continuer = false;
                 System.out.println("Merci d'avoir joue :) ");
