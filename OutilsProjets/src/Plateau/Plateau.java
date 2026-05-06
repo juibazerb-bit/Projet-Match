@@ -37,6 +37,7 @@ public class Plateau {
         System.out.println("Colonnes creees, suppression des matchs...");
         gestionMatchs.supprimerTousLesMatchs(this,new Random());
         System.out.println("Plateau pret !");
+        this.score=0;
     }
 
     public Plateau copy() {
@@ -68,7 +69,8 @@ public class Plateau {
         for (int i = 0; i < nbColonnes; i++) {
             this.lesColonnes[i] = new Colonne(nbLignes, nbTypes, rand);
         }
-        gestionMatchs.supprimerTousLesMatchs(this,rand); // on passe le même rand
+        gestionMatchs.supprimerTousLesMatchs(this,rand);
+        this.score=0;// on passe le même rand
     }
 
     // -------------------------------------------------------------------------
@@ -92,6 +94,10 @@ public class Plateau {
 
     public int getScore() {
         return this.score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public GestionMatchs getGestionMatchs() {
