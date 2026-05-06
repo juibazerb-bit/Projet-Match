@@ -7,6 +7,8 @@ import java.util.Random;
 
 public class GestionMatchs {
 
+    private TypesCombinaisons typesCombinaisons = new TypesCombinaisons();
+
     // Vérifie s'il existe un match vertical à partir de la coordonnée donnée
     public boolean existeMatchVertical(Plateau plateau, Coord coordonnee) {
         int col = coordonnee.getAbscisse();
@@ -112,138 +114,7 @@ public class GestionMatchs {
 
     // Collecte toutes les positions à supprimer (vertical + horizontal) sans rien supprimer
     public ArrayList<Coord> collecterToutesLesTuilesASupprimer(Plateau plateau) {
-        ArrayList<Coord> aSupprimer = new ArrayList<>();
-
-        // Matchs verticaux
-        for (int col = 0; col < plateau.getNbCol(); col++) {
-            for (int lig = 0; lig < plateau.getNbLig() - 2; lig++) {
-                if (plateau.getTuile(col, lig).equals(plateau.getTuile(col, lig + 1))
-                        && plateau.getTuile(col, lig).equals(plateau.getTuile(col, lig + 2))) {
-                    int fin = lig + 2;
-                    while (fin + 1 < plateau.getNbLig() && plateau.getTuile(col, fin + 1).equals(plateau.getTuile(col, lig))) {
-                        fin++;
-                    }
-//                    int taille = fin - lig + 1;
-//                    ArrayList<Coord> effet = appliquerEffetPoint(plateau, col, lig, fin, taille, true);
-//                    for (Coord c : effet) {
-//                        if (!contient(aSupprimer, c)) {
-//                            aSupprimer.add(c);
-//                        }
-//                    }
-                    for (int i = lig; i <= fin; i++) {
-                        Coord c = new Coord(col, i);
-                        if (!contient(aSupprimer, c)) {
-                            aSupprimer.add(c);
-                        }
-                    }
-                    
-                    lig = fin;
-                }
-            }
-        }
-
-        // Matchs horizontaux
-        for (int lig = 0; lig < plateau.getNbLig(); lig++) {
-            for (int col = 0; col < plateau.getNbCol() - 2; col++) {
-                if (plateau.getTuile(col, lig).equals(plateau.getTuile(col + 1, lig))
-                        && plateau.getTuile(col, lig).equals(plateau.getTuile(col + 2, lig))) {
-                    int fin = col + 2;
-                    while (fin + 1 < plateau.getNbCol() && plateau.getTuile(fin + 1, lig).equals(plateau.getTuile(col, lig))) {
-                        fin++;
-                    }
-//                    int taille = fin - col + 1;
-//                    ArrayList<Coord> effet = appliquerEffetPoint(plateau, col, lig, fin, taille, false);
-//                    for (Coord c : effet) {
-//                        if (!contient(aSupprimer, c)) {
-//                            aSupprimer.add(c);
-//                        }
-//                    }
-                    for (int c = col; c <= fin; c++) {
-                        Coord coord = new Coord(c, lig);
-                        if (!contient(aSupprimer, coord)) {
-                            aSupprimer.add(coord);
-                        }
-                    }
-                    col = fin;
-                }
-            }
-        }
-        return aSupprimer;
-    }
-
-    // Retourne les tuiles à supprimer selon la taille du match
-    // vertical=true pour un match vertical, false pour horizontal
-    private ArrayList<Coord> appliquerEffetPoint(Plateau plateau, int debut, int lig, int fin, int taille, boolean vertical) {
-        ArrayList<Coord> aSupprimer = new ArrayList<>();
-
-        if (taille >= 8) {
-            // Tout le plateau
-            plateau.ajouterScore(5000);
-            System.out.println("COMBO x8 ! ET le plateau disparait ! +5000 pts");
-            for (int c = 0; c < plateau.getNbCol(); c++) {
-                for (int l = 0; l < plateau.getNbLig(); l++) {
-                    aSupprimer.add(new Coord(c, l));
-                }
-            }
-
-        } else if (taille == 7) {
-            // Explosion rayon 2 ( à modifier si on veut)
-            plateau.ajouterScore(2000);
-            System.out.println("COMBO x7 ! Macron EXPLOSION ! +2000 pts");
-            int centreCol = vertical ? debut : (debut + fin) / 2; //condition ? valeur si vrai : valeur si faux
-            int centreLig = vertical ? (debut + fin) / 2 : lig; // lig ici = la ligne du match horizontal
-            for (int c = centreCol - 2; c <= centreCol + 2; c++) {
-                for (int l = centreLig - 2; l <= centreLig + 2; l++) {
-                    if (c >= 0 && c < plateau.getNbCol() && l >= 0 && l < plateau.getNbLig()) { // test si on est bien sur le plateau pour les bords
-                        aSupprimer.add(new Coord(c, l));
-                    }
-                }
-            }
-
-        } else if (taille == 6) {
-            // Ligne + colonne entière
-            plateau.ajouterScore(1000);
-            System.out.println("COMBO x6 ! GIGA FUSEE ! +1000 pts");
-            int centreCol = vertical ? debut : (debut + fin) / 2;
-            int centreLig = vertical ? (debut + fin) / 2 : lig;
-            // toute la ligne
-            for (int c = 0; c < plateau.getNbCol(); c++) {
-                aSupprimer.add(new Coord(c, centreLig));
-            }
-            // toute la colonne
-            for (int l = 0; l < plateau.getNbLig(); l++) {
-                aSupprimer.add(new Coord(centreCol, l));
-            }
-
-        } else if (taille == 4) {
-            // Toute la ligne
-            plateau.ajouterScore(500);
-            System.out.println("COMBO x4 ! Petite fusee ! +500 pts");
-            int centreLig = vertical ? (debut + fin) / 2 : lig;
-            for (int c = 0; c < plateau.getNbCol(); c++) {
-                aSupprimer.add(new Coord(c, centreLig));
-            }
-
-        } else {
-            // Match normal 3 tuiles
-            plateau.ajouterScore(taille * 100);
-            System.out.println("Match x" + taille + " ! +" + (taille * 100) + " pts");
-
-            if (vertical) {
-                // On boucle de la ligne du début : lig jusqu'à la fin 
-                // On reste dans la même colonne : debut
-                for (int l = lig; l <= fin; l++) {
-                    aSupprimer.add(new Coord(debut, l));
-                }
-            } else {
-                // On boucle de la colonne du début jusqu'à la fin 
-                // On reste sur la même ligne 
-                for (int c = debut; c <= fin; c++) {
-                    aSupprimer.add(new Coord(c, lig));
-                }
-            }
-        }
-        return aSupprimer;
+        return typesCombinaisons.collecterToutesLesTuilesASupprimer(plateau);
     }
 
     // Vérifie si une Coord est déjà dans la liste (pour éviter les doublons)

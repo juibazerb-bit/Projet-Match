@@ -9,9 +9,9 @@ import Plateau.Plateau;
  *
  * @author fpauvert
  */
-public class FenetreGraphique extends javax.swing.JFrame {
+public class FenetreGraphiquePropre extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FenetreGraphique.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FenetreGraphiquePropre.class.getName());
     private Plateau plateau;
     
     /**
@@ -19,7 +19,7 @@ public class FenetreGraphique extends javax.swing.JFrame {
      */
     
     
-    public FenetreGraphique() {
+    public FenetreGraphiquePropre() {
         plateau= new Plateau(5,5,5);
         initComponents();
     }
@@ -163,8 +163,6 @@ public class FenetreGraphique extends javax.swing.JFrame {
                         .addGap(13, 13, 13))))
         );
 
-        jLabel4.getAccessibleContext().setAccessibleName("Liste coups possible");
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -202,7 +200,7 @@ public class FenetreGraphique extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FenetreGraphique().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new FenetreGraphiquePropre().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

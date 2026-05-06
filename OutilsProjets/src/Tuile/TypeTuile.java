@@ -22,10 +22,10 @@ public enum TypeTuile {
     CYAN("\u001B[36m", "X", "diamond.png"),
     BLANC("\u001B[37m", "O", "gem1.png");
 
-    private  String RESET = "\u001B[0m";
-    private  String couleur;
-    private  String symbole;
-    private  Image image;
+    private final  String RESET = "\u001B[0m";
+    private final  String couleur;
+    private final  String symbole;
+    private final  Image image;
 
     TypeTuile(String couleur, String symbole, String fichier) {
         this.couleur = couleur;

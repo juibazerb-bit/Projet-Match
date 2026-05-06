@@ -82,9 +82,6 @@ public class GestionGraphique {
         int basGrille = margeY + (plateau.getNbLig() + 1) * Tuile.TAILLE; // +1 pour le décalage
         int lig = (basGrille - clicY) / Tuile.TAILLE;
 
-        System.out.println("Clic pixels : (" + clicX + ", " + clicY + ")");
-        System.out.println("Converti en : col=" + col + ", lig=" + lig);
-
         if (col >= 0 && col < plateau.getNbCol() && lig >= 0 && lig < plateau.getNbLig()) {
             return new Coord(col, lig);
         }
@@ -120,6 +117,12 @@ public class GestionGraphique {
                     return coord;
                 }
             }
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+
         }
     }
 
@@ -143,11 +146,8 @@ public class GestionGraphique {
     public void animerChute(Plateau plateau, FenetreGraphique fenetre, int margeX, int margeY) {
         int hauteurPlateau = plateau.getNbLig() * Tuile.TAILLE;
         boolean enMouvement = true;
-
-        // Paramètres de vitesse
-        double vitesseBase = 4;
-        double boostParLigne = 0.0; // Plus ce chiffre est haut, plus l'écart de vitesse est grand 
-        //ce qui permet aux tuiles de ne pas se superposer en tombant
+        double vitesse = 4.0; // pixels par frame
+        double boostParLigne = 0.0;
 
         while (enMouvement) {
             enMouvement = false;
@@ -160,18 +160,16 @@ public class GestionGraphique {
                     }
 
                     int yCible = margeY + hauteurPlateau - (lig * Tuile.TAILLE);
+                    double vitesseTuile = vitesse + ((plateau.getNbLig() - lig) * boostParLigne);
 
-                    // Si lig = 0 (tout en bas), la vitesse est maximale.
-                    // Si lig = nbLig-1 (en haut), la vitesse est minimale.
-                    double vitesseTuile = vitesseBase + ((plateau.getNbLig() - lig) * boostParLigne);
-
-                    // Initialisation pour les nouvelles tuiles
+                    // Nouvelle tuile : elle part du haut de la grille
                     if (t.getPosYVisuelle() == -1) {
+                        // Plus la tuile est haute dans la grille (lig grand), plus elle part de loin
                         t.setPosYVisuelle(margeY - (lig-plateau.getNbCol()/2) * Tuile.TAILLE);
                         enMouvement = true;
                     }
 
-                    // Déplacement
+                    // Déplacement vers la cible
                     if (t.getPosYVisuelle() < yCible) {
                         // On avance selon la vitesse propre à cette ligne
                         t.setPosYVisuelle(Math.min(yCible, t.getPosYVisuelle() + vitesseTuile));
@@ -179,7 +177,14 @@ public class GestionGraphique {
                     }
                 }
             }
+
             afficherPlateau(plateau, fenetre, margeX, margeY);
+
+            // Petite pause pour que l'animation soit visible
+            try {
+                Thread.sleep(16);
+            } catch (InterruptedException e) {
+            }
         }
     }
 

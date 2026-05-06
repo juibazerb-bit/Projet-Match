@@ -187,9 +187,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Liste coups possible"/>
       </Properties>
-      <AccessibilityProperties>
-        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Liste coups possible"/>
-      </AccessibilityProperties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">
       <Properties>
