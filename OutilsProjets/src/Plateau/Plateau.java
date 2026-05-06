@@ -7,7 +7,6 @@ package Plateau;
 import Colone.Colonne;
 import Coordonnees.Coord;
 import Tuile.Tuile;
-import java.util.ArrayList;
 import Clavier.Clavier;
 import FenetreGraphique.FenetreGraphique;
 import java.util.Random;
@@ -221,114 +220,6 @@ public class Plateau {
         }
     }
 
-    // -------------------------------------------------------------------------
-    // AIDE ORDINATEUR
-    // -------------------------------------------------------------------------
-    public String listMatchs() {
-        ArrayList<Coord> matchs = this.listEchange();
-        String res = "Liste des echanges possibles";
-        if (matchs.isEmpty()) {
-            return res += ": \n Aucun";
-        }
-        res += " entre:";
-        for (int i = 0; i < matchs.size(); i += 2) {
-            res += " \n " + matchs.get(i) + " et " + matchs.get(i + 1);
-        }
-
-        return res;
-    }
-
-    public ArrayList<Coord> listEchange() {
-        ArrayList<Coord> matchs = new ArrayList<>();
-
-        // Vérification de création de matchs par des echange verticale
-        for (int ordonnee = 0; ordonnee < nbLig - 1; ordonnee++) {
-            for (int abscisse = 0; abscisse < nbCol; abscisse++) {
-                Coord coord1 = new Coord(abscisse, ordonnee);
-                Coord coord2 = new Coord(abscisse, ordonnee + 1);
-                echangerTuiles(coord1, coord2);
-
-                // si matchs ajout a la liste
-                if (gestionMatchs.existeMatchVertical(this,coord1)
-                        || gestionMatchs.existeMatchVertical(this,coord2)
-                        || gestionMatchs.existeMatchHorizontal(this,coord1)
-                        || gestionMatchs.existeMatchHorizontal(this,coord2)) {
-                    // Verification que la paire de coord n'est pas deja dans la liste
-                    boolean paireDejaPresente = false;
-                    int i = 0;
-                    while (!paireDejaPresente && i < matchs.size()) {
-                        if (matchs.get(i).equals(coord1) && matchs.get(i + 1).equals(coord2)) {
-                            paireDejaPresente = true;
-                        }
-                        i += 2;
-                    }
-                    if (!paireDejaPresente) {
-                        matchs.add(coord1);
-                        matchs.add(coord2);
-                    }
-                }
-                // on remet en place les Tuiles
-                echangerTuiles(coord1, coord2);
-            }
-        }
-
-        // Vérification de création de matchs par des echange horizontale
-        for (int abscisse = 0; abscisse < nbCol - 1; abscisse++) {
-            for (int ordonnee = 0; ordonnee < nbLig; ordonnee++) {
-                Coord coord1 = new Coord(abscisse, ordonnee);
-                Coord coord2 = new Coord(abscisse + 1, ordonnee);
-                echangerTuiles(coord1, coord2);
-
-                if (gestionMatchs.existeMatchVertical(this,coord1)
-                        || gestionMatchs.existeMatchVertical(this,coord2)
-                        || gestionMatchs.existeMatchHorizontal(this,coord1)
-                        || gestionMatchs.existeMatchHorizontal(this,coord2)) {
-
-                    boolean paireDejaPresente = false;
-                    int i = 0;
-                    while (!paireDejaPresente && i < matchs.size()) {
-                        if (matchs.get(i).equals(coord1) && matchs.get(i + 1).equals(coord2)) {
-                            paireDejaPresente = true;
-                        }
-                        i += 2;
-                    }
-                    if (!paireDejaPresente) {
-                        matchs.add(coord1);
-                        matchs.add(coord2);
-                    }
-                }
-                // on remet en place les Tuiles
-                echangerTuiles(coord1, coord2);
-            }
-        }
-        return matchs;
-    }
-
-    // à faire (Ayoub) avec une boucle reccursif
-    public ArrayList<Coord> aideOrdi() {
-        ArrayList<Coord> matchs = this.listEchange();
-        Plateau copy = this.copy();
-        ArrayList<Coord> meilleurMatchs = new ArrayList<Coord>();
-        int meilleurScore = 0;
-        for (int i = 0; i < matchs.size(); i += 2) {
-            copy.echangerTuiles(matchs.get(i), matchs.get(i + 1));
-            int scoreCopy = gestionMatchs.supprimerTousLesMatchs(copy, new Random()) * 100;
-            if (scoreCopy > meilleurScore) {
-                meilleurMatchs.clear();
-                meilleurMatchs.add(matchs.get(i));
-                meilleurMatchs.add(matchs.get(i + 1));
-                meilleurScore = scoreCopy;
-            }
-        }
-        return meilleurMatchs;
-    }
-
-    // -------------------------------------------------------------------------
-    // METHODES SUR CLIC
-    // -------------------------------------------------------------------------
-    // -------------------------------------------------------------------------
-    // BOUTONS
-    // -------------------------------------------------------------------------
     // Dessine un bouton et retourne true si le clic est dessus
     // Attend un clic sur un bouton et retourne le choix (1, 2, 3 ou 4)
     public int lireChoix(FenetreGraphique fenetre) {

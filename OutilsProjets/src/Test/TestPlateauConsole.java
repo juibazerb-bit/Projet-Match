@@ -4,7 +4,7 @@
  */
 package Test;
 
-import FenetreGraphique.FenetreGraphique;
+import Plateau.GestionIA;
 import Plateau.Plateau;
 
 /**
@@ -24,19 +24,17 @@ public class TestPlateauConsole {
 
         // 2. Création du plateau
         Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes);
-
+        GestionIA ia = new GestionIA();
         // 3. Création de la fenêtre graphique
         // On calcule la taille en fonction du nombre de tuiles (50 pixels par tuile)
         int largeur = nbCol * 50;
         int hauteur = nbLignes * 50;
-        
 
         System.out.println("=== Jeu de Match // CandyCruch ===");
         System.out.println(plateau.afficher()); // Console
 
         // Premier affichage graphique
 //        plateau.afficherPlateau(fenetre);
-
         boolean continuer = true;
         while (continuer) {
             System.out.println("\nQue voulez-vous faire ?");
@@ -56,18 +54,13 @@ public class TestPlateauConsole {
 
                 // Mise à jour de l'affichage Graphique
 //                plateau.afficherPlateau(fenetre);
-
-
-            }
-            else if (choix == 2) {
+            } else if (choix == 2) {
                 System.out.println(plateau.afficher());
-                System.out.print(plateau.listMatchs());
-            } 
-            else if (choix == 3){
+                System.out.print(ia.listMatchs(plateau));
+            } else if (choix == 3) {
                 System.out.println("Voici le meilleur coups d'après moi même:");
-                System.out.println(plateau.aideOrdi());
-            } 
-            else  {
+                System.out.println(ia.aideOrdi(plateau));
+            } else {
                 continuer = false;
                 System.out.println("Merci d'avoir joue :) ");
             }
