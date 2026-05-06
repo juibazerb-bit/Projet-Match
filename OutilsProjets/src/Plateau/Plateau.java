@@ -10,9 +10,6 @@ import Tuile.Tuile;
 import java.util.ArrayList;
 import Clavier.Clavier;
 import FenetreGraphique.FenetreGraphique;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
 import java.util.Random;
 
 /**
@@ -26,6 +23,8 @@ public class Plateau {
     private int nbLig;
     private int nbTypesTuile;
     private int score;
+    private GestionMatchs gestionMatchs = new GestionMatchs();
+    private GestionGraphique gestionGraphique = new GestionGraphique();
 
     public Plateau(int nbColonnes, int nbLignes, int nbTypes) {
         this.nbCol = nbColonnes;
@@ -37,7 +36,7 @@ public class Plateau {
             this.lesColonnes[i] = new Colonne(nbLignes, nbTypes);
         }
         System.out.println("Colonnes creees, suppression des matchs...");
-        this.supprimerTousLesMatchs(new Random());
+        gestionMatchs.supprimerTousLesMatchs(this,new Random());
         System.out.println("Plateau pret !");
     }
 
@@ -70,7 +69,7 @@ public class Plateau {
         for (int i = 0; i < nbColonnes; i++) {
             this.lesColonnes[i] = new Colonne(nbLignes, nbTypes, rand);
         }
-        this.supprimerTousLesMatchs(rand); // on passe le même rand
+        gestionMatchs.supprimerTousLesMatchs(this,rand); // on passe le même rand
     }
 
     // -------------------------------------------------------------------------
@@ -95,6 +94,23 @@ public class Plateau {
     public int getScore() {
         return this.score;
     }
+
+    public GestionMatchs getGestionMatchs() {
+        return gestionMatchs;
+    }
+
+    public GestionGraphique getGestionGraphique() {
+        return gestionGraphique;
+    }
+
+    public void setGestionMatchs(GestionMatchs gestionMatchs) {
+        this.gestionMatchs = gestionMatchs;
+    }
+
+    public void setGestionGraphique(GestionGraphique gestionGraphique) {
+        this.gestionGraphique = gestionGraphique;
+    }
+    
 
     public void setLesColonnes(Colonne[] lesColonnes) {
         this.lesColonnes = lesColonnes;
@@ -144,287 +160,6 @@ public class Plateau {
     }
 
     // -------------------------------------------------------------------------
-    // DETECTION DE MATCHS
-    // -------------------------------------------------------------------------
-    // Vérifie s'il existe un match vertical à partir de la coordonnée donnée
-    public boolean existeMatchVertical(Coord coordonnee) {
-        int col = coordonnee.getAbscisse();
-        int lig = coordonnee.getOrdonnee();
-        int typeSource = getTuile(col, lig).getType();
-        int typeHaut1 = -1;
-        int typeHaut2 = -1;
-        int typeBas1 = -1;
-        int typeBas2 = -1;
-//      On attribut des types au 2 case au dessus et en dessous s'il existe
-//      Sinon on leurs donne la valeur -1 
-        if (lig + 2 < this.nbLig) {
-            typeHaut1 = getTuile(col, lig + 1).getType();
-            typeHaut2 = getTuile(col, lig + 2).getType();
-        } else if (lig + 1 < this.nbLig) {
-            typeHaut1 = getTuile(col, lig + 1).getType();
-        }
-        if (lig - 2 >= 0) {
-            typeBas1 = getTuile(col, lig - 1).getType();
-            typeBas2 = getTuile(col, lig - 2).getType();
-        } else if (lig - 1 >= 0) {
-            typeBas1 = getTuile(col, lig - 1).getType();
-        }
-        return (typeSource == typeHaut1 && typeSource == typeHaut2
-                || typeSource == typeBas1 && typeSource == typeBas2
-                || typeSource == typeBas1 && typeSource == typeHaut1);
-    }
-
-    // Vérifie s'il existe un match horizontal à partir de la coordonnée donnée
-    public boolean existeMatchHorizontal(Coord coordonnee) {
-        int col = coordonnee.getAbscisse();
-        int lig = coordonnee.getOrdonnee();
-        int typeSource = getTuile(col, lig).getType();
-        int typeDroite1 = -1;
-        int typeDroite2 = -1;
-        int typeGauche1 = -1;
-        int typeGauche2 = -1;
-
-//      On attribut des types aux 2 case a droite et a gauche s'il existe
-//      Sinon on leurs donne la valeur -1
-        if (col + 2 < this.nbCol) {
-            typeDroite1 = getTuile(col + 1, lig).getType();
-            typeDroite2 = getTuile(col + 2, lig).getType();
-        } else if (col + 1 < this.nbCol) {
-            typeDroite1 = getTuile(col + 1, lig).getType();
-        }
-        if (col - 2 >= 0) {
-            typeGauche1 = getTuile(col - 1, lig).getType();
-            typeGauche2 = getTuile(col - 2, lig).getType();
-        } else if (col - 1 >= 0) {
-            typeGauche1 = getTuile(col - 1, lig).getType();
-        }
-        return (typeSource == typeDroite1 && typeSource == typeDroite2
-                || typeSource == typeGauche1 && typeSource == typeGauche2
-                || typeSource == typeGauche1 && typeSource == typeDroite1);
-
-    }
-
-    // Retourne la position du premier match vertical trouvé, ou (-1,-1) si aucun
-    public Coord posMatchVertical() {
-        Coord pos = new Coord(-1, -1);
-        int col = 0;
-        boolean trouve = false;
-        while (col < this.nbCol && !trouve) {
-            int lig = 0;
-            while (lig < this.nbLig - 2 && !trouve) {
-                if (this.existeMatchVertical(new Coord(col, lig))) {
-                    trouve = true;
-                    pos = new Coord(col, lig);
-                } else {
-                    lig++;
-                }
-            }
-            col++;
-        }
-        return pos;
-    }
-
-    // Retourne la position du premier match horizontal trouvé, ou (-1,-1) si aucun
-    public Coord posMatchHorizontal() {
-        Coord pos = new Coord(-1, -1);
-        int lig = 0;
-        boolean trouve = false;
-        while (lig < this.nbLig && !trouve) {
-            int col = 0;
-            while (col < this.nbCol - 2 && !trouve) {
-                if (this.existeMatchHorizontal(new Coord(col, lig))) {
-                    trouve = true;
-                    pos = new Coord(col, lig);
-                } else {
-                    col++;
-                }
-            }
-            lig++;
-        }
-        return pos;
-    }
-
-    // Retourne true s'il existe au moins un match (vertical ou horizontal) sur le plateau
-    public boolean existeUnMatch() {
-        return this.posMatchVertical().getAbscisse() != -1
-                || this.posMatchHorizontal().getAbscisse() != -1;
-    }
-
-    // -------------------------------------------------------------------------
-    // SUPPRESSION DES MATCHS ET CHUTE DES TUILES
-    // ------------------------------------------------------------------------
-    // Collecte toutes les positions à supprimer (vertical + horizontal) sans rien supprimer
-    public ArrayList<Coord> collecterToutesLesTuilesASupprimer() {
-        ArrayList<Coord> aSupprimer = new ArrayList<>();
-
-        // Matchs verticaux
-        for (int col = 0; col < this.nbCol; col++) {
-            for (int lig = 0; lig < this.nbLig - 2; lig++) {
-                if (getTuile(col, lig).equals(getTuile(col, lig + 1))
-                        && getTuile(col, lig).equals(getTuile(col, lig + 2))) {
-                    // Trouve toute l'étendue du match
-                    int fin = lig + 2;
-                    while (fin + 1 < this.nbLig && getTuile(col, fin + 1).equals(getTuile(col, lig))) {
-                        fin++;
-                    }
-                    int taille = fin - lig + 1;
-
-                    // Collecte les tuiles selon l'effet
-                    ArrayList<Coord> effet = appliquerEffetPoint(col, lig, fin, taille, true);
-                    for (Coord c : effet) {
-                        if (!contient(aSupprimer, c)) {
-                            aSupprimer.add(c);
-                        }
-                    }
-                    lig = fin; // on saute les tuiles déjà traitées
-                }
-            }
-        }
-
-        // Matchs horizontaux
-        for (int lig = 0; lig < this.nbLig; lig++) {
-            for (int col = 0; col < this.nbCol - 2; col++) {
-                if (getTuile(col, lig).equals(getTuile(col + 1, lig))
-                        && getTuile(col, lig).equals(getTuile(col + 2, lig))) {
-                    // Trouve toute l'étendue du match
-                    int fin = col + 2;
-                    while (fin + 1 < this.nbCol && getTuile(fin + 1, lig).equals(getTuile(col, lig))) {
-                        fin++;
-                    }
-                    int taille = fin - col + 1;
-
-                    ArrayList<Coord> effet = appliquerEffetPoint(col, lig, fin, taille, false);
-                    for (Coord c : effet) {
-                        if (!contient(aSupprimer, c)) {
-                            aSupprimer.add(c);
-                        }
-                    }
-                    col = fin;
-                }
-            }
-        }
-
-        return aSupprimer;
-    }
-
-// Retourne les tuiles à supprimer selon la taille du match
-// vertical=true pour un match vertical, false pour horizontal
-    private ArrayList<Coord> appliquerEffetPoint(int debut, int lig, int fin, int taille, boolean vertical) {
-        ArrayList<Coord> aSupprimer = new ArrayList<>();
-
-        if (taille >= 8) {
-            // Tout le plateau
-            this.score += 5000;
-            System.out.println("COMBO x8 ! ET le plateau disparait ! +5000 pts");
-            for (int c = 0; c < this.nbCol; c++) {
-                for (int l = 0; l < this.nbLig; l++) {
-                    aSupprimer.add(new Coord(c, l));
-                }
-            }
-
-        } else if (taille == 7) {
-            // Explosion rayon 2 ( à modifier si on veut)
-            this.score += 2000;
-            System.out.println("COMBO x7 ! Macron EXPLOSION ! +2000 pts");
-            int centreCol = vertical ? debut : (debut + fin) / 2; //condition ? valeur si vrai : valeur si faux
-            int centreLig = vertical ? (debut + fin) / 2 : lig; // lig ici = la ligne du match horizontal
-            for (int c = centreCol - 2; c <= centreCol + 2; c++) {
-                for (int l = centreLig - 2; l <= centreLig + 2; l++) {
-                    if (c >= 0 && c < nbCol && l >= 0 && l < nbLig) { // test si on est bien sur le plateau pour les bords
-                        aSupprimer.add(new Coord(c, l));
-                    }
-                }
-            }
-
-        } else if (taille == 6) {
-            // Ligne + colonne entière
-            this.score += 1000;
-            System.out.println("COMBO x6 ! GIGA FUSEE ! +1000 pts");
-            int centreCol = vertical ? debut : (debut + fin) / 2;
-            int centreLig = vertical ? (debut + fin) / 2 : lig;
-            // toute la ligne
-            for (int c = 0; c < this.nbCol; c++) {
-                aSupprimer.add(new Coord(c, centreLig));
-            }
-            // toute la colonne
-            for (int l = 0; l < this.nbLig; l++) {
-                aSupprimer.add(new Coord(centreCol, l));
-            }
-
-        } else if (taille == 5) {
-            // Toute la ligne
-            this.score += 500;
-            System.out.println("COMBO x5 ! Petite fusee ! +500 pts");
-            int centreLig = vertical ? (debut + fin) / 2 : lig;
-            for (int c = 0; c < this.nbCol; c++) {
-                aSupprimer.add(new Coord(c, centreLig));
-            }
-
-        } else {
-            // Match normal 3-4 tuiles
-            this.score += taille * 100;
-            System.out.println("Match x" + taille + " ! +" + (taille * 100) + " pts");
-
-            if (vertical) {
-                // On boucle de la ligne du début : lig jusqu'à la fin 
-                // On reste dans la même colonne : debut
-                for (int l = lig; l <= fin; l++) {
-                    aSupprimer.add(new Coord(debut, l));
-                }
-            } else {
-                // On boucle de la colonne du début jusqu'à la fin 
-                // On reste sur la même ligne 
-                for (int c = debut; c <= fin; c++) {
-                    aSupprimer.add(new Coord(c, lig));
-                }
-            }
-
-        }
-        return aSupprimer;
-    }
-
-    // Vérifie si une Coord est déjà dans la liste (pour éviter les doublons)
-    public boolean contient(ArrayList<Coord> liste, Coord c) {
-        boolean flag = false;
-        for (Coord coord : liste) {
-            if (coord.equals(c)) {
-                flag = true;
-            }
-        }
-        return flag;
-    }
-
-    public int supprimerTousLesMatchs(Random rand) {
-        int totalSupprimees = 0;
-        boolean matchTrouve = true;
-        while (matchTrouve) {
-            ArrayList<Coord> aSupprimer = collecterToutesLesTuilesASupprimer();
-            if (aSupprimer.isEmpty()) {
-                matchTrouve = false;
-            } else {
-                totalSupprimees += supprimerCoords(aSupprimer, rand);
-            }
-        }
-        return totalSupprimees;
-    }
-
-    private int supprimerCoords(ArrayList<Coord> aSupprimer, Random rand) {
-        for (int col = 0; col < this.nbCol; col++) {
-            ArrayList<Integer> lignesASupprimer = new ArrayList<>();
-            for (Coord c : aSupprimer) {
-                if (c.getAbscisse() == col) {
-                    lignesASupprimer.add(c.getOrdonnee());
-                }
-            }
-            if (!lignesASupprimer.isEmpty()) {
-                lignesASupprimer.sort((a, b) -> a - b);
-                this.lesColonnes[col].supprimerTuiles(lignesASupprimer, rand);
-            }
-        }
-        return aSupprimer.size();
-    }
-
-    // -------------------------------------------------------------------------
     // ECHANGE DE TUILES
     // -------------------------------------------------------------------------
     // Échange deux tuiles voisines désignées par leurs coordonnées
@@ -461,9 +196,9 @@ public class Plateau {
         boolean echangeOk = this.echangerTuiles(c1, c2);
 
         if (echangeOk) {
-            if (this.existeUnMatch()) {
+            if (gestionMatchs.existeUnMatch(this)) {
                 System.out.println("Echange effectue !");
-                this.supprimerTousLesMatchs(new Random());
+                gestionMatchs.supprimerTousLesMatchs(this,new Random());
                 System.out.println("Score total : " + this.score);
             } else {
                 System.out.println("Cet echange ne cree pas de match, annulation.");
@@ -475,9 +210,9 @@ public class Plateau {
     public void jouerUnCoup(Coord c1, Coord c2) {
         boolean echangeOk = this.echangerTuiles(c1, c2);
         if (echangeOk) {
-            if (this.existeUnMatch()) {
+            if (gestionMatchs.existeUnMatch(this)) {
                 System.out.println("echange effectue ! ");
-                this.supprimerTousLesMatchs(new Random());
+                gestionMatchs.supprimerTousLesMatchs(this,new Random());
                 System.out.println("Score total : " + this.score);
             } else {
                 System.out.println("Cet echange ne cree pas de match, annulation.");
@@ -514,10 +249,10 @@ public class Plateau {
                 echangerTuiles(coord1, coord2);
 
                 // si matchs ajout a la liste
-                if (this.existeMatchVertical(coord1)
-                        || this.existeMatchVertical(coord2)
-                        || this.existeMatchHorizontal(coord1)
-                        || this.existeMatchHorizontal(coord2)) {
+                if (gestionMatchs.existeMatchVertical(this,coord1)
+                        || gestionMatchs.existeMatchVertical(this,coord2)
+                        || gestionMatchs.existeMatchHorizontal(this,coord1)
+                        || gestionMatchs.existeMatchHorizontal(this,coord2)) {
                     // Verification que la paire de coord n'est pas deja dans la liste
                     boolean paireDejaPresente = false;
                     int i = 0;
@@ -544,10 +279,10 @@ public class Plateau {
                 Coord coord2 = new Coord(abscisse + 1, ordonnee);
                 echangerTuiles(coord1, coord2);
 
-                if (this.existeMatchVertical(coord1)
-                        || this.existeMatchVertical(coord2)
-                        || this.existeMatchHorizontal(coord1)
-                        || this.existeMatchHorizontal(coord2)) {
+                if (gestionMatchs.existeMatchVertical(this,coord1)
+                        || gestionMatchs.existeMatchVertical(this,coord2)
+                        || gestionMatchs.existeMatchHorizontal(this,coord1)
+                        || gestionMatchs.existeMatchHorizontal(this,coord2)) {
 
                     boolean paireDejaPresente = false;
                     int i = 0;
@@ -577,7 +312,7 @@ public class Plateau {
         int meilleurScore = 0;
         for (int i = 0; i < matchs.size(); i += 2) {
             copy.echangerTuiles(matchs.get(i), matchs.get(i + 1));
-            int scoreCopy = copy.supprimerTousLesMatchs(new Random()) * 100;
+            int scoreCopy = gestionMatchs.supprimerTousLesMatchs(copy, new Random()) * 100;
             if (scoreCopy > meilleurScore) {
                 meilleurMatchs.clear();
                 meilleurMatchs.add(matchs.get(i));
@@ -591,75 +326,10 @@ public class Plateau {
     // -------------------------------------------------------------------------
     // METHODES SUR CLIC
     // -------------------------------------------------------------------------
-    public Coord clicVersCoord(int clicX, int clicY, int margeX, int margeY) {
-        int col = (clicX - margeX) / Tuile.TAILLE;
-        int basGrille = margeY + (this.nbLig + 1) * Tuile.TAILLE; // +1 pour le décalage
-        int lig = (basGrille - clicY) / Tuile.TAILLE;
-
-        System.out.println("Clic pixels : (" + clicX + ", " + clicY + ")");
-        System.out.println("Converti en : col=" + col + ", lig=" + lig);
-
-        if (col >= 0 && col < nbCol && lig >= 0 && lig < nbLig) {
-            return new Coord(col, lig);
-        }
-        return null;
-    }
-
-    public Coord attendreClicOuBouton(FenetreGraphique fenetre, int margeX, int margeY) {
-        // Valeurs spéciales retournées pour les boutons :
-        // (-2, 0) = Coups possibles
-        // (-3, 0) = Nouvelle partie  
-        // (-4, 0) = Quitter
-        // Coord valide = clic sur la grille
-        int boutonX = margeX + this.nbCol * Tuile.TAILLE + 20;
-
-        while (true) {
-            if (fenetre.unClicAEuLieu()) {
-                int clicX = fenetre.getXDernierClic();
-                int clicY = fenetre.getYDernierClic();
-                fenetre.effacerDernierClic();
-
-                if (boutonClique(clicX, clicY, boutonX, 60, 160, 30)) {
-                    return new Coord(-2, 0);
-                }
-                if (boutonClique(clicX, clicY, boutonX, 100, 160, 30)) {
-                    return new Coord(-3, 0);
-                }
-                if (boutonClique(clicX, clicY, boutonX, 140, 160, 30)) {
-                    return new Coord(-4, 0);
-                }
-
-                Coord coord = clicVersCoord(clicX, clicY, margeX, margeY);
-                if (coord != null) {
-                    return coord;
-                }
-            }
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-            }
-        }
-    }
-
     // -------------------------------------------------------------------------
     // BOUTONS
     // -------------------------------------------------------------------------
     // Dessine un bouton et retourne true si le clic est dessus
-    public boolean boutonClique(int clicX, int clicY, int x, int y, int largeur, int hauteur) {
-        return clicX >= x && clicX <= x + largeur && clicY >= y && clicY <= y + hauteur;
-    }
-
-    // Dessine un bouton dans la fenêtre
-    public void dessinerBouton(FenetreGraphique fenetre, String texte, int x, int y, int largeur, int hauteur) {
-        Graphics2D g = fenetre.getGraphics2D();
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillRoundRect(x, y, largeur, hauteur, 10, 10);
-        g.setColor(Color.BLACK);
-        g.drawRoundRect(x, y, largeur, hauteur, 10, 10);
-        g.setFont(new Font("Arial", Font.BOLD, 12));
-        g.drawString(texte, x + 10, y + hauteur / 2 + 5);
-    }
-
     // Attend un clic sur un bouton et retourne le choix (1, 2, 3 ou 4)
     public int lireChoix(FenetreGraphique fenetre) {
         int boutonX = 20 + this.nbCol * Tuile.TAILLE + 20;
@@ -670,16 +340,16 @@ public class Plateau {
                 int clicY = fenetre.getYDernierClic();
                 fenetre.effacerDernierClic();
 
-                if (boutonClique(clicX, clicY, boutonX, 20, 160, 30)) {
+                if (gestionGraphique.boutonClique(clicX, clicY, boutonX, 20, 160, 30)) {
                     return 1; // Jouer
                 }
-                if (boutonClique(clicX, clicY, boutonX, 60, 160, 30)) {
+                if (gestionGraphique.boutonClique(clicX, clicY, boutonX, 60, 160, 30)) {
                     return 2; // Coups possibles
                 }
-                if (boutonClique(clicX, clicY, boutonX, 100, 160, 30)) {
+                if (gestionGraphique.boutonClique(clicX, clicY, boutonX, 100, 160, 30)) {
                     return 3; // Nouvelle partie
                 }
-                if (boutonClique(clicX, clicY, boutonX, 140, 160, 30)) {
+                if (gestionGraphique.boutonClique(clicX, clicY, boutonX, 140, 160, 30)) {
                     return 4; // Quitter
                 }
             }
@@ -689,138 +359,23 @@ public class Plateau {
     // -------------------------------------------------------------------------
     // AFFICHAGE GRAPHIQUE PLATEAU
     // -------------------------------------------------------------------------
-    public void afficherPlateau(FenetreGraphique fenetre, int margeX, int margeY) {
-        fenetre.effacer();
-        int largeurPlateau = this.nbCol * Tuile.TAILLE;
-        int hauteurPlateau = this.nbLig * Tuile.TAILLE;
-        for (int lig = this.nbLig - 1; lig >= 0; lig--) {
-            for (int col = 0; col < this.nbCol; col++) {
-                Tuile t = this.lesColonnes[col].getTuile(lig);
-
-                if (t != null) {
-                    // Calcul de la position : on utilise la TAILLE de la tuile 
-                    int posX = margeX + col * Tuile.TAILLE;
-                    int posY = margeY + hauteurPlateau - lig * Tuile.TAILLE;
-
-                    // On met à jour les coordonnées internes de la tuile si besoin
-                    t.setCoordTuile(new Coord(posX, posY));
-
-                    // On dessine
-                    t.dessiner(fenetre, posX, posY);
-                }
-
-            }
-        }
-
-        // Dessin des boutons à droite de la grille
-        int boutonX = 150 + this.nbCol * Tuile.TAILLE;
-        dessinerBouton(fenetre, "Coups possibles", boutonX, 60, 160, 30);
-        dessinerBouton(fenetre, "Nouvelle partie", boutonX, 100, 160, 30);
-        dessinerBouton(fenetre, "Quitter", boutonX, 140, 160, 30);
-
-        //grille de jeu
-        // Dessine les lignes HORIZONTALES (de gauche à droite)
-        for (int i = 0; i <= this.nbLig; i++) {
-            int y = margeY + (i + 1) * Tuile.TAILLE;
-            fenetre.getGraphics2D().drawLine(margeX, y, margeX + largeurPlateau, y);
-        }
-
-        // Dessine les lignes VERTICALES (de haut en bas)
-        for (int j = 0; j <= this.nbCol; j++) {
-            int x = margeX + j * Tuile.TAILLE;
-            fenetre.getGraphics2D().drawLine(x, margeY + Tuile.TAILLE, x, margeY + hauteurPlateau + Tuile.TAILLE);
-        }
-        fenetre.actualiser();
-
-    }
-
     public void echangerTuile(FenetreGraphique fenetre, int margeX, int margeY) {
         System.out.println("Cliquez sur la premiere tuile...");
-        Coord c1 = attendreClicOuBouton(fenetre, margeX, margeY);
+        Coord c1 = gestionGraphique.attendreClicOuBouton(this, fenetre, margeX, margeY);
         System.out.println("Premier clic : " + c1);
 
         System.out.println("Cliquez sur la deuxieme tuile...");
-        Coord c2 = attendreClicOuBouton(fenetre, margeX, margeY);
+        Coord c2 = gestionGraphique.attendreClicOuBouton(this, fenetre, margeX, margeY);
         System.out.println("Deuxième clic : " + c2);
 
         this.jouerUnCoup(c1, c2);
 
         fenetre.effacer();
-        this.afficherPlateau(fenetre, margeX, margeY);
+        gestionGraphique.afficherPlateau(this,fenetre, margeX, margeY);
     }
     // -------------------------------------------------------------------------
     // CHUTTE TUILE (REELLE)
     // -------------------------------------------------------------------------
-
-    public void fixerPositionsActuelles(int margeY) {
-        int hauteurPlateau = this.nbLig * Tuile.TAILLE;
-        for (int col = 0; col < nbCol; col++) {
-            for (int lig = 0; lig < nbLig; lig++) {
-                Tuile t = getTuile(col, lig);
-                if (t != null) {
-                    // On enregistre sa position Y actuelle en pixels
-                    int yActuel = margeY + hauteurPlateau - (lig * Tuile.TAILLE);
-                    t.setPosYVisuelle(yActuel);
-                }
-            }
-        }
-    }
-
-    public void animerChute(FenetreGraphique fenetre, int margeX, int margeY) {
-        int hauteurPlateau = this.nbLig * Tuile.TAILLE;
-        boolean enMouvement = true;
-
-        // Paramètres de vitesse
-        double vitesseBase = 0.1;
-        double boostParLigne = 0.2; // Plus ce chiffre est haut, plus l'écart de vitesse est grand 
-        //ce qui permet aux tuiles de ne pas se superposer en tombant
-
-        while (enMouvement) {
-            enMouvement = false;
-
-            for (int col = 0; col < this.nbCol; col++) {
-                for (int lig = 0; lig < this.nbLig; lig++) {
-                    Tuile t = this.getTuile(col, lig);
-                    if (t == null) {
-                        continue;
-                    }
-
-                    int yCible = margeY + hauteurPlateau - (lig * Tuile.TAILLE);
-
-                    // Si lig = 0 (tout en bas), la vitesse est maximale.
-                    // Si lig = nbLig-1 (en haut), la vitesse est minimale.
-                    double vitesseTuile = vitesseBase + ((this.nbLig - lig) * boostParLigne);
-
-                    // Initialisation pour les nouvelles tuiles
-                    if (t.getPosYVisuelle() == -1) {
-                        t.setPosYVisuelle(margeY - Tuile.TAILLE);
-                        enMouvement = true;
-                    }
-
-                    // Déplacement
-                    if (t.getPosYVisuelle() < yCible) {
-                        // On avance selon la vitesse propre à cette ligne
-                        t.setPosYVisuelle(Math.min(yCible, t.getPosYVisuelle() + vitesseTuile));
-                        enMouvement = true;
-                    }
-                }
-            }
-
-            this.afficherPlateau(fenetre, margeX, margeY);
-            try {
-                Thread.sleep(12);
-            } catch (InterruptedException e) {
-            }
-        }
-    }
-
-    public void reinitialiserPositionsVisuelles() {
-        for (int col = 0; col < nbCol; col++) {
-            for (int lig = 0; lig < nbLig; lig++) {
-                getTuile(col, lig).setPosYVisuelle(-1);
-            }
-        }
-    }
 
     public void jouerUnCoup(FenetreGraphique fenetre, int margeX, int margeY) {
         System.out.println("Entrez les coordonnees de la premiere tuile :");
@@ -835,15 +390,15 @@ public class Plateau {
         boolean echangeOk = this.echangerTuiles(c1, c2);
 
         if (echangeOk) {
-            if (this.existeUnMatch()) {
+            if (gestionMatchs.existeUnMatch(this)) {
                 System.out.println("Echange effectue !");
 
                 // 1. On calcule la suppression et le remplissage (logique interne)
-                this.supprimerTousLesMatchs(new Random());
+                gestionMatchs.supprimerTousLesMatchs(this,new Random());
 
                 // 2. On lance l'animation visuelle de la chute
                 // (Assure-toi d'avoir accès à 'fenetre', 'margeX' et 'margeY' ici)
-                this.animerChute(fenetre, margeX, margeY);
+                gestionGraphique.animerChute(this,fenetre, margeX, margeY);
 
                 System.out.println("Score total : " + this.score);
             } else {
