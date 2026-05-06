@@ -96,8 +96,10 @@ public class GestionIA {
      * @param plateau
      * @return 
      */
-    public ArrayList<Coord> aideOrdi(Plateau plateau) {
+    public ArrayList<Coord> aideOrdi(Plateau plateau, int nbCoups) {
+        int compteur=0;
         ArrayList<Coord> matchs = this.listEchange(plateau);
+        if (matchs.isEmpty()) return new ArrayList<>();
         ArrayList<Coord> meilleurMatchs = new ArrayList<>();
         int meilleurScore = -1;
         Random rand = new Random();
@@ -121,7 +123,7 @@ public class GestionIA {
         }
         return meilleurMatchs;
     }
-
+    
     /**
      * Méthode privée utilitaire pour éviter les doublons dans la liste
      */
@@ -133,4 +135,16 @@ public class GestionIA {
         }
         return false;
     }
+
+public void aideNCoups(int N){
+    
+    
+    
+    
+}
+
+
+
+
+
 }
