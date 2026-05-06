@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package Tuile;
+package Test;
 
 import FenetreGraphique.FenetreGraphique;
+import Tuile.Tuile;
 import java.awt.Color;
 import java.util.Random;
 

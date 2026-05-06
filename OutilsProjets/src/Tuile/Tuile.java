@@ -2,7 +2,6 @@ package Tuile;
 
 import Coordonnees.Coord;
 import FenetreGraphique.FenetreGraphique;
-import TypeTuile.TypeTuile;
 import java.util.Random;
 
 public class Tuile {
