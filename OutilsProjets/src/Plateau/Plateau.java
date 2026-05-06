@@ -88,6 +88,14 @@ public class Plateau {
         return nbLig;
     }
 
+    public void ajouterScore(int points) {
+        this.score += points;
+    }
+
+    public int getScore() {
+        return this.score;
+    }
+
     public void setLesColonnes(Colonne[] lesColonnes) {
         this.lesColonnes = lesColonnes;
     }
