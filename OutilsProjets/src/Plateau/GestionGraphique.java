@@ -57,7 +57,7 @@ public class GestionGraphique {
     // -------------------------------------------------------------------------
     // BOUTONS
     // -------------------------------------------------------------------------
-    
+
     // Dessine un bouton dans la fenêtre
     public void dessinerBouton(FenetreGraphique fenetre, String texte, int x, int y, int largeur, int hauteur) {
         Graphics2D g = fenetre.getGraphics2D();
@@ -73,7 +73,7 @@ public class GestionGraphique {
     public boolean boutonClique(int clicX, int clicY, int x, int y, int largeur, int hauteur) {
         return clicX >= x && clicX <= x + largeur && clicY >= y && clicY <= y + hauteur;
     }
-    
+
     // -------------------------------------------------------------------------
     // METHODES SUR CLIC
     // -------------------------------------------------------------------------
@@ -149,8 +149,8 @@ public class GestionGraphique {
         boolean enMouvement = true;
 
         // Paramètres de vitesse
-        double vitesseBase = 0.4;
-        double boostParLigne = 0.2; // Plus ce chiffre est haut, plus l'écart de vitesse est grand 
+        double vitesseBase = 4;
+        double boostParLigne = 0.0; // Plus ce chiffre est haut, plus l'écart de vitesse est grand 
         //ce qui permet aux tuiles de ne pas se superposer en tombant
 
         while (enMouvement) {
@@ -171,7 +171,7 @@ public class GestionGraphique {
 
                     // Initialisation pour les nouvelles tuiles
                     if (t.getPosYVisuelle() == -1) {
-                        t.setPosYVisuelle(margeY - Tuile.TAILLE);
+                        t.setPosYVisuelle(margeY - (lig-plateau.getNbCol()/2) * Tuile.TAILLE);
                         enMouvement = true;
                     }
 
@@ -199,8 +199,8 @@ public class GestionGraphique {
             }
         }
     }
-    
-    public int lireChoix(Plateau plateau,FenetreGraphique fenetre) {
+
+    public int lireChoix(Plateau plateau, FenetreGraphique fenetre) {
         int boutonX = 20 + plateau.getNbCol() * Tuile.TAILLE + 20;
 
         while (true) {
@@ -222,6 +222,12 @@ public class GestionGraphique {
                     return 4; // Quitter
                 }
             }
+        }
+    }
+
+    public static void clearConsole() {
+        for (int i = 0; i < 50; i++) {
+            System.out.println();
         }
     }
 }

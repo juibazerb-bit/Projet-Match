@@ -6,6 +6,7 @@ package Test;
 
 import Coordonnees.Coord;
 import FenetreGraphique.FenetreGraphique;
+import Plateau.GestionGraphique;
 import Plateau.GestionIA;
 import Plateau.Plateau;
 import Tuile.Tuile;
@@ -28,6 +29,7 @@ public class TestPlateauFenetreGraphique {
         int largeur = nbCol * Tuile.TAILLE + 300;
         int hauteur = nbLignes * Tuile.TAILLE + 300;
         FenetreGraphique fenetre = new FenetreGraphique("Candy Crush - Mode Graphique", largeur, hauteur);
+        GestionGraphique.clearConsole();
 
         System.out.println("=== Jeu de Match // CandyCrush ===");
         plateau.getGestionGraphique().afficherPlateau(plateau, fenetre, margeX, margeY);
