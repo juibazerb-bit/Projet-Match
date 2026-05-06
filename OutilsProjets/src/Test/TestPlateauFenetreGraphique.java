@@ -17,8 +17,8 @@ import Tuile.Tuile;
 public class TestPlateauFenetreGraphique {
 
     public static void main(String[] args) {
-        int nbLignes = 5;
-        int nbCol = 5;
+        int nbLignes = 10;
+        int nbCol = 10;
         int nbTypes = 5;
         int margeX = 100;
         int margeY = 100;
