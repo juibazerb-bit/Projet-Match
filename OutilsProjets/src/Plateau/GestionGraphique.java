@@ -120,10 +120,6 @@ public class GestionGraphique {
                     return coord;
                 }
             }
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-            }
         }
     }
 
@@ -183,12 +179,7 @@ public class GestionGraphique {
                     }
                 }
             }
-
             afficherPlateau(plateau, fenetre, margeX, margeY);
-            try {
-                Thread.sleep(12);
-            } catch (InterruptedException e) {
-            }
         }
     }
 

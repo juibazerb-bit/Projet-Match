@@ -2,6 +2,7 @@ package Plateau;
 
 import Coordonnees.Coord;
 import Tuile.Tuile;
+import Tuile.TypeTuile;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -123,13 +124,13 @@ public class GestionMatchs {
                     while (fin + 1 < plateau.getNbLig() && plateau.getTuile(col, fin + 1).equals(plateau.getTuile(col, lig))) {
                         fin++;
                     }
-                    int taille = fin - lig + 1;
-                    ArrayList<Coord> effet = appliquerEffetPoint(plateau, col, lig, fin, taille, true);
-                    for (Coord c : effet) {
+                    for (int i = lig; i <= fin; i++) {
+                        Coord c = new Coord(col, i);
                         if (!contient(aSupprimer, c)) {
                             aSupprimer.add(c);
                         }
                     }
+
                     lig = fin;
                 }
             }
@@ -144,11 +145,10 @@ public class GestionMatchs {
                     while (fin + 1 < plateau.getNbCol() && plateau.getTuile(fin + 1, lig).equals(plateau.getTuile(col, lig))) {
                         fin++;
                     }
-                    int taille = fin - col + 1;
-                    ArrayList<Coord> effet = appliquerEffetPoint(plateau, col, lig, fin, taille, false);
-                    for (Coord c : effet) {
-                        if (!contient(aSupprimer, c)) {
-                            aSupprimer.add(c);
+                    for (int c = col; c <= fin; c++) {
+                        Coord coord = new Coord(c, lig);
+                        if (!contient(aSupprimer, coord)) {
+                            aSupprimer.add(coord);
                         }
                     }
                     col = fin;
@@ -157,26 +157,17 @@ public class GestionMatchs {
         }
         return aSupprimer;
     }
-
     // Retourne les tuiles à supprimer selon la taille du match
     // vertical=true pour un match vertical, false pour horizontal
-    private ArrayList<Coord> appliquerEffetPoint(Plateau plateau, int debut, int lig, int fin, int taille, boolean vertical) {
+
+    public ArrayList<Coord> appliquerEffetPoint(Plateau plateau, int debut, int lig, int fin, int taille, boolean vertical) {
         ArrayList<Coord> aSupprimer = new ArrayList<>();
+        TypeCombinaisons type = TypeCombinaisons.values()[];
 
-        if (taille >= 8) {
-            // Tout le plateau
-            plateau.ajouterScore(5000);
-            System.out.println("COMBO x8 ! ET le plateau disparait ! +5000 pts");
-            for (int c = 0; c < plateau.getNbCol(); c++) {
-                for (int l = 0; l < plateau.getNbLig(); l++) {
-                    aSupprimer.add(new Coord(c, l));
-                }
-            }
-
-        } else if (taille == 7) {
+        if () {
             // Explosion rayon 2 ( à modifier si on veut)
             plateau.ajouterScore(2000);
-            System.out.println("COMBO x7 ! Macron EXPLOSION ! +2000 pts");
+            System.out.println("COMBO T OU L ! Macron EXPLOSION ! +2000 pts");
             int centreCol = vertical ? debut : (debut + fin) / 2; //condition ? valeur si vrai : valeur si faux
             int centreLig = vertical ? (debut + fin) / 2 : lig; // lig ici = la ligne du match horizontal
             for (int c = centreCol - 2; c <= centreCol + 2; c++) {
@@ -202,17 +193,17 @@ public class GestionMatchs {
                 aSupprimer.add(new Coord(centreCol, l));
             }
 
-        } else if (taille == 5) {
+        } else if (taille == 4) {
             // Toute la ligne
             plateau.ajouterScore(500);
-            System.out.println("COMBO x5 ! Petite fusee ! +500 pts");
+            System.out.println("COMBO x4 ! Petite fusee ! +500 pts");
             int centreLig = vertical ? (debut + fin) / 2 : lig;
             for (int c = 0; c < plateau.getNbCol(); c++) {
                 aSupprimer.add(new Coord(c, centreLig));
             }
 
         } else {
-            // Match normal 3-4 tuiles
+            // Match normal 3 tuiles
             plateau.ajouterScore(taille * 100);
             System.out.println("Match x" + taille + " ! +" + (taille * 100) + " pts");
 
@@ -258,7 +249,7 @@ public class GestionMatchs {
         return totalSupprimees;
     }
 
-    private int supprimerCoords(Plateau plateau, ArrayList<Coord> aSupprimer, Random rand) {
+    public int supprimerCoords(Plateau plateau, ArrayList<Coord> aSupprimer, Random rand) {
         for (int col = 0; col < plateau.getNbCol(); col++) {
             ArrayList<Integer> lignesASupprimer = new ArrayList<>();
             for (Coord c : aSupprimer) {
