@@ -55,7 +55,10 @@ public class GestionGraphique {
         }
         fenetre.actualiser();
     }
-
+    // -------------------------------------------------------------------------
+    // BOUTONS
+    // -------------------------------------------------------------------------
+    
     // Dessine un bouton dans la fenêtre
     public void dessinerBouton(FenetreGraphique fenetre, String texte, int x, int y, int largeur, int hauteur) {
         Graphics2D g = fenetre.getGraphics2D();
@@ -71,7 +74,10 @@ public class GestionGraphique {
     public boolean boutonClique(int clicX, int clicY, int x, int y, int largeur, int hauteur) {
         return clicX >= x && clicX <= x + largeur && clicY >= y && clicY <= y + hauteur;
     }
-
+    
+    // -------------------------------------------------------------------------
+    // METHODES SUR CLIC
+    // -------------------------------------------------------------------------
     public Coord clicVersCoord(Plateau plateau, int clicX, int clicY, int margeX, int margeY) {
         int col = (clicX - margeX) / Tuile.TAILLE;
         int basGrille = margeY + (plateau.getNbLig() + 1) * Tuile.TAILLE; // +1 pour le décalage
