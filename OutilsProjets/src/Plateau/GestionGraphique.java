@@ -149,7 +149,7 @@ public class GestionGraphique {
         boolean enMouvement = true;
 
         // Paramètres de vitesse
-        double vitesseBase = 0.1;
+        double vitesseBase = 0.4;
         double boostParLigne = 0.2; // Plus ce chiffre est haut, plus l'écart de vitesse est grand 
         //ce qui permet aux tuiles de ne pas se superposer en tombant
 
@@ -196,6 +196,31 @@ public class GestionGraphique {
         for (int col = 0; col < plateau.getNbCol(); col++) {
             for (int lig = 0; lig < plateau.getNbLig(); lig++) {
                 plateau.getTuile(col, lig).setPosYVisuelle(-1);
+            }
+        }
+    }
+    
+    public int lireChoix(Plateau plateau,FenetreGraphique fenetre) {
+        int boutonX = 20 + plateau.getNbCol() * Tuile.TAILLE + 20;
+
+        while (true) {
+            if (fenetre.unClicAEuLieu()) {
+                int clicX = fenetre.getXDernierClic();
+                int clicY = fenetre.getYDernierClic();
+                fenetre.effacerDernierClic();
+
+                if (boutonClique(clicX, clicY, boutonX, 20, 160, 30)) {
+                    return 1; // Jouer
+                }
+                if (boutonClique(clicX, clicY, boutonX, 60, 160, 30)) {
+                    return 2; // Coups possibles
+                }
+                if (boutonClique(clicX, clicY, boutonX, 100, 160, 30)) {
+                    return 3; // Nouvelle partie
+                }
+                if (boutonClique(clicX, clicY, boutonX, 140, 160, 30)) {
+                    return 4; // Quitter
+                }
             }
         }
     }

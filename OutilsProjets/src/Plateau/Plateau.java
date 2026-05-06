@@ -222,30 +222,7 @@ public class Plateau {
 
     // Dessine un bouton et retourne true si le clic est dessus
     // Attend un clic sur un bouton et retourne le choix (1, 2, 3 ou 4)
-    public int lireChoix(FenetreGraphique fenetre) {
-        int boutonX = 20 + this.nbCol * Tuile.TAILLE + 20;
-
-        while (true) {
-            if (fenetre.unClicAEuLieu()) {
-                int clicX = fenetre.getXDernierClic();
-                int clicY = fenetre.getYDernierClic();
-                fenetre.effacerDernierClic();
-
-                if (gestionGraphique.boutonClique(clicX, clicY, boutonX, 20, 160, 30)) {
-                    return 1; // Jouer
-                }
-                if (gestionGraphique.boutonClique(clicX, clicY, boutonX, 60, 160, 30)) {
-                    return 2; // Coups possibles
-                }
-                if (gestionGraphique.boutonClique(clicX, clicY, boutonX, 100, 160, 30)) {
-                    return 3; // Nouvelle partie
-                }
-                if (gestionGraphique.boutonClique(clicX, clicY, boutonX, 140, 160, 30)) {
-                    return 4; // Quitter
-                }
-            }
-        }
-    }
+    
 
     // -------------------------------------------------------------------------
     // AFFICHAGE GRAPHIQUE PLATEAU
