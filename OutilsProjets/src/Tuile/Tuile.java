@@ -2,6 +2,7 @@ package Tuile;
 
 import Coordonnees.Coord;
 import FenetreGraphique.FenetreGraphique;
+import java.awt.Graphics2D;
 import java.util.Random;
 
 public class Tuile {
@@ -71,11 +72,17 @@ public class Tuile {
 
     public void dessiner(FenetreGraphique fenetre, int x, int y) {
         TypeTuile monType = TypeTuile.values()[this.type % TypeTuile.values().length];
-        
+
         // Si posYVisuelle est définie, on l'utilise, sinon on utilise le y de la grille
-        int yFinal = (posYVisuelle == -1) ? y : (int)posYVisuelle;
-        
+        int yFinal = (posYVisuelle == -1) ? y : (int) posYVisuelle;
+
         fenetre.getGraphics2D().drawImage(monType.getImage(), x, yFinal, TAILLE, TAILLE, null);
+    }
+
+    public void dessiner(int x, int y, Graphics2D g2) {
+        TypeTuile monType = TypeTuile.values()[this.type % TypeTuile.values().length];
+        int yFinal = (posYVisuelle == -1) ? y : (int) posYVisuelle;
+        g2.drawImage(monType.getImage(), x, yFinal, TAILLE, TAILLE, null);
     }
 
 }
