@@ -47,7 +47,7 @@ public class TypesCombinaisons {
             for (int lig = 0; lig < plateau.getNbLig() - 1; lig++) {
                 if (estUnCarre(plateau, col, lig)) {
                     plateau.ajouterScore(400);
-                    System.out.println("BONUS ! Carré 2x2 en (" + col + "," + lig + ") ! +400 pts");
+                    System.out.println("BONUS ! Carre 2x2 en (" + col + "," + lig + ") ! +400 pts");
                     ajouterSiAbsent(tuilesCarres, new Coord(col, lig));
                     ajouterSiAbsent(tuilesCarres, new Coord(col + 1, lig));
                     ajouterSiAbsent(tuilesCarres, new Coord(col, lig + 1));
@@ -194,16 +194,16 @@ public class TypesCombinaisons {
                 if (cv.equals(ch) && !contient(aSupprimer, cv)) {
                     plateau.ajouterScore(800);
                     System.out.println("BONUS ! Macron EXPLOSION !!!!! +800 pts");
-                    ajouterZone4x4(plateau, cv, aSupprimer);
+                    ajouterZone3x3(plateau, cv, aSupprimer);
                 }
             }
         }
     }
 
     // Ajoute toutes les tuiles d'une zone 3x3 autour d'un centre
-    private void ajouterZone4x4(Plateau plateau, Coord centre, ArrayList<Coord> aSupprimer) {
-        for (int c = centre.getAbscisse() - 2; c <= centre.getAbscisse() + 2; c++) {
-            for (int l = centre.getOrdonnee() - 2; l <= centre.getOrdonnee() + 2; l++) {
+    private void ajouterZone3x3(Plateau plateau, Coord centre, ArrayList<Coord> aSupprimer) {
+        for (int c = centre.getAbscisse() - 1; c <= centre.getAbscisse() + 1; c++) {
+            for (int l = centre.getOrdonnee() - 1; l <= centre.getOrdonnee() + 1; l++) {
                 if (c >= 0 && c < plateau.getNbCol() && l >= 0 && l < plateau.getNbLig()) { //regarde si on est bien dans les limites du plateau
                     ajouterSiAbsent(aSupprimer, new Coord(c, l));
                 }

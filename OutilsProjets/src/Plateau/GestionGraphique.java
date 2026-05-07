@@ -146,8 +146,8 @@ public class GestionGraphique {
     public void animerChute(Plateau plateau, FenetreGraphique fenetre, int margeX, int margeY) {
         int hauteurPlateau = plateau.getNbLig() * Tuile.TAILLE;
         boolean enMouvement = true;
-        double vitesse = 4.0; // pixels par frame
-        double boostParLigne = 0.0;
+        double vitesse = 1.0; // pixels par frame
+        double boostParLigne = 1.0;
 
         while (enMouvement) {
             enMouvement = false;
@@ -165,7 +165,7 @@ public class GestionGraphique {
                     // Nouvelle tuile : elle part du haut de la grille
                     if (t.getPosYVisuelle() == -1) {
                         // Plus la tuile est haute dans la grille (lig grand), plus elle part de loin
-                        t.setPosYVisuelle(margeY - (lig-plateau.getNbCol()/2) * Tuile.TAILLE);
+                        t.setPosYVisuelle(margeY - (lig-plateau.getNbCol()+3) * Tuile.TAILLE/2);
                         enMouvement = true;
                     }
 
