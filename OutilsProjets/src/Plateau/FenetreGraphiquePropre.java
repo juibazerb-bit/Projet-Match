@@ -13,15 +13,18 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FenetreGraphiquePropre.class.getName());
     private Plateau plateau;
-    
+    private GestionGraphique gestionGraphique = new GestionGraphique();
     /**
      * Creates new form FenetreGraphique
      */
     
     
     public FenetreGraphiquePropre() {
+        
+        initComponents();
         plateau= new Plateau(5,5,5);
         initComponents();
+       
     }
 
     /**

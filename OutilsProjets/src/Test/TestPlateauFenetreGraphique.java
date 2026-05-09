@@ -10,6 +10,7 @@ import Plateau.GestionGraphique;
 import Plateau.GestionIA;
 import Plateau.Plateau;
 import Tuile.Tuile;
+import java.util.ArrayList;
 
 /**
  *
@@ -24,7 +25,7 @@ public class TestPlateauFenetreGraphique {
         int margeX = 100;
         int margeY = 100;
 
-        Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes,42); // 42 = graine fixe
+        Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes, 42); // 42 = graine fixe
         GestionIA ia = new GestionIA();
         int largeur = nbCol * Tuile.TAILLE + 300;
         int hauteur = nbLignes * Tuile.TAILLE + 300;
@@ -61,18 +62,34 @@ public class TestPlateauFenetreGraphique {
 
                     if (echangeOk && plateau.getGestionMatchs().existeUnMatch(plateau)) {
 
-                        //Boucle visible : supprimer → animer → recommencer
+                        //Boucle: supprimer → animer → recommencer
                         boolean encoreDesMatchs = true;
                         while (encoreDesMatchs) {
 
                             // Collecter les tuiles à supprimer
-                            java.util.ArrayList<Coordonnees.Coord> aSupprimer
+                            ArrayList<Coordonnees.Coord> aSupprimer
                                     = plateau.getGestionMatchs().collecterToutesLesTuilesASupprimer(plateau);
 
                             if (aSupprimer.isEmpty()) {
                                 encoreDesMatchs = false;
                             } else {
-                                //  Supprimer logiquement 
+                               // clignotement de la tuile
+                                for (int i = 0; i < 3; i++) {
+                                    plateau.getGestionGraphique().afficherPlateauClignotant(
+                                            plateau, fenetre, margeX, margeY, aSupprimer, true);  // noir
+                                    try {
+                                        Thread.sleep(200);
+                                    } catch (InterruptedException e) {
+                                    }
+
+                                    plateau.getGestionGraphique().afficherPlateauClignotant(
+                                            plateau, fenetre, margeX, margeY, aSupprimer, false); // normal
+                                    try {
+                                        Thread.sleep(200);
+                                    } catch (InterruptedException e) {
+                                    }
+                                }
+                                //  Supprimer 
                                 plateau.getLesColonnes(); // accès aux colonnes
                                 java.util.Random rand = new java.util.Random();
 

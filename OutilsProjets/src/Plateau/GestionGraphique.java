@@ -6,6 +6,7 @@ import Tuile.Tuile;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 public class GestionGraphique {
 
@@ -53,6 +54,27 @@ public class GestionGraphique {
             fenetre.getGraphics2D().drawLine(x, margeY + Tuile.TAILLE, x, margeY + hauteurPlateau + Tuile.TAILLE);
         }
         fenetre.actualiser();
+    }
+
+    public void afficherPlateauClignotant(Plateau plateau, FenetreGraphique fenetre,
+            int margeX, int margeY,
+            ArrayList<Coord> aNoircir, boolean enNoir) {
+        // On affiche le plateau normalement d'abord
+        this.afficherPlateau(plateau, fenetre, margeX, margeY);
+
+        // On dessine par-dessus les rectangles noirs pour les tuiles concernées
+        if (enNoir) {
+            fenetre.getGraphics2D().setColor(java.awt.Color.BLACK);
+            for (Coord c : aNoircir) {
+                int x = margeX + c.getAbscisse() * Tuile.TAILLE;
+                int hauteurPlateau = plateau.getNbLig() * Tuile.TAILLE;
+                int y = margeY + hauteurPlateau - c.getOrdonnee() * Tuile.TAILLE;
+                fenetre.getGraphics2D().fillRect(x, y, Tuile.TAILLE, Tuile.TAILLE);
+            }
+        }
+
+        // On force le rafraîchissement de la fenêtre
+        fenetre.actualiser(); 
     }
     // -------------------------------------------------------------------------
     // BOUTONS
@@ -165,7 +187,7 @@ public class GestionGraphique {
                     // Nouvelle tuile : elle part du haut de la grille
                     if (t.getPosYVisuelle() == -1) {
                         // Plus la tuile est haute dans la grille (lig grand), plus elle part de loin
-                        t.setPosYVisuelle(margeY - (lig-plateau.getNbCol()+3) * Tuile.TAILLE/2);
+                        t.setPosYVisuelle(margeY - (lig - plateau.getNbCol() + 3) * Tuile.TAILLE / 2);
                         enMouvement = true;
                     }
 
