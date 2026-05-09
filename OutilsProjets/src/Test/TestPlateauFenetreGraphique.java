@@ -62,7 +62,7 @@ public class TestPlateauFenetreGraphique {
 
                     if (echangeOk && plateau.getGestionMatchs().existeUnMatch(plateau)) {
 
-                        //Boucle: supprimer → animer → recommencer
+                        //Boucle: clignotter -> supprimer -> animer -> recommencer
                         boolean encoreDesMatchs = true;
                         while (encoreDesMatchs) {
 
