@@ -4,7 +4,7 @@
  */
 package Plateau;
 
-import Colone.Colonne;
+import Colonne.Colonne;
 import Coordonnees.Coord;
 import Tuile.Tuile;
 import Clavier.Clavier;

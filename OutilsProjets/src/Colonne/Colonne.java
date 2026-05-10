@@ -1,4 +1,4 @@
-package Colone;
+package Colonne;
 
 import Tuile.Tuile;
 import java.util.ArrayList;
