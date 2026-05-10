@@ -3,9 +3,6 @@ package Plateau;
 import Coordonnees.Coord;
 import FenetreGraphique.FenetreGraphique;
 import Tuile.Tuile;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 public class GestionGraphique {

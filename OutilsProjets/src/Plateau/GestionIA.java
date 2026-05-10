@@ -13,8 +13,9 @@ public class GestionIA {
 
     /**
      * Retourne une chaîne de caractères lisible listant les échanges possibles.
+     *
      * @param plateau
-     * @return 
+     * @return
      */
     public String listMatchs(Plateau plateau) {
         ArrayList<Coord> matchs = this.listEchange(plateau);
@@ -35,8 +36,9 @@ public class GestionIA {
     /**
      * Parcourt le plateau pour trouver tous les échanges de tuiles voisines qui
      * créent au moins un match.
+     *
      * @param plateau
-     * @return 
+     * @return
      */
     public ArrayList<Coord> listEchange(Plateau plateau) {
         ArrayList<Coord> matchs = new ArrayList<>();
@@ -93,13 +95,16 @@ public class GestionIA {
     /**
      * Analyse tous les coups possibles sur une copie du plateau et retourne le
      * meilleur coup (celui qui rapporte le plus de points).
+     *
      * @param plateau
-     * @return 
+     * @return
      */
     public ArrayList<Coord> aideOrdi(Plateau plateau, int nbCoups) {
-        int compteur=0;
+        int compteur = 0;
         ArrayList<Coord> matchs = this.listEchange(plateau);
-        if (matchs.isEmpty()) return new ArrayList<>();
+        if (matchs.isEmpty()) {
+            return new ArrayList<>();
+        }
         ArrayList<Coord> meilleurMatchs = new ArrayList<>();
         int meilleurScore = -1;
         Random rand = new Random();
@@ -123,7 +128,7 @@ public class GestionIA {
         }
         return meilleurMatchs;
     }
-    
+
     /**
      * Méthode privée utilitaire pour éviter les doublons dans la liste
      */
@@ -136,15 +141,8 @@ public class GestionIA {
         return false;
     }
 
-public void aideNCoups(int N){
-    
-    
-    
-    
-}
+    public void aideNCoups(int N) {
 
-
-
-
+    }
 
 }
