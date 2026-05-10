@@ -3,13 +3,10 @@ package Plateau;
 import Coordonnees.Coord;
 import FenetreGraphique.FenetreGraphique;
 import Tuile.Tuile;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 public class GestionGraphique {
-
+    private ClicEtBouton clicEtBouton = new ClicEtBouton();
     // -------------------------------------------------------------------------
     // AFFICHAGE GRAPHIQUE PLATEAU
     // -------------------------------------------------------------------------
@@ -37,9 +34,14 @@ public class GestionGraphique {
 
         // Dessin des boutons à droite de la grille
         int boutonX = 150 + plateau.getNbCol() * Tuile.TAILLE;
-        dessinerBouton(fenetre, "Coups possibles", boutonX, 60, 160, 30);
-        dessinerBouton(fenetre, "Nouvelle partie", boutonX, 100, 160, 30);
-        dessinerBouton(fenetre, "Quitter", boutonX, 140, 160, 30);
+        clicEtBouton.dessinerBouton(fenetre, "Coups possibles", boutonX, 60, 160, 30);
+        clicEtBouton.dessinerBouton(fenetre, "Nouvelle partie", boutonX, 100, 160, 30);
+        clicEtBouton.dessinerBouton(fenetre, "Quitter", boutonX, 140, 160, 30);
+
+        // A la fin de afficherPlateau, apres les boutons existants
+        int compteurX = boutonX;
+        clicEtBouton.dessinerCompteur(fenetre, compteurX, 200, 160, 90, "Lignes", plateau.getNbLig());
+        clicEtBouton.dessinerCompteur(fenetre, compteurX, 300, 160, 90, "Colonnes", plateau.getNbCol());
 
         //grille de jeu
         // Dessine les lignes HORIZONTALES (de gauche à droite)
@@ -74,79 +76,14 @@ public class GestionGraphique {
         }
 
         // On force le rafraîchissement de la fenêtre
-        fenetre.actualiser(); 
+        fenetre.actualiser();
     }
     // -------------------------------------------------------------------------
     // BOUTONS
     // -------------------------------------------------------------------------
 
     // Dessine un bouton dans la fenêtre
-    public void dessinerBouton(FenetreGraphique fenetre, String texte, int x, int y, int largeur, int hauteur) {
-        Graphics2D g = fenetre.getGraphics2D();
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillRoundRect(x, y, largeur, hauteur, 10, 10);
-        g.setColor(Color.BLACK);
-        g.drawRoundRect(x, y, largeur, hauteur, 10, 10);
-        g.setFont(new Font("Arial", Font.BOLD, 12));
-        g.drawString(texte, x + 10, y + hauteur / 2 + 5);
-    }
-
-    // Dessine un bouton et retourne true si le clic est dessus
-    public boolean boutonClique(int clicX, int clicY, int x, int y, int largeur, int hauteur) {
-        return clicX >= x && clicX <= x + largeur && clicY >= y && clicY <= y + hauteur;
-    }
-
-    // -------------------------------------------------------------------------
-    // METHODES SUR CLIC
-    // -------------------------------------------------------------------------
-    public Coord clicVersCoord(Plateau plateau, int clicX, int clicY, int margeX, int margeY) {
-        int col = (clicX - margeX) / Tuile.TAILLE;
-        int basGrille = margeY + (plateau.getNbLig() + 1) * Tuile.TAILLE; // +1 pour le décalage
-        int lig = (basGrille - clicY) / Tuile.TAILLE;
-
-        if (col >= 0 && col < plateau.getNbCol() && lig >= 0 && lig < plateau.getNbLig()) {
-            return new Coord(col, lig);
-        }
-        return null;
-    }
-
-    public Coord attendreClicOuBouton(Plateau plateau, FenetreGraphique fenetre, int margeX, int margeY) {
-        // Valeurs spéciales retournées pour les boutons :
-        // (-2, 0) = Coups possibles
-        // (-3, 0) = Nouvelle partie  
-        // (-4, 0) = Quitter
-        // Coord valide = clic sur la grille
-        int boutonX = margeX + plateau.getNbCol() * Tuile.TAILLE + 20;
-
-        while (true) {
-            if (fenetre.unClicAEuLieu()) {
-                int clicX = fenetre.getXDernierClic();
-                int clicY = fenetre.getYDernierClic();
-                fenetre.effacerDernierClic();
-
-                if (boutonClique(clicX, clicY, boutonX, 60, 160, 30)) {
-                    return new Coord(-2, 0);
-                }
-                if (boutonClique(clicX, clicY, boutonX, 100, 160, 30)) {
-                    return new Coord(-3, 0);
-                }
-                if (boutonClique(clicX, clicY, boutonX, 140, 160, 30)) {
-                    return new Coord(-4, 0);
-                }
-
-                Coord coord = clicVersCoord(plateau, clicX, clicY, margeX, margeY);
-                if (coord != null) {
-                    return coord;
-                }
-            }
-            try {
-                Thread.sleep(20);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-
-        }
-    }
+   
 
     // -------------------------------------------------------------------------
     // CHUTTE TUILE (REELLE)
@@ -218,30 +155,7 @@ public class GestionGraphique {
         }
     }
 
-    public int lireChoix(Plateau plateau, FenetreGraphique fenetre) {
-        int boutonX = 20 + plateau.getNbCol() * Tuile.TAILLE + 20;
-
-        while (true) {
-            if (fenetre.unClicAEuLieu()) {
-                int clicX = fenetre.getXDernierClic();
-                int clicY = fenetre.getYDernierClic();
-                fenetre.effacerDernierClic();
-
-                if (boutonClique(clicX, clicY, boutonX, 20, 160, 30)) {
-                    return 1; // Jouer
-                }
-                if (boutonClique(clicX, clicY, boutonX, 60, 160, 30)) {
-                    return 2; // Coups possibles
-                }
-                if (boutonClique(clicX, clicY, boutonX, 100, 160, 30)) {
-                    return 3; // Nouvelle partie
-                }
-                if (boutonClique(clicX, clicY, boutonX, 140, 160, 30)) {
-                    return 4; // Quitter
-                }
-            }
-        }
-    }
+    
 
     public static void clearConsole() {
         for (int i = 0; i < 50; i++) {

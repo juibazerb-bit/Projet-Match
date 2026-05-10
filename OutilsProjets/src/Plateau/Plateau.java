@@ -24,6 +24,7 @@ public class Plateau {
     private int score;
     private GestionMatchs gestionMatchs = new GestionMatchs();
     private GestionGraphique gestionGraphique = new GestionGraphique();
+    private ClicEtBouton clicEtBouton = new ClicEtBouton();
 
     public Plateau(int nbColonnes, int nbLignes, int nbTypes) {
         this.nbCol = nbColonnes;
@@ -115,6 +116,11 @@ public class Plateau {
     public void setGestionGraphique(GestionGraphique gestionGraphique) {
         this.gestionGraphique = gestionGraphique;
     }
+
+    public ClicEtBouton getClicEtBouton() {
+        return clicEtBouton;
+    }
+    
     
 
     public void setLesColonnes(Colonne[] lesColonnes) {
@@ -235,11 +241,11 @@ public class Plateau {
     // -------------------------------------------------------------------------
     public void echangerTuile(FenetreGraphique fenetre, int margeX, int margeY) {
         System.out.println("Cliquez sur la premiere tuile...");
-        Coord c1 = gestionGraphique.attendreClicOuBouton(this, fenetre, margeX, margeY);
+        Coord c1 = clicEtBouton.attendreClicOuBouton(this, fenetre, margeX, margeY);
         System.out.println("Premier clic : " + c1);
 
         System.out.println("Cliquez sur la deuxieme tuile...");
-        Coord c2 = gestionGraphique.attendreClicOuBouton(this, fenetre, margeX, margeY);
+        Coord c2 = clicEtBouton.attendreClicOuBouton(this, fenetre, margeX, margeY);
         System.out.println("Deuxième clic : " + c2);
 
         this.jouerUnCoup(c1, c2);

@@ -19,8 +19,8 @@ import java.util.ArrayList;
 public class TestPlateauFenetreGraphique {
 
     public static void main(String[] args) {
-        int nbLignes = 20;
-        int nbCol = 20;
+        int nbLignes = 10;
+        int nbCol = 10;
         int nbTypes = 7;
         int margeX = 100;
         int margeY = 100;
@@ -39,7 +39,7 @@ public class TestPlateauFenetreGraphique {
         boolean continuer = true;
 
         while (continuer) {
-            Coord clic = plateau.getGestionGraphique().attendreClicOuBouton(plateau, fenetre, margeX, margeY);
+            Coord clic = plateau.getClicEtBouton().attendreClicOuBouton(plateau, fenetre, margeX, margeY);
 
             if (clic.getAbscisse() == -2) {
                 System.out.println(ia.listMatchs(plateau));
@@ -51,6 +51,26 @@ public class TestPlateauFenetreGraphique {
             } else if (clic.getAbscisse() == -4) {
                 continuer = false;
                 fenetre.dispose();
+            } else if (clic.getAbscisse() == -10) {
+                // Changer le nombre de lignes
+                int nouvLig = Math.max(3, plateau.getNbLig() + clic.getOrdonnee());
+                fenetre.dispose(); // ferme l'ancienne fenetre
+                fenetre = creerFenetre(nbCol, nouvLig, "Candy Crush - Mode Graphique");
+
+                plateau = new Plateau(nbCol, nouvLig, nbTypes);
+                plateau.getGestionGraphique().afficherPlateau(plateau, fenetre, margeX, margeY);
+                premierClic = null;
+
+            } else if (clic.getAbscisse() == -11) {
+                // Changer le nombre de colonnes
+                int nouvCol = Math.max(3, plateau.getNbCol() + clic.getOrdonnee());
+                int nbLig = plateau.getNbLig();
+                fenetre.dispose(); // ferme l'ancienne fenetre
+                fenetre = creerFenetre(nouvCol, nbLig, "Candy Crush - Mode Graphique");
+
+                plateau = new Plateau(nouvCol, nbLig, nbTypes);
+                plateau.getGestionGraphique().afficherPlateau(plateau, fenetre, margeX, margeY);
+                premierClic = null;
             } else {
                 if (premierClic == null) {
                     premierClic = clic;
@@ -73,7 +93,7 @@ public class TestPlateauFenetreGraphique {
                             if (aSupprimer.isEmpty()) {
                                 encoreDesMatchs = false;
                             } else {
-                               // clignotement de la tuile
+                                // clignotement de la tuile
                                 for (int i = 0; i < 3; i++) {
                                     plateau.getGestionGraphique().afficherPlateauClignotant(
                                             plateau, fenetre, margeX, margeY, aSupprimer, true);  // noir
@@ -129,6 +149,12 @@ public class TestPlateauFenetreGraphique {
                 }
             }
         }
+    }
+
+    private static FenetreGraphique creerFenetre(int nbCol, int nbLig, String titre) {
+        int largeur = nbCol * Tuile.TAILLE + 300;
+        int hauteur = nbLig * Tuile.TAILLE + 300;
+        return new FenetreGraphique(titre, largeur, hauteur);
     }
 
 }
