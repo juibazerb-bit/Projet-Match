@@ -32,7 +32,7 @@ public enum TypeTuile {
         this.symbole = symbole;
         String chemin = "images gemmes/" + fichier;
         this.image = new ImageIcon(chemin).getImage();
-
+        
     }
 
     public Image getImage() {

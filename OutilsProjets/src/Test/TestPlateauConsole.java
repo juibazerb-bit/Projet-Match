@@ -18,9 +18,9 @@ public class TestPlateauConsole {
      */
     public static void main(String[] args) {
         // 1. Initialisation des paramètres
-        int nbLignes = 5;
-        int nbCol = 5;
-        int nbTypes = 5;
+        int nbLignes = 20;
+        int nbCol = 20;
+        int nbTypes = 7;
 
         // 2. Création du plateau
         Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes);
