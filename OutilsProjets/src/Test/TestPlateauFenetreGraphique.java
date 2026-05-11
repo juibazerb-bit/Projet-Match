@@ -19,8 +19,8 @@ import java.util.ArrayList;
 public class TestPlateauFenetreGraphique {
 
     public static void main(String[] args) {
-        int nbLignes = 10;
-        int nbCol = 10;
+        int nbLignes = 20;
+        int nbCol = 20;
         int nbTypes = 7;
         int margeX = 100;
         int margeY = 100;

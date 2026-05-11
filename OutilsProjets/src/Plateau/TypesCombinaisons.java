@@ -47,7 +47,7 @@ public class TypesCombinaisons {
             for (int lig = 0; lig < plateau.getNbLig() - 1; lig++) {
                 if (estUnCarre(plateau, col, lig)) {
                     plateau.ajouterScore(400);
-                    System.out.println("BONUS ! Carre 2x2 en (" + col + "," + lig + ") ! +400 pts");
+                    System.out.println("BONUS ! Carre 2x2 ! +400 pts");
                     ajouterSiAbsent(tuilesCarres, new Coord(col, lig));
                     ajouterSiAbsent(tuilesCarres, new Coord(col + 1, lig));
                     ajouterSiAbsent(tuilesCarres, new Coord(col, lig + 1));
