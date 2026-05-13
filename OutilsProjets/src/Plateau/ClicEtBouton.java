@@ -108,6 +108,12 @@ public class ClicEtBouton {
             if (fenetre.unClicAEuLieu()) {
                 int clicX = fenetre.getXDernierClic();
                 int clicY = fenetre.getYDernierClic();
+                fenetre.getGraphics2D().setColor(java.awt.Color.YELLOW);
+                int x = margeX + clicX * Tuile.TAILLE;
+                int hauteurPlateau = plateau.getNbLig() * Tuile.TAILLE;
+                int y = margeY + hauteurPlateau - clicY * Tuile.TAILLE;
+                fenetre.getGraphics2D().fillRect(x, y, Tuile.TAILLE, Tuile.TAILLE);
+                fenetre.actualiser();
                 fenetre.effacerDernierClic();
 
                 if (boutonClique(clicX, clicY, boutonX, 60, 160, 30)) {
