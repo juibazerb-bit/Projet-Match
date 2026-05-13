@@ -19,13 +19,14 @@ import java.util.ArrayList;
 public class TestPlateauFenetreGraphique {
 
     public static void main(String[] args) {
-        int nbLignes = 10;
-        int nbCol = 10;
-        int nbTypes = 4;
+
+        int nbLignes = 20;
+        int nbCol = 20;
+        int nbTypes = 5;
         int margeX = 100;
         int margeY = 100;
 
-        Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes, 42); // 42 = graine fixe
+        Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes, 0); // 42 = graine fixe
         GestionIA ia = new GestionIA();
         int largeur = nbCol * Tuile.TAILLE + 300;
         int hauteur = nbLignes * Tuile.TAILLE + 300;

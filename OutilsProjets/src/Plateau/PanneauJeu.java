@@ -13,10 +13,10 @@ import java.awt.event.*;
 public class PanneauJeu extends JPanel implements MouseListener {
 
     private Plateau plateau;
-    private GestionGraphique gestionGraphique = new GestionGraphique();
     private int margeX = 10, margeY = 10;  //position de la grille
     private Coord premierClic = null; // Pour gérer les deux clics successifs
     private Runnable coupJouer;
+    private ClicEtBouton clicEtBouton = new ClicEtBouton();
 
     public PanneauJeu() {
         addMouseListener(this);
@@ -70,7 +70,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
         if (plateau == null) {
             return;
         }
-        Coord clic = gestionGraphique.clicVersCoord(plateau, e.getX() - Tuile.TAILLE, e.getY(), margeX, margeY);
+        Coord clic = clicEtBouton.clicVersCoord(plateau, e.getX() - Tuile.TAILLE, e.getY(), margeX, margeY);
         if (clic == null) {
             return;
         }
