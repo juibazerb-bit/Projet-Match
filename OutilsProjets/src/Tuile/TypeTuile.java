@@ -20,7 +20,14 @@ public enum TypeTuile {
     BLEU("\u001B[34m", "T", "tourmaline.png"),
     MAGENTA("\u001B[35m", "A", "amethyst.png"),
     CYAN("\u001B[36m", "X", "diamond.png"),
-    BLANC("\u001B[37m", "O", "gem1.png");
+    BLANC("\u001B[37m", "O", "gem1.png"),
+    LOUP("","","loup.png"),
+    CHAT("","","chat.png"),
+    DAUPHIN("","","dauphin.png"),
+    GRENOUILLE("","","grenouille.png"),
+    PERROQUET("","","perroquet.png"),
+    RENARD("","","renard.png"),
+    POULPE("","","poulpe.png");
 
     private final  String RESET = "\u001B[0m";
     private final  String couleur;
