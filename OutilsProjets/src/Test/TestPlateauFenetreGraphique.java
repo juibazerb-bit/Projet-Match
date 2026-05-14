@@ -22,7 +22,7 @@ public class TestPlateauFenetreGraphique {
 
         int nbLignes = 20;
         int nbCol = 20;
-        int nbTypes = 5;
+        int nbTypes = 7;
         int margeX = 100;
         int margeY = 100;
 

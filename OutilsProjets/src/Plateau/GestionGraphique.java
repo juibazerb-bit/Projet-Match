@@ -6,7 +6,9 @@ import Tuile.Tuile;
 import java.util.ArrayList;
 
 public class GestionGraphique {
+
     private ClicEtBouton clicEtBouton = new ClicEtBouton();
+
     // -------------------------------------------------------------------------
     // AFFICHAGE GRAPHIQUE PLATEAU
     // -------------------------------------------------------------------------
@@ -78,13 +80,30 @@ public class GestionGraphique {
         // On force le rafraîchissement de la fenêtre
         fenetre.actualiser();
     }
+
+    public void afficherCaseCochée(Plateau plateau, FenetreGraphique fenetre, int margeX, int margeY, Coord c , boolean selectionnee) {
+
+        // On affiche le plateau normalement d'abord
+        this.afficherPlateau(plateau, fenetre, margeX, margeY);
+
+        // On dessine par-dessus les rectangles noirs pour les tuiles concernées
+        if (selectionnee) {
+            fenetre.getGraphics2D().setColor(java.awt.Color.YELLOW);
+            int x = margeX + c.getAbscisse() * Tuile.TAILLE;
+            int hauteurPlateau = plateau.getNbLig() * Tuile.TAILLE;
+            int y = margeY + hauteurPlateau - c.getOrdonnee() * Tuile.TAILLE;
+            fenetre.getGraphics2D().drawRect(x, y, Tuile.TAILLE, Tuile.TAILLE);
+
+        }
+
+        // On force le rafraîchissement de la fenêtre
+        fenetre.actualiser();
+    }
     // -------------------------------------------------------------------------
     // BOUTONS
     // -------------------------------------------------------------------------
 
     // Dessine un bouton dans la fenêtre
-   
-
     // -------------------------------------------------------------------------
     // CHUTTE TUILE (REELLE)
     // -------------------------------------------------------------------------
@@ -154,8 +173,6 @@ public class GestionGraphique {
             }
         }
     }
-
-    
 
     public static void clearConsole() {
         for (int i = 0; i < 50; i++) {
