@@ -99,8 +99,7 @@ public class GestionIA {
      * @param plateau
      * @return
      */
-    public ArrayList<Coord> aideOrdi(Plateau plateau, int nbCoups) {
-        int compteur = 0;
+    public ArrayList<Coord> aideOrdi(Plateau plateau) {
         ArrayList<Coord> matchs = this.listEchange(plateau);
         if (matchs.isEmpty()) {
             return new ArrayList<>();

@@ -9,6 +9,8 @@ import Tuile.Tuile;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import Plateau.GestionIA;
 
 public class PanneauJeu extends JPanel implements MouseListener {
 
@@ -17,6 +19,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
     private Coord premierClic = null; // Pour gérer les deux clics successifs
     private Runnable coupJouer;
     private ClicEtBouton clicEtBouton = new ClicEtBouton();
+
 
     public PanneauJeu() {
         addMouseListener(this);
@@ -53,7 +56,30 @@ public class PanneauJeu extends JPanel implements MouseListener {
             }
         }
 
+        // Surbrillance par dessus la tuile sélectionnée
+        surbrillance(g2,offsetX);
+
         // Grille
+        grille(g2, hauteurPlateau, largeurPlateau,offsetX);
+    }
+        
+    public void surbrillance(Graphics g2, int offsetX){
+        if (premierClic != null) {
+            int col = premierClic.getAbscisse();
+            int lig = premierClic.getOrdonnee();
+
+            int posX = offsetX + col * Tuile.TAILLE;
+            int posY = margeY + (plateau.getNbLig() - lig) * Tuile.TAILLE;
+
+            g2.setColor(new Color(255, 255, 0, 100)); // jaune semi-transparent
+            g2.fillRect(posX, posY, Tuile.TAILLE, Tuile.TAILLE);
+
+            g2.setColor(Color.YELLOW);
+            g2.drawRect(posX, posY, Tuile.TAILLE - 1, Tuile.TAILLE - 1); // bordure
+        }
+    }
+    
+    public void grille(Graphics g2, int hauteurPlateau, int largeurPlateau, int offsetX){
         g2.setColor(Color.BLACK);
         for (int i = 0; i <= plateau.getNbLig(); i++) {
             int y = margeY + (i + 1) * Tuile.TAILLE;
@@ -74,16 +100,16 @@ public class PanneauJeu extends JPanel implements MouseListener {
         if (clic == null) {
             return;
         }
-        
-    // <editor-fold desc="à enlever a la TOUTE FIN: aide pour verifier que les trucs marche">
+
+        // <editor-fold desc="à enlever a la TOUTE FIN: aide pour verifier que les trucs marche">
         System.out.println("Clic pixel : x=" + e.getX() + " y=" + e.getY());
         System.out.println("Coord tuile : " + (clic == null ? "NULL (hors plateau)" : "col=" + clic.getAbscisse() + " lig=" + clic.getOrdonnee()));
         // </editor-fold>
-        
 
- // a la fin retirer les "System.out.println" si voulu
+        // a la fin retirer les "System.out.println" si voulu
         if (premierClic == null) {
             premierClic = clic;
+            repaint();
             System.out.println("Premier clic enregistré : col=" + premierClic.getAbscisse() + " lig=" + premierClic.getOrdonnee());
         } else {
             System.out.println("Tentative échange : (" + premierClic.getAbscisse() + "," + premierClic.getOrdonnee() + ") <-> (" + clic.getAbscisse() + "," + clic.getOrdonnee() + ")");
@@ -100,7 +126,13 @@ public class PanneauJeu extends JPanel implements MouseListener {
     public void setCoupJouer(Runnable callback) {
         this.coupJouer = callback;
     }
-    
+
+    public String aideOrdiString(Plateau plateau) {
+        GestionIA ia = new GestionIA();
+        ArrayList<Coord> matchs = ia.aideOrdi(plateau);
+        return matchs + " ";
+
+    }
 
     // Méthodes vides obligatoires de MouseListener
     @Override
