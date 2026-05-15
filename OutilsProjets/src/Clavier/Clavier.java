@@ -1,6 +1,6 @@
 package Clavier;
 
-import Coordonnees.Coord;
+import Modele.Coord;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 

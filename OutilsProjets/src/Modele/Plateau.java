@@ -2,13 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Plateau;
+package Modele;
 
-import Colonne.Colonne;
-import Coordonnees.Coord;
-import Tuile.Tuile;
-import Clavier.Clavier;
+import Affichage.DessinPlateau;
 import FenetreGraphique.FenetreGraphique;
+import Controleur.GestionClics;
+import Controleur.GestionPartie;
+import LogiqueJeu.DetectionMatchs;
+import LogiqueJeu.SuppressionMatchs;
 import java.util.Random;
 
 /**
@@ -22,9 +23,11 @@ public class Plateau {
     private int nbLig;
     private int nbTypesTuile;
     private int score;
-    private GestionMatchs gestionMatchs = new GestionMatchs();
-    private GestionGraphique gestionGraphique = new GestionGraphique();
-    private ClicEtBouton clicEtBouton = new ClicEtBouton();
+    private DetectionMatchs detectionMatchs = new DetectionMatchs();
+    private SuppressionMatchs suppressionMatchs = new SuppressionMatchs();
+    private GestionPartie gestionPartie = new GestionPartie();
+    private GestionClics gestionClics = new GestionClics();
+    private DessinPlateau dessinPlateau = new DessinPlateau();
 
     public Plateau(int nbColonnes, int nbLignes, int nbTypes) {
         this.nbCol = nbColonnes;
@@ -36,9 +39,9 @@ public class Plateau {
             this.lesColonnes[i] = new Colonne(nbLignes, nbTypes);
         }
         System.out.println("Colonnes creees, suppression des matchs...");
-        gestionMatchs.supprimerTousLesMatchs(this,new Random());
+        suppressionMatchs.supprimerTousLesMatchs(this, new Random());
         System.out.println("Plateau pret !");
-        this.score=0;
+        this.score = 0;
     }
 
     public Plateau copy() {
@@ -70,8 +73,8 @@ public class Plateau {
         for (int i = 0; i < nbColonnes; i++) {
             this.lesColonnes[i] = new Colonne(nbLignes, nbTypes, rand);
         }
-        gestionMatchs.supprimerTousLesMatchs(this,rand);
-        this.score=0;// on passe le même rand
+        suppressionMatchs.supprimerTousLesMatchs(this, rand);
+        this.score = 0;// on passe le même rand
     }
 
     // -------------------------------------------------------------------------
@@ -101,27 +104,13 @@ public class Plateau {
         this.score = score;
     }
 
-    public GestionMatchs getGestionMatchs() {
-        return gestionMatchs;
+    public DetectionMatchs getDetectionMatchs() {
+        return detectionMatchs;
     }
 
-    public GestionGraphique getGestionGraphique() {
-        return gestionGraphique;
+    public SuppressionMatchs getSuppressionMatchs() {
+        return suppressionMatchs;
     }
-
-    public void setGestionMatchs(GestionMatchs gestionMatchs) {
-        this.gestionMatchs = gestionMatchs;
-    }
-
-    public void setGestionGraphique(GestionGraphique gestionGraphique) {
-        this.gestionGraphique = gestionGraphique;
-    }
-
-    public ClicEtBouton getClicEtBouton() {
-        return clicEtBouton;
-    }
-    
-    
 
     public void setLesColonnes(Colonne[] lesColonnes) {
         this.lesColonnes = lesColonnes;
@@ -193,99 +182,27 @@ public class Plateau {
         return true;
     }
 
-    // Demande au joueur les coordonnées de deux tuiles à échanger et effectue l'échange
-    public void jouerUnCoup() {
-        System.out.println("Entrez les coordonnees de la premiere tuile :");
-
-        Coord c1 = Clavier.getCoord();
-
-        System.out.println("Entrez les coordonnees de la deuxieme tuile :");
-        Coord c2 = Clavier.getCoord();
-
-        System.out.println("Entrez les coordonnees de la deuxieme tuile :");
-
-        boolean echangeOk = this.echangerTuiles(c1, c2);
-
-        if (echangeOk) {
-            if (gestionMatchs.existeUnMatch(this)) {
-                System.out.println("Echange effectue !");
-                gestionMatchs.supprimerTousLesMatchs(this,new Random());
-                System.out.println("Score total : " + this.score);
-            } else {
-                System.out.println("Cet echange ne cree pas de match, annulation.");
-                this.echangerTuiles(c2, c1);
-            }
-        }
-    }
-
-    public void jouerUnCoup(Coord c1, Coord c2) {
-        boolean echangeOk = this.echangerTuiles(c1, c2);
-        if (echangeOk) {
-            if (gestionMatchs.existeUnMatch(this)) {
-                System.out.println("echange effectue ! ");
-                gestionMatchs.supprimerTousLesMatchs(this,new Random());
-                System.out.println("Score total : " + this.score);
-            } else {
-                System.out.println("Cet echange ne cree pas de match, annulation.");
-                this.echangerTuiles(c2, c1);
-            }
-        }
-    }
-
     // Dessine un bouton et retourne true si le clic est dessus
     // Attend un clic sur un bouton et retourne le choix (1, 2, 3 ou 4)
-    
-
     // -------------------------------------------------------------------------
     // AFFICHAGE GRAPHIQUE PLATEAU
     // -------------------------------------------------------------------------
     public void echangerTuile(FenetreGraphique fenetre, int margeX, int margeY) {
         System.out.println("Cliquez sur la premiere tuile...");
-        Coord c1 = clicEtBouton.attendreClicOuBouton(this, fenetre, margeX, margeY);
+        Coord c1 = gestionClics.attendreClicOuBouton(this, fenetre, margeX, margeY);
         System.out.println("Premier clic : " + c1);
 
         System.out.println("Cliquez sur la deuxieme tuile...");
-        Coord c2 = clicEtBouton.attendreClicOuBouton(this, fenetre, margeX, margeY);
+        Coord c2 = gestionClics.attendreClicOuBouton(this, fenetre, margeX, margeY);
         System.out.println("Deuxième clic : " + c2);
 
-        this.jouerUnCoup(c1, c2);
+        gestionPartie.jouerUnCoup(this, c1, c2);
 
         fenetre.effacer();
-        gestionGraphique.afficherPlateau(this,fenetre, margeX, margeY);
+        dessinPlateau.afficherPlateau(this, fenetre, margeX, margeY);
     }
     // -------------------------------------------------------------------------
     // CHUTTE TUILE (REELLE)
     // -------------------------------------------------------------------------
-
-    public void jouerUnCoup(FenetreGraphique fenetre, int margeX, int margeY) {
-        System.out.println("Entrez les coordonnees de la premiere tuile :");
-
-        Coord c1 = Clavier.getCoord();
-
-        System.out.println("Entrez les coordonnees de la deuxieme tuile :");
-        Coord c2 = Clavier.getCoord();
-
-        System.out.println("Entrez les coordonnees de la deuxieme tuile :");
-
-        boolean echangeOk = this.echangerTuiles(c1, c2);
-
-        if (echangeOk) {
-            if (gestionMatchs.existeUnMatch(this)) {
-                System.out.println("Echange effectue !");
-
-                // 1. On calcule la suppression et le remplissage (logique interne)
-                gestionMatchs.supprimerTousLesMatchs(this,new Random());
-
-                // 2. On lance l'animation visuelle de la chute
-                // (Assure-toi d'avoir accès à 'fenetre', 'margeX' et 'margeY' ici)
-                gestionGraphique.animerChute(this,fenetre, margeX, margeY);
-
-                System.out.println("Score total : " + this.score);
-            } else {
-                System.out.println("Cet echange ne cree pas de match, annulation.");
-                this.echangerTuiles(c2, c1);
-            }
-        }
-    }
 
 }

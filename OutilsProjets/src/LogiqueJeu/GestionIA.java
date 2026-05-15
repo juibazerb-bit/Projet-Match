@@ -1,6 +1,7 @@
-package Plateau;
+package LogiqueJeu;
 
-import Coordonnees.Coord;
+import Modele.Plateau;
+import Modele.Coord;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -10,7 +11,6 @@ import java.util.Random;
  * @author flo66
  */
 public class GestionIA {
-
     /**
      * Retourne une chaîne de caractères lisible listant les échanges possibles.
      *
@@ -42,7 +42,7 @@ public class GestionIA {
      */
     public ArrayList<Coord> listEchange(Plateau plateau) {
         ArrayList<Coord> matchs = new ArrayList<>();
-        GestionMatchs gm = plateau.getGestionMatchs();
+        DetectionMatchs gm = plateau.getDetectionMatchs();
         int nbLig = plateau.getNbLig();
         int nbCol = plateau.getNbCol();
 
@@ -116,7 +116,7 @@ public class GestionIA {
 
             copy.echangerTuiles(c1, c2);
             // On simule la suppression pour voir combien de points cela rapporte
-            int scoreGagne = copy.getGestionMatchs().supprimerTousLesMatchs(copy, rand) * 100;
+            int scoreGagne = copy.getSuppressionMatchs().supprimerTousLesMatchs(copy, rand) * 100;
 
             if (scoreGagne > meilleurScore) {
                 meilleurScore = scoreGagne;

@@ -1,6 +1,5 @@
-package Tuile;
+package Modele;
 
-import Coordonnees.Coord;
 import FenetreGraphique.FenetreGraphique;
 import java.awt.Graphics2D;
 import java.util.Random;

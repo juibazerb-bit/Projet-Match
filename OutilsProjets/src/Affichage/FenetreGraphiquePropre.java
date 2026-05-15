@@ -2,11 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package Plateau;
+package Affichage;
 
-import Coordonnees.Coord;
-import Plateau.Plateau;
-import Tuile.Tuile;
+import LogiqueJeu.GestionIA;
+import Modele.Coord;
+import Modele.Plateau;
+import Modele.Tuile;
+import Plateau.PanneauJeu;
 import java.awt.Dimension;
 import java.util.ArrayList;
 /**
@@ -90,7 +92,6 @@ private void redimensionnerPanneau() {
         });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1500, 1000));
 
         boutonTypesTuile.addContainerListener(new java.awt.event.ContainerAdapter() {
             public void componentAdded(java.awt.event.ContainerEvent evt) {

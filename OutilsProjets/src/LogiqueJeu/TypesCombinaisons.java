@@ -1,6 +1,7 @@
-package Plateau;
+package LogiqueJeu;
 
-import Coordonnees.Coord;
+import Modele.Plateau;
+import Modele.Coord;
 import java.util.ArrayList;
 
 public class TypesCombinaisons {

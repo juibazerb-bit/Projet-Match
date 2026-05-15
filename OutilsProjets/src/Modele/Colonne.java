@@ -1,6 +1,6 @@
-package Colonne;
+package Modele;
 
-import Tuile.Tuile;
+import Modele.Tuile;
 import java.util.ArrayList;
 import java.util.Random;
 

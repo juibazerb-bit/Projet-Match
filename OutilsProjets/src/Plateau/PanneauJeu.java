@@ -4,13 +4,16 @@
  */
 package Plateau;
 
-import Coordonnees.Coord;
-import Tuile.Tuile;
+import Controleur.GestionClics;
+import Controleur.GestionPartie;
+import Modele.Plateau;
+import Modele.Coord;
+import Modele.Tuile;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import Plateau.GestionIA;
+import LogiqueJeu.GestionIA;
 
 public class PanneauJeu extends JPanel implements MouseListener {
 
@@ -18,8 +21,8 @@ public class PanneauJeu extends JPanel implements MouseListener {
     private int margeX = 10, margeY = 10;  //position de la grille
     private Coord premierClic = null; // Pour gérer les deux clics successifs
     private Runnable coupJouer;
-    private ClicEtBouton clicEtBouton = new ClicEtBouton();
-
+    private GestionClics gestionClics = new GestionClics();
+    private GestionPartie gestionPartie = new GestionPartie();
 
     public PanneauJeu() {
         addMouseListener(this);
@@ -57,13 +60,13 @@ public class PanneauJeu extends JPanel implements MouseListener {
         }
 
         // Surbrillance par dessus la tuile sélectionnée
-        surbrillance(g2,offsetX);
+        surbrillance(g2, offsetX);
 
         // Grille
-        grille(g2, hauteurPlateau, largeurPlateau,offsetX);
+        grille(g2, hauteurPlateau, largeurPlateau, offsetX);
     }
-        
-    public void surbrillance(Graphics g2, int offsetX){
+
+    public void surbrillance(Graphics g2, int offsetX) {
         if (premierClic != null) {
             int col = premierClic.getAbscisse();
             int lig = premierClic.getOrdonnee();
@@ -78,8 +81,8 @@ public class PanneauJeu extends JPanel implements MouseListener {
             g2.drawRect(posX, posY, Tuile.TAILLE - 1, Tuile.TAILLE - 1); // bordure
         }
     }
-    
-    public void grille(Graphics g2, int hauteurPlateau, int largeurPlateau, int offsetX){
+
+    public void grille(Graphics g2, int hauteurPlateau, int largeurPlateau, int offsetX) {
         g2.setColor(Color.BLACK);
         for (int i = 0; i <= plateau.getNbLig(); i++) {
             int y = margeY + (i + 1) * Tuile.TAILLE;
@@ -96,7 +99,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
         if (plateau == null) {
             return;
         }
-        Coord clic = clicEtBouton.clicVersCoord(plateau, e.getX() - Tuile.TAILLE, e.getY(), margeX, margeY);
+        Coord clic = gestionClics.clicVersCoord(plateau, e.getX() - Tuile.TAILLE, e.getY(), margeX, margeY);
         if (clic == null) {
             return;
         }
@@ -113,7 +116,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
             System.out.println("Premier clic enregistré : col=" + premierClic.getAbscisse() + " lig=" + premierClic.getOrdonnee());
         } else {
             System.out.println("Tentative échange : (" + premierClic.getAbscisse() + "," + premierClic.getOrdonnee() + ") <-> (" + clic.getAbscisse() + "," + clic.getOrdonnee() + ")");
-            plateau.jouerUnCoup(premierClic, clic);
+            gestionPartie.jouerUnCoup(plateau, premierClic, clic);
             premierClic = null;
             repaint();
             // actualisation du score
