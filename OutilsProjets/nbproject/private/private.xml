@@ -5,14 +5,13 @@
         <group>
             <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/Affichage/DessinPlateau.java</file>
             <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/Affichage/Animation.java</file>
-            <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/Controleur/GestionPartie.java</file>
-            <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/Modele/Plateau.java</file>
-            <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/Controleur/GestionClics.java</file>
+            <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/Test/TestPlateauFenetreGraphique.java</file>
             <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/Test/TestPlateauConsole.java</file>
             <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/LogiqueJeu/GestionIA.java</file>
-            <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/Test/TestPlateauFenetreGraphique.java</file>
             <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/Plateau/PanneauJeu.java</file>
-            <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/test/Plateau/GestionIATest.java</file>
+            <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/FenetreGraphique/FenetreGraphique.java</file>
+            <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/Modele/TypeTuile.java</file>
+            <file>file:/C:/Users/flo66/Documents/cours%20ENSMM/Projet%20INFO/Projet-Match/OutilsProjets/src/LogiqueJeu/TypesCombinaisons.java</file>
         </group>
     </open-files>
 </project-private>
