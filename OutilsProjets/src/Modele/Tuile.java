@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class Tuile {
 
-    public static final int TAILLE = 30;
+    public static final int TAILLE = 50;
     private double posYVisuelle;
 
     private int type;

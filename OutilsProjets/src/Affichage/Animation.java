@@ -13,8 +13,9 @@ import Modele.Tuile;
  * @author flo66
  */
 public class Animation {
+
     private DessinPlateau dessinPlateau = new DessinPlateau();
-    
+
     public void fixerPositionsActuelles(Plateau plateau, int margeY) {
         int hauteurPlateau = plateau.getNbLig() * Tuile.TAILLE;
         for (int col = 0; col < plateau.getNbCol(); col++) {
@@ -51,7 +52,7 @@ public class Animation {
                     // Nouvelle tuile : elle part du haut de la grille
                     if (t.getPosYVisuelle() == -1) {
                         // Plus la tuile est haute dans la grille (lig grand), plus elle part de loin
-                        t.setPosYVisuelle(margeY - (lig - plateau.getNbCol() + 3) * Tuile.TAILLE / 2);
+                        t.setPosYVisuelle(margeY - (lig - plateau.getNbLig() + 3) * Tuile.TAILLE/2 );
                         enMouvement = true;
                     }
 
@@ -65,13 +66,11 @@ public class Animation {
             }
 
             dessinPlateau.afficherPlateau(plateau, fenetre, margeX, margeY);
-
+            
             // Petite pause pour que l'animation soit visible
-            try {
-                Thread.sleep(16);
-            } catch (InterruptedException e) {
-            }
+            fenetre.attendre(0.002);
         }
+        fenetre.actualiser();
     }
 
     public void reinitialiserPositionsVisuelles(Plateau plateau) {
@@ -81,6 +80,7 @@ public class Animation {
             }
         }
     }
+
     public static void clearConsole() {
         for (int i = 0; i < 50; i++) {
             System.out.println();

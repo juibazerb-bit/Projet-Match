@@ -25,9 +25,9 @@ public class TestPlateauFenetreGraphique {
 
     public static void main(String[] args) {
 
-        int nbLignes = 20;
+        int nbLignes = 10;
         int nbCol = 20;
-        int nbTypes = 7;
+        int nbTypes = 14;
         int margeX = 100;
         int margeY = 100;
 
@@ -109,17 +109,11 @@ public class TestPlateauFenetreGraphique {
                                 for (int i = 0; i < 3; i++) {
                                     dessinPlateau.afficherPlateauClignotant(
                                             plateau, fenetre, margeX, margeY, aSupprimer, true);  // noir
-                                    try {
-                                        Thread.sleep(200);
-                                    } catch (InterruptedException e) {
-                                    }
+                                    fenetre.attendre(0.2);
 
                                     dessinPlateau.afficherPlateauClignotant(
                                             plateau, fenetre, margeX, margeY, aSupprimer, false); // normal
-                                    try {
-                                        Thread.sleep(200);
-                                    } catch (InterruptedException e) {
-                                    }
+                                    fenetre.attendre(0.2);
                                 }
                                 //  Supprimer 
                                 plateau.getLesColonnes(); // accès aux colonnes
@@ -143,10 +137,7 @@ public class TestPlateauFenetreGraphique {
                                 animation.animerChute(plateau, fenetre, margeX, margeY);
 
                                 // Petite pause entre les vagues pour que ce soit lisible
-                                try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e) {
-                                }
+                                fenetre.attendre(1);
                             }
                         }
 

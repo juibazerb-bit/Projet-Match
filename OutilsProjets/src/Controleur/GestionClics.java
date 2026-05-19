@@ -90,11 +90,7 @@ public class GestionClics {
                 return coord;
             }
         }
-        try {
-            Thread.sleep(20);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        fenetre.attendre(0.02);
     }
 }
 
