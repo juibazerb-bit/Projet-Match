@@ -2,6 +2,8 @@ package LogiqueJeu;
 
 import Modele.Plateau;
 import Modele.Coord;
+import Sons.Son;
+import Sons.SonManager;
 import java.util.ArrayList;
 
 public class TypesCombinaisons {
@@ -202,6 +204,7 @@ public class TypesCombinaisons {
             int typeCible = plateau.getTuile(debut, lig).getType();
             plateau.ajouterScore(1000);
             System.out.println("BONUS Super x5 ! Le racisme est a son comble! +1000 pts");
+            SonManager.jouer(Son.RACISME);
             for (int c = 0; c < plateau.getNbCol(); c++) {
                 for (int l = 0; l < plateau.getNbLig(); l++) {
                     if (plateau.getTuile(c, l).getType() == typeCible) {
@@ -212,6 +215,7 @@ public class TypesCombinaisons {
         } else if (taille == 4) {
             plateau.ajouterScore(500);
             System.out.println("BONUS Fusee x4 ! +500 pts");
+            SonManager.jouer(Son.BONUS_FUSEE);
             if (vertical) {
                 for (int l = 0; l < plateau.getNbLig(); l++) {
                     ajouterSiAbsent(aSupprimer, new Coord(debut, l));
@@ -224,6 +228,7 @@ public class TypesCombinaisons {
         } else {
             plateau.ajouterScore(taille * 100);
             System.out.println("Match x" + taille + " ! +" + (taille * 100) + " pts");
+            SonManager.jouer(Son.MATCH_SIMPLE);
             if (vertical) {
                 for (int l = lig; l <= fin; l++) {
                     ajouterSiAbsent(aSupprimer, new Coord(debut, l));
@@ -269,11 +274,13 @@ public class TypesCombinaisons {
                         // T de 7 cases ou plus = explosion rayon 2
                         plateau.ajouterScore(1500);
                         System.out.println("MEGA BONUS T geant ! Hiroshima is comming! +1500 pts");
+                        SonManager.jouerNsecondes(Son.HIROSHIMA,2);
                         ajouterZoneRayon(plateau, cv, 2, aSupprimer);
                     } else {
                         // T ou L normal = explosion rayon 3x3
                         plateau.ajouterScore(800);
                         System.out.println("BONUS! Macron EXPLOSION ! +800 pts");
+                        SonManager.jouer(Son.EXPLOSION);
                         ajouterZone3x3(plateau, cv, aSupprimer);
                     }
 

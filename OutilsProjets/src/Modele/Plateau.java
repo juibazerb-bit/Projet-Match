@@ -4,11 +4,13 @@
  */
 package Modele;
 
+import Affichage.Animation;
 import Affichage.DessinPlateau;
 import FenetreGraphique.FenetreGraphique;
 import Controleur.GestionClics;
 import Controleur.GestionPartie;
 import LogiqueJeu.DetectionMatchs;
+import LogiqueJeu.GestionIA;
 import LogiqueJeu.SuppressionMatchs;
 import java.util.Random;
 
@@ -28,6 +30,8 @@ public class Plateau {
     private GestionPartie gestionPartie = new GestionPartie();
     private GestionClics gestionClics = new GestionClics();
     private DessinPlateau dessinPlateau = new DessinPlateau();
+    private Animation animation = new Animation();
+    private GestionIA gestionIA = new GestionIA();
 
     public Plateau(int nbColonnes, int nbLignes, int nbTypes) {
         this.nbCol = nbColonnes;
@@ -104,6 +108,10 @@ public class Plateau {
         this.score = score;
     }
 
+    public Animation getAnimation() {
+        return animation;
+    }
+
     public DetectionMatchs getDetectionMatchs() {
         return detectionMatchs;
     }
@@ -122,6 +130,22 @@ public class Plateau {
 
     public void setNbLig(int nbLig) {
         this.nbLig = nbLig;
+    }
+
+    public GestionPartie getGestionPartie() {
+        return gestionPartie;
+    }
+
+    public GestionIA getGestionIA() {
+        return gestionIA;
+    }
+
+    public GestionClics getGestionClics() {
+        return gestionClics;
+    }
+
+    public DessinPlateau getDessinPlateau() {
+        return dessinPlateau;
     }
 
     public void setNbTypesTuile(int nbTypesTuile) {
@@ -204,5 +228,9 @@ public class Plateau {
     // -------------------------------------------------------------------------
     // CHUTTE TUILE (REELLE)
     // -------------------------------------------------------------------------
+
+    public Object getGestionGraphique() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
 }

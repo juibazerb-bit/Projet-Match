@@ -25,9 +25,9 @@ public class TestPlateauFenetreGraphique {
 
     public static void main(String[] args) {
 
-        int nbLignes = 10;
-        int nbCol = 20;
-        int nbTypes = 14;
+        int nbLignes = 15;
+        int nbCol = 15;
+        int nbTypes = 7;
         int margeX = 100;
         int margeY = 100;
 
@@ -63,6 +63,17 @@ public class TestPlateauFenetreGraphique {
             } else if (clic.getAbscisse() == -4) {
                 continuer = false;
                 fenetre.dispose();
+            } else if (clic.getAbscisse() == -5) {
+                // Afficher le meilleur coup
+//                ArrayList<Coord> meilleurCoup = ia.aideOrdi(plateau);
+                ArrayList<Coord> coupDeMonteCarlo = plateau.getGestionIA().obtenirMeilleurCoupStatistique(plateau, 200);
+                if (coupDeMonteCarlo.isEmpty()) {
+                    System.out.println("Aucun coup possible !");
+                } else {
+                    dessinPlateau.afficherPlateauAvecAide(plateau, fenetre, margeX, margeY, coupDeMonteCarlo);
+                    System.out.println("Meilleur coup : " + coupDeMonteCarlo.get(0) + " <-> " + coupDeMonteCarlo.get(1));
+                }
+                premierClic = null;
             } else if (clic.getAbscisse() == -10) {
                 // Changer le nombre de lignes
                 int nouvLig = Math.max(3, plateau.getNbLig() + clic.getOrdonnee());
@@ -139,8 +150,9 @@ public class TestPlateauFenetreGraphique {
                                 // Petite pause entre les vagues pour que ce soit lisible
                                 fenetre.attendre(1);
                             }
-                        }
 
+                        }
+                        System.out.println("Score total =" + plateau.getScore());
                     } else if (echangeOk) {
                         // Échange sans match → on annule
                         System.out.println("Pas de match, annulation.");

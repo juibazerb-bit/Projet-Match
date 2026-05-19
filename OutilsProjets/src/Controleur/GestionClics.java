@@ -52,47 +52,60 @@ public class GestionClics {
     }
 
     public Coord attendreClicOuBouton(Plateau plateau, FenetreGraphique fenetre, int margeX, int margeY) {
-    int boutonX = margeX + plateau.getNbCol() * Tuile.TAILLE + 20;
+        int boutonX = margeX + plateau.getNbCol() * Tuile.TAILLE + 20;
 
-    while (true) {
-        if (fenetre.unClicAEuLieu()) {
-            int clicX = fenetre.getXDernierClic();
-            int clicY = fenetre.getYDernierClic();
-            fenetre.effacerDernierClic();
+        while (true) {
+            if (fenetre.unClicAEuLieu()) {
+                int clicX = fenetre.getXDernierClic();
+                int clicY = fenetre.getYDernierClic();
+                fenetre.effacerDernierClic();
 
-            // Boutons en priorité
-            if (boutonClique(clicX, clicY, boutonX, 60, 160, 30)) return new Coord(-2, 0);
-            if (boutonClique(clicX, clicY, boutonX, 100, 160, 30)) return new Coord(-3, 0);
-            if (boutonClique(clicX, clicY, boutonX, 140, 160, 30)) return new Coord(-4, 0);
+                // Boutons en priorité
+                if (boutonClique(clicX, clicY, boutonX, 60, 160, 30)) {
+                    return new Coord(-2, 0);
+                }
+                if (boutonClique(clicX, clicY, boutonX, 100, 160, 30)) {
+                    return new Coord(-3, 0);
+                }
+                if (boutonClique(clicX, clicY, boutonX, 140, 160, 30)) {
+                    return new Coord(-4, 0);
+                }
+                if (boutonClique(clicX, clicY, boutonX, 180, 160, 30)) {
+                    return new Coord(-5, 0);
+                }
 
-            int deltaLig = clicSurCompteur(clicX, clicY, boutonX, 200, 160, 90);
-            if (deltaLig != 0) return new Coord(-10, deltaLig);
+                int deltaLig = clicSurCompteur(clicX, clicY, boutonX, 200, 160, 90);
+                if (deltaLig != 0) {
+                    return new Coord(-10, deltaLig);
+                }
 
-            int deltaCol = clicSurCompteur(clicX, clicY, boutonX, 300, 160, 90);
-            if (deltaCol != 0) return new Coord(-11, deltaCol);
+                int deltaCol = clicSurCompteur(clicX, clicY, boutonX, 300, 160, 90);
+                if (deltaCol != 0) {
+                    return new Coord(-11, deltaCol);
+                }
 
-            // Clic sur la grille
-            Coord coord = clicVersCoord(plateau, clicX, clicY, margeX, margeY);
-            if (coord != null) {
-                // on convertit la Coord logique en pixels pour dessiner au bon endroit
-                int hauteurPlateau = plateau.getNbLig() * Tuile.TAILLE;
-                int x = margeX + coord.getAbscisse() * Tuile.TAILLE;
-                int y = margeY + hauteurPlateau - coord.getOrdonnee() * Tuile.TAILLE;
+                // Clic sur la grille
+                Coord coord = clicVersCoord(plateau, clicX, clicY, margeX, margeY);
+                if (coord != null) {
+                    // on convertit la Coord logique en pixels pour dessiner au bon endroit
+                    int hauteurPlateau = plateau.getNbLig() * Tuile.TAILLE;
+                    int x = margeX + coord.getAbscisse() * Tuile.TAILLE;
+                    int y = margeY + hauteurPlateau - coord.getOrdonnee() * Tuile.TAILLE;
 
-                // Contour jaune épais
-                Graphics2D g = fenetre.getGraphics2D();
-                g.setColor(java.awt.Color.YELLOW);
-                g.setStroke(new java.awt.BasicStroke(4)); // épaisseur 4 pixels
-                g.drawRect(x + 2, y + 2, Tuile.TAILLE - 4, Tuile.TAILLE - 4);
-                g.setStroke(new java.awt.BasicStroke(1)); // on remet l'épaisseur par défaut
-                fenetre.actualiser();
+                    // Contour jaune épais
+                    Graphics2D g = fenetre.getGraphics2D();
+                    g.setColor(java.awt.Color.YELLOW);
+                    g.setStroke(new java.awt.BasicStroke(4)); // épaisseur 4 pixels
+                    g.drawRect(x + 2, y + 2, Tuile.TAILLE - 4, Tuile.TAILLE - 4);
+                    g.setStroke(new java.awt.BasicStroke(1)); // on remet l'épaisseur par défaut
+                    fenetre.actualiser();
 
-                return coord;
+                    return coord;
+                }
             }
+            fenetre.attendre(0.02);
         }
-        fenetre.attendre(0.02);
     }
-}
 
     public int lireChoix(Plateau plateau, FenetreGraphique fenetre) {
         int boutonX = 20 + plateau.getNbCol() * Tuile.TAILLE + 20;
