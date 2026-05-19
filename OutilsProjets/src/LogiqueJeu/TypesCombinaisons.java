@@ -11,7 +11,6 @@ public class TypesCombinaisons {
     // -------------------------------------------------------------------------
     public ArrayList<Coord> collecterToutesLesTuilesASupprimer(Plateau plateau) {
         ArrayList<Coord> aSupprimer = new ArrayList<>();
-
         ArrayList<Coord> tuilesCarres = collecterCarres(plateau);
         ArrayList<Coord> tuilesVerticaux = collecterMatchsVerticaux(plateau);
         ArrayList<Coord> tuilesHorizontaux = collecterMatchsHorizontaux(plateau);
