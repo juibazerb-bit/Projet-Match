@@ -5,7 +5,7 @@
 package Test;
 
 import FenetreGraphique.FenetreGraphique;
-import Tuile.Tuile;
+import Modele.Tuile;
 import java.awt.Color;
 import java.util.Random;
 

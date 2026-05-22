@@ -1,0 +1,87 @@
+package Modele;
+
+import FenetreGraphique.FenetreGraphique;
+import java.awt.Graphics2D;
+import java.util.Random;
+
+public class Tuile {
+
+    public static final int TAILLE = 50;
+    private double posYVisuelle;
+
+    private int type;
+    private Coord coordTuile;
+
+    // Constructeur avec type fixe
+    public Tuile(int typeTuile) {
+        this.type = typeTuile;
+        this.posYVisuelle = -1; // -1 signifie qu'elle n'a pas encore de position
+    }
+
+    // Constructeur aléatoire 
+    public Tuile(int nbTuiles, Random rand) {
+        this.type = rand.nextInt(nbTuiles);
+        this.posYVisuelle = -1;
+    }
+
+    public void setPosYVisuelle(double y) {
+        this.posYVisuelle = y;
+    }
+
+    public double getPosYVisuelle() {
+        return posYVisuelle;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        TypeTuile[] valeurs = TypeTuile.values();
+        return valeurs[this.type % valeurs.length].afficher();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Tuile other = (Tuile) obj;
+        return this.type == other.type;
+    }
+
+    public Coord getCoordTuile() {
+        return coordTuile;
+    }
+
+    public void setCoordTuile(Coord coordTuile) {
+        this.coordTuile = coordTuile;
+    }
+
+    public void dessiner(FenetreGraphique fenetre, int x, int y) {
+        TypeTuile monType = TypeTuile.values()[this.type % TypeTuile.values().length];
+
+        // Si posYVisuelle est définie, on l'utilise, sinon on utilise le y de la grille
+        int yFinal = (posYVisuelle == -1) ? y : (int) posYVisuelle;
+
+        fenetre.getGraphics2D().drawImage(monType.getImage(), x, yFinal, TAILLE, TAILLE, null);
+    }
+
+    public void dessiner(int x, int y, Graphics2D g2) {
+        TypeTuile monType = TypeTuile.values()[this.type % TypeTuile.values().length];
+        int yFinal = (posYVisuelle == -1) ? y : (int) posYVisuelle;
+        g2.drawImage(monType.getImage(), x, yFinal, TAILLE, TAILLE, null);
+    }
+
+}

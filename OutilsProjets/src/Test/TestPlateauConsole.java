@@ -4,8 +4,9 @@
  */
 package Test;
 
-import Plateau.GestionIA;
-import Plateau.Plateau;
+import Controleur.GestionPartie;
+import LogiqueJeu.GestionIA;
+import Modele.Plateau;
 
 /**
  *
@@ -25,6 +26,7 @@ public class TestPlateauConsole {
         // 2. Création du plateau
         Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes);
         GestionIA ia = new GestionIA();
+        GestionPartie gestionPartie = new GestionPartie();
         // 3. Création de la fenêtre graphique
         // On calcule la taille en fonction du nombre de tuiles (50 pixels par tuile)
         int largeur = nbCol * 50;
@@ -47,7 +49,7 @@ public class TestPlateauConsole {
             int choix = Clavier.Clavier.getInt();
 
             if (choix == 1) {
-                plateau.jouerUnCoup();
+                gestionPartie.jouerUnCoup(plateau);
 
                 // Mise à jour de l'affichage Console
                 System.out.println(plateau.afficher());
@@ -59,7 +61,7 @@ public class TestPlateauConsole {
                 System.out.print(ia.listMatchs(plateau));
             } else if (choix == 3) {
                 System.out.println("Voici le meilleur coups d'après moi même:");
-                System.out.println(ia.aideOrdi(plateau,3));
+                System.out.println(ia.aideOrdi(plateau));
             } else {
                 continuer = false;
                 System.out.println("Merci d'avoir joue :) ");

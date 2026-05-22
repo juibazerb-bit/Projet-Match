@@ -4,7 +4,9 @@
  */
 package Plateau;
 
-import Coordonnees.Coord;
+import LogiqueJeu.GestionIA;
+import Modele.Plateau;
+import Modele.Coord;
 import java.util.ArrayList;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;

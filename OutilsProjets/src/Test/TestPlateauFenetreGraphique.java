@@ -4,12 +4,17 @@
  */
 package Test;
 
-import Coordonnees.Coord;
+import Affichage.Animation;
+import Affichage.DessinPlateau;
+import Controleur.GestionClics;
+import Controleur.GestionPartie;
+import Modele.Coord;
 import FenetreGraphique.FenetreGraphique;
-import Plateau.GestionGraphique;
-import Plateau.GestionIA;
-import Plateau.Plateau;
-import Tuile.Tuile;
+import LogiqueJeu.DetectionMatchs;
+import LogiqueJeu.GestionIA;
+import LogiqueJeu.SuppressionMatchs;
+import Modele.Plateau;
+import Modele.Tuile;
 import java.util.ArrayList;
 
 /**
@@ -20,38 +25,55 @@ public class TestPlateauFenetreGraphique {
 
     public static void main(String[] args) {
 
-        int nbLignes = 20;
-        int nbCol = 20;
+        int nbLignes = 15;
+        int nbCol = 15;
         int nbTypes = 7;
         int margeX = 100;
         int margeY = 100;
 
         Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes, 0); // 42 = graine fixe
         GestionIA ia = new GestionIA();
+        GestionPartie gestionPartie = new GestionPartie();
+        Animation animation = new Animation();
+        GestionClics gestionClics = new GestionClics();
+        DessinPlateau dessinPlateau = new DessinPlateau();
+        DetectionMatchs detectionMatchs = new DetectionMatchs();
+        SuppressionMatchs suppressionMatchs = new SuppressionMatchs();
         int largeur = nbCol * Tuile.TAILLE + 300;
         int hauteur = nbLignes * Tuile.TAILLE + 300;
         FenetreGraphique fenetre = new FenetreGraphique("Candy Crush - Mode Graphique", largeur, hauteur);
-        GestionGraphique.clearConsole();
+        Animation.clearConsole();
 
         System.out.println("=== Jeu de Match // CandyCrush ===");
-        plateau.getGestionGraphique().afficherPlateau(plateau, fenetre, margeX, margeY);
+        dessinPlateau.afficherPlateau(plateau, fenetre, margeX, margeY);
 
         Coord premierClic = null;
         boolean continuer = true;
 
         while (continuer) {
-            Coord clic = plateau.getClicEtBouton().attendreClicOuBouton(plateau, fenetre, margeX, margeY);
+            Coord clic = gestionClics.attendreClicOuBouton(plateau, fenetre, margeX, margeY);
 
             if (clic.getAbscisse() == -2) {
                 System.out.println(ia.listMatchs(plateau));
                 premierClic = null;
             } else if (clic.getAbscisse() == -3) {
                 plateau = new Plateau(nbLignes, nbCol, nbTypes);
-                plateau.getGestionGraphique().afficherPlateau(plateau, fenetre, margeX, margeY);
+                dessinPlateau.afficherPlateau(plateau, fenetre, margeX, margeY);
                 premierClic = null;
             } else if (clic.getAbscisse() == -4) {
                 continuer = false;
                 fenetre.dispose();
+            } else if (clic.getAbscisse() == -5) {
+                // Afficher le meilleur coup
+//                ArrayList<Coord> meilleurCoup = ia.aideOrdi(plateau);
+                ArrayList<Coord> coupDeMonteCarlo = plateau.getGestionIA().obtenirMeilleurCoupStatistique(plateau, 200);
+                if (coupDeMonteCarlo.isEmpty()) {
+                    System.out.println("Aucun coup possible !");
+                } else {
+                    dessinPlateau.afficherPlateauAvecAide(plateau, fenetre, margeX, margeY, coupDeMonteCarlo);
+                    System.out.println("Meilleur coup : " + coupDeMonteCarlo.get(0) + " <-> " + coupDeMonteCarlo.get(1));
+                }
+                premierClic = null;
             } else if (clic.getAbscisse() == -10) {
                 // Changer le nombre de lignes
                 int nouvLig = Math.max(3, plateau.getNbLig() + clic.getOrdonnee());
@@ -59,7 +81,7 @@ public class TestPlateauFenetreGraphique {
                 fenetre = creerFenetre(nbCol, nouvLig, "Candy Crush - Mode Graphique");
 
                 plateau = new Plateau(nbCol, nouvLig, nbTypes);
-                plateau.getGestionGraphique().afficherPlateau(plateau, fenetre, margeX, margeY);
+                dessinPlateau.afficherPlateau(plateau, fenetre, margeX, margeY);
                 premierClic = null;
 
             } else if (clic.getAbscisse() == -11) {
@@ -70,45 +92,39 @@ public class TestPlateauFenetreGraphique {
                 fenetre = creerFenetre(nouvCol, nbLig, "Candy Crush - Mode Graphique");
 
                 plateau = new Plateau(nouvCol, nbLig, nbTypes);
-                plateau.getGestionGraphique().afficherPlateau(plateau, fenetre, margeX, margeY);
+                dessinPlateau.afficherPlateau(plateau, fenetre, margeX, margeY);
                 premierClic = null;
             } else {
                 if (premierClic == null) {
                     premierClic = clic;
                 } else {
-                    plateau.getGestionGraphique().fixerPositionsActuelles(plateau, margeY);
+                    animation.fixerPositionsActuelles(plateau, margeY);
 
                     //On tente l'échange
                     boolean echangeOk = plateau.echangerTuiles(premierClic, clic);
 
-                    if (echangeOk && plateau.getGestionMatchs().existeUnMatch(plateau)) {
+                    if (echangeOk && detectionMatchs.existeUnMatch(plateau)) {
 
                         //Boucle: clignotter -> supprimer -> animer -> recommencer
                         boolean encoreDesMatchs = true;
                         while (encoreDesMatchs) {
 
                             // Collecter les tuiles à supprimer
-                            ArrayList<Coordonnees.Coord> aSupprimer
-                                    = plateau.getGestionMatchs().collecterToutesLesTuilesASupprimer(plateau);
+                            ArrayList<Modele.Coord> aSupprimer
+                                    = suppressionMatchs.collecterToutesLesTuilesASupprimer(plateau);
 
                             if (aSupprimer.isEmpty()) {
                                 encoreDesMatchs = false;
                             } else {
                                 // clignotement de la tuile
                                 for (int i = 0; i < 3; i++) {
-                                    plateau.getGestionGraphique().afficherPlateauClignotant(
+                                    dessinPlateau.afficherPlateauClignotant(
                                             plateau, fenetre, margeX, margeY, aSupprimer, true);  // noir
-                                    try {
-                                        Thread.sleep(200);
-                                    } catch (InterruptedException e) {
-                                    }
+                                    fenetre.attendre(0.2);
 
-                                    plateau.getGestionGraphique().afficherPlateauClignotant(
+                                    dessinPlateau.afficherPlateauClignotant(
                                             plateau, fenetre, margeX, margeY, aSupprimer, false); // normal
-                                    try {
-                                        Thread.sleep(200);
-                                    } catch (InterruptedException e) {
-                                    }
+                                    fenetre.attendre(0.2);
                                 }
                                 //  Supprimer 
                                 plateau.getLesColonnes(); // accès aux colonnes
@@ -117,7 +133,7 @@ public class TestPlateauFenetreGraphique {
                                 // On supprime colonne par colonne
                                 for (int col = 0; col < plateau.getNbCol(); col++) {
                                     java.util.ArrayList<Integer> lignes = new java.util.ArrayList<>();
-                                    for (Coordonnees.Coord c : aSupprimer) {
+                                    for (Modele.Coord c : aSupprimer) {
                                         if (c.getAbscisse() == col) {
                                             lignes.add(c.getOrdonnee());
                                         }
@@ -129,21 +145,19 @@ public class TestPlateauFenetreGraphique {
                                 }
 
                                 // Animer la chute
-                                plateau.getGestionGraphique().animerChute(plateau, fenetre, margeX, margeY);
+                                animation.animerChute(plateau, fenetre, margeX, margeY);
 
                                 // Petite pause entre les vagues pour que ce soit lisible
-                                try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e) {
-                                }
+                                fenetre.attendre(1);
                             }
-                        }
 
+                        }
+                        System.out.println("Score total =" + plateau.getScore());
                     } else if (echangeOk) {
                         // Échange sans match → on annule
                         System.out.println("Pas de match, annulation.");
                         plateau.echangerTuiles(clic, premierClic);
-                        plateau.getGestionGraphique().afficherPlateau(plateau, fenetre, margeX, margeY);
+                        dessinPlateau.afficherPlateau(plateau, fenetre, margeX, margeY);
                     }
 
                     premierClic = null;
