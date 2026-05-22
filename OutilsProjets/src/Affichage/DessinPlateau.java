@@ -54,8 +54,8 @@ public class DessinPlateau {
 
         // A la fin de afficherPlateau, apres les boutons existants
         int compteurX = boutonX;
-        dessinBoutons.dessinerCompteur(fenetre, compteurX, 200, 160, 90, "Lignes", plateau.getNbLig());
-        dessinBoutons.dessinerCompteur(fenetre, compteurX, 300, 160, 90, "Colonnes", plateau.getNbCol());
+        dessinBoutons.dessinerCompteur(fenetre, compteurX, 250, 160, 90, "Lignes", plateau.getNbLig());
+        dessinBoutons.dessinerCompteur(fenetre, compteurX, 350, 160, 90, "Colonnes", plateau.getNbCol());
 
         //grille de jeu
         // Dessine les lignes HORIZONTALES (de gauche à droite)
