@@ -106,7 +106,7 @@ public class TypesCombinaisons {
     // -------------------------------------------------------------------------
     // CARRÉS 2x2
     // -------------------------------------------------------------------------
-    private ArrayList<Coord> collecterCarres(Plateau plateau) {
+    public ArrayList<Coord> collecterCarres(Plateau plateau) {
         ArrayList<Coord> tuilesCarres = new ArrayList<>();
         for (int col = 0; col < plateau.getNbCol() - 1; col++) {
             for (int lig = 0; lig < plateau.getNbLig() - 1; lig++) {
@@ -123,7 +123,7 @@ public class TypesCombinaisons {
         return tuilesCarres;
     }
 
-    private boolean estUnCarre(Plateau plateau, int col, int lig) {
+    public boolean estUnCarre(Plateau plateau, int col, int lig) {
         int type = plateau.getTuile(col, lig).getType();
         return plateau.getTuile(col + 1, lig).getType() == type
                 && plateau.getTuile(col, lig + 1).getType() == type
@@ -133,7 +133,7 @@ public class TypesCombinaisons {
     // -------------------------------------------------------------------------
     // MATCHS VERTICAUX
     // -------------------------------------------------------------------------
-    private ArrayList<Coord> collecterMatchsVerticaux(Plateau plateau) {
+    public ArrayList<Coord> collecterMatchsVerticaux(Plateau plateau) {
         ArrayList<Coord> tuiles = new ArrayList<>();
         for (int col = 0; col < plateau.getNbCol(); col++) {
             for (int lig = 0; lig < plateau.getNbLig() - 2; lig++) {
@@ -155,7 +155,7 @@ public class TypesCombinaisons {
     // -------------------------------------------------------------------------
     // MATCHS HORIZONTAUX
     // -------------------------------------------------------------------------
-    private ArrayList<Coord> collecterMatchsHorizontaux(Plateau plateau) {
+    public ArrayList<Coord> collecterMatchsHorizontaux(Plateau plateau) {
         ArrayList<Coord> tuiles = new ArrayList<>();
         for (int lig = 0; lig < plateau.getNbLig(); lig++) {
             for (int col = 0; col < plateau.getNbCol() - 2; col++) {
@@ -177,7 +177,7 @@ public class TypesCombinaisons {
     // -------------------------------------------------------------------------
     // EXTENSION D'UN MATCH AU-DELÀ DE 3
     // -------------------------------------------------------------------------
-    private int etendreMatch(Plateau plateau, int debut, int lig, boolean vertical) {
+    public int etendreMatch(Plateau plateau, int debut, int lig, boolean vertical) {
         int fin = (vertical ? lig : debut) + 2;
         if (vertical) {
             while (fin + 1 < plateau.getNbLig()
@@ -245,7 +245,7 @@ public class TypesCombinaisons {
     // -------------------------------------------------------------------------
     // BONUS T ou L — choisit le meilleur effet selon la taille totale
     // -------------------------------------------------------------------------
-    private void appliquerBonusTetL(Plateau plateau,
+    public void appliquerBonusTetL(Plateau plateau,
             ArrayList<Coord> verticaux,
             ArrayList<Coord> horizontaux,
             ArrayList<Coord> aSupprimer,
@@ -298,7 +298,7 @@ public class TypesCombinaisons {
     // ZONES D'EXPLOSION
     // -------------------------------------------------------------------------
     // Ajoute toutes les tuiles d'une zone 3x3 autour d'un centre
-    private void ajouterZone3x3(Plateau plateau, Coord centre, ArrayList<Coord> aSupprimer) {
+    public void ajouterZone3x3(Plateau plateau, Coord centre, ArrayList<Coord> aSupprimer) {
         ajouterZoneRayon(plateau, centre, 1, aSupprimer);
     }
 
@@ -326,7 +326,7 @@ public class TypesCombinaisons {
         return false;
     }
 
-    private void ajouterSiAbsent(ArrayList<Coord> liste, Coord c) {
+    public void ajouterSiAbsent(ArrayList<Coord> liste, Coord c) {
         if (!contient(liste, c)) {
             liste.add(c);
         }
