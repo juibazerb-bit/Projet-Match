@@ -23,6 +23,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
     private Runnable coupJouer;
     private GestionClics gestionClics = new GestionClics();
     private GestionPartie gestionPartie = new GestionPartie();
+    private ArrayList<Coord> surbrillanceIA = new ArrayList<>();
 
     public PanneauJeu() {
         addMouseListener(this);
@@ -64,6 +65,31 @@ public class PanneauJeu extends JPanel implements MouseListener {
 
         // Grille
         grille(g2, hauteurPlateau, largeurPlateau, offsetX);
+        
+        // Surbrillance suggestion IA (en bleu)
+for (int i = 0; i < surbrillanceIA.size(); i += 2) {
+    // première tuile
+    int col1 = surbrillanceIA.get(i).getAbscisse();
+    int lig1 = surbrillanceIA.get(i).getOrdonnee();
+    int posX1 = offsetX + col1 * Tuile.TAILLE;
+    int posY1 = margeY + (plateau.getNbLig() - lig1) * Tuile.TAILLE;
+
+    g2.setColor(new Color(0, 100, 255, 120)); // bleu semi-transparent
+    g2.fillRect(posX1, posY1, Tuile.TAILLE, Tuile.TAILLE);
+    g2.setColor(Color.BLUE);
+    g2.drawRect(posX1, posY1, Tuile.TAILLE - 1, Tuile.TAILLE - 1);
+
+    // deuxième tuile
+    int col2 = surbrillanceIA.get(i + 1).getAbscisse();
+    int lig2 = surbrillanceIA.get(i + 1).getOrdonnee();
+    int posX2 = offsetX + col2 * Tuile.TAILLE;
+    int posY2 = margeY + (plateau.getNbLig() - lig2) * Tuile.TAILLE;
+
+    g2.setColor(new Color(0, 100, 255, 120));
+    g2.fillRect(posX2, posY2, Tuile.TAILLE, Tuile.TAILLE);
+    g2.setColor(Color.BLUE);
+    g2.drawRect(posX2, posY2, Tuile.TAILLE - 1, Tuile.TAILLE - 1);
+}
     }
 
     public void surbrillance(Graphics g2, int offsetX) {
@@ -80,6 +106,10 @@ public class PanneauJeu extends JPanel implements MouseListener {
             g2.setColor(Color.YELLOW);
             g2.drawRect(posX, posY, Tuile.TAILLE - 1, Tuile.TAILLE - 1); // bordure
         }
+    }
+    
+    public void surbrillance(ArrayList<Coord> matchs){
+        
     }
 
     public void grille(Graphics g2, int hauteurPlateau, int largeurPlateau, int offsetX) {
@@ -114,8 +144,10 @@ public class PanneauJeu extends JPanel implements MouseListener {
             premierClic = clic;
             repaint();
             System.out.println("Premier clic enregistré : col=" + premierClic.getAbscisse() + " lig=" + premierClic.getOrdonnee());
-        } else {
+        }
+        else {
             System.out.println("Tentative échange : (" + premierClic.getAbscisse() + "," + premierClic.getOrdonnee() + ") <-> (" + clic.getAbscisse() + "," + clic.getOrdonnee() + ")");
+            surbrillanceIA.clear();
             gestionPartie.jouerUnCoup(plateau, premierClic, clic);
             premierClic = null;
             repaint();
@@ -133,10 +165,16 @@ public class PanneauJeu extends JPanel implements MouseListener {
     public String aideOrdiString(Plateau plateau) {
         GestionIA ia = new GestionIA();
         ArrayList<Coord> matchs = ia.aideOrdi(plateau);
+        
+        surbrillanceIA.clear();
+        surbrillanceIA.addAll(matchs); // on stocke les 2 coords
+        repaint();
+        
+        
         return matchs + " ";
 
     }
-
+    
     // Méthodes vides obligatoires de MouseListener
     @Override
     public void mousePressed(MouseEvent e) {
