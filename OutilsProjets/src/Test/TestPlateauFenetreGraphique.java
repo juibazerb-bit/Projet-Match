@@ -18,19 +18,19 @@ import java.util.Random;
 
 public class TestPlateauFenetreGraphique {
 
-    static int nbLignes = 15, nbCol = 10, nbTypes = 5;
+    static int nbLignes = 15, nbCol = 25, nbTypes = 7;
     static int margeX = 100, margeY = 100;
     static Animation animation = new Animation();
     static DessinPlateau dessinPlateau = new DessinPlateau();
     static SuppressionMatchs suppressionMatchs = new SuppressionMatchs();
 
     public static void main(String[] args) {
-        Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes, 0);
+        Plateau plateau = new Plateau(nbCol, nbLignes, nbTypes, 0);
         GestionIA ia = new GestionIA();
         GestionClics gestionClics = new GestionClics();
         DetectionMatchs detectionMatchs = new DetectionMatchs();
 
-        FenetreGraphique fenetre = creerFenetre(nbLignes, nbCol, "Candy Crush - Mode Graphique");
+        FenetreGraphique fenetre = creerFenetre(nbCol, nbLignes, "Candy Crush - Mode Graphique");
         Animation.clearConsole();
 
         dessinPlateau.afficherPlateau(plateau, fenetre, margeX, margeY);

@@ -35,8 +35,8 @@ public class Plateau {
 
     public Plateau(int nbColonnes, int nbLignes, int nbTypes) {
         // Bloque immédiatement si le nombre de types de tuiles est insuffisant
-        if (nbTypes < 2 || nbTypes>14) {
-            throw new IllegalArgumentException("Erreur : Il doit y avoir au moins 2 et moins de 14 types de tuiles pour generer un plateau.");
+        if (nbTypes < 2 || nbTypes>14 || (nbColonnes>30) ||(nbLignes>20)) {
+            throw new IllegalArgumentException("Erreur");
         }
 
         this.nbCol = nbColonnes;
@@ -76,8 +76,8 @@ public class Plateau {
 
     public Plateau(int nbColonnes, int nbLignes, int nbTypes, long seed) {
         
-        if (nbTypes < 2 || nbTypes>14) {
-            throw new IllegalArgumentException("Erreur : Il doit y avoir au moins 2 et moins de 14 types de tuiles pour générer un plateau.");
+        if (nbTypes < 2 || nbTypes>14 || (nbColonnes>25) ||(nbLignes>25)) {
+            throw new IllegalArgumentException("Erreur");
         }
         this.nbCol = nbColonnes;
         this.nbLig = nbLignes;
