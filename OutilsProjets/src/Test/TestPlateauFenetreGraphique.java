@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class TestPlateauFenetreGraphique {
 
-    static int nbLignes = 15, nbCol = 25, nbTypes = 7;
+    static int nbLignes = 6, nbCol = 10, nbTypes = 7;
     static int margeX = 100, margeY = 100;
     static Animation animation = new Animation();
     static DessinPlateau dessinPlateau = new DessinPlateau();
@@ -38,7 +38,10 @@ public class TestPlateauFenetreGraphique {
 
         Coord premierClic = null;
         boolean continuer = true;
-
+        if (verifierFinDePartie(plateau, ia)) {
+            System.out.println("GAME OVER : Plus aucun coup possible !");
+            fenetre.dispose();
+        }
         while (continuer) {
             Coord clic = gestionClics.attendreClicOuBouton(plateau, fenetre, margeX, margeY);
             int abs = clic.getAbscisse();
@@ -71,7 +74,10 @@ public class TestPlateauFenetreGraphique {
                 Random rand = new Random();
                 for (int i = 0; i < nbCoupsAJouer; i++) {
                     ArrayList<Coord> coup = ia.aideOrdi(plateau);
-                    if (coup.isEmpty()) { System.out.println("IA bloquée après " + i + " coups."); break; }
+                    if (coup.isEmpty()) {
+                        System.out.println("IA bloquée après " + i + " coups.");
+                        break;
+                    }
 
                     System.out.println("IA coup " + (i + 1) + " : " + coup.get(0) + " <-> " + coup.get(1));
                     animation.fixerPositionsActuelles(plateau, margeY);
@@ -79,7 +85,9 @@ public class TestPlateauFenetreGraphique {
                     jouerCascade(plateau, fenetre, rand, 0.15, 0.5);
                     fenetre.attendre(0.8);
                     System.out.println("Score : " + plateau.getScore());
-                    if (verifierFinDePartie(plateau, ia)) break;
+                    if (verifierFinDePartie(plateau, ia)) {
+                        break;
+                    }
                 }
                 premierClic = null;
 
@@ -96,6 +104,7 @@ public class TestPlateauFenetreGraphique {
             } else {
                 if (premierClic == null) {
                     premierClic = clic;
+                    
                 } else {
                     animation.fixerPositionsActuelles(plateau, margeY);
                     boolean echangeOk = plateau.echangerTuiles(premierClic, clic);
@@ -103,8 +112,10 @@ public class TestPlateauFenetreGraphique {
                     if (echangeOk && detectionMatchs.existeUnMatch(plateau)) {
                         jouerCascade(plateau, fenetre, new Random(), 0.2, 1);
                         System.out.println("Score total = " + plateau.getScore());
-                        if (verifierFinDePartie(plateau, ia))
+                        if (verifierFinDePartie(plateau, ia)) {
                             System.out.println("GAME OVER : Plus aucun coup possible !");
+                            fenetre.dispose();
+                        }
                     } else if (echangeOk) {
                         System.out.println("Pas de match, annulation.");
                         plateau.echangerTuiles(clic, premierClic);
@@ -118,7 +129,7 @@ public class TestPlateauFenetreGraphique {
 
     // Boucle complète : clignotement → suppression → animation de chute
     private static void jouerCascade(Plateau plateau, FenetreGraphique fenetre,
-                                      Random rand, double pauseCligno, double pauseChute) {
+            Random rand, double pauseCligno, double pauseChute) {
         boolean encoreDesMatchs = true;
         while (encoreDesMatchs) {
             ArrayList<Coord> aSupprimer = suppressionMatchs.collecterToutesLesTuilesASupprimer(plateau);
@@ -133,8 +144,11 @@ public class TestPlateauFenetreGraphique {
                 }
                 for (int col = 0; col < plateau.getNbCol(); col++) {
                     ArrayList<Integer> lignes = new ArrayList<>();
-                    for (Coord c : aSupprimer)
-                        if (c.getAbscisse() == col) lignes.add(c.getOrdonnee());
+                    for (Coord c : aSupprimer) {
+                        if (c.getAbscisse() == col) {
+                            lignes.add(c.getOrdonnee());
+                        }
+                    }
                     if (!lignes.isEmpty()) {
                         lignes.sort((a, b) -> a - b);
                         plateau.getLesColonnes()[col].supprimerTuiles(lignes, rand);
