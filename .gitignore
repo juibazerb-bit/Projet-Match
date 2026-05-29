@@ -24,3 +24,7 @@ hs_err_pid*
 replay_pid*
 /OutilsProjets/build/
 /OutilsProjets/dist/
+/ProjetV2/target/
+/ProjetV2/ProjetV2/nbproject/private/
+/ProjetV2/nbproject/
+/ProjetV2/build/
