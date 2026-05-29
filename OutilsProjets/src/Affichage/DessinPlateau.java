@@ -50,12 +50,13 @@ public class DessinPlateau {
         dessinBoutons.dessinerBouton(fenetre, "Coups possibles", boutonX, 60, 160, 30);
         dessinBoutons.dessinerBouton(fenetre, "Nouvelle partie", boutonX, 100, 160, 30);
         dessinBoutons.dessinerBouton(fenetre, "Quitter", boutonX, 140, 160, 30);
-        dessinBoutons.dessinerBouton(fenetre, "Meilleur coup", boutonX, 180, 160, 30);
+        dessinBoutons.dessinerBouton(fenetre, "Meilleur Coup Statistique", boutonX, 180, 160, 30);
+        dessinBoutons.dessinerBouton(fenetre, "Ordi Joue tout seul N coup", boutonX, 220, 160, 30);
 
         // A la fin de afficherPlateau, apres les boutons existants
         int compteurX = boutonX;
-        dessinBoutons.dessinerCompteur(fenetre, compteurX, 250, 160, 90, "Lignes", plateau.getNbLig());
-        dessinBoutons.dessinerCompteur(fenetre, compteurX, 350, 160, 90, "Colonnes", plateau.getNbCol());
+        dessinBoutons.dessinerCompteur(fenetre, compteurX, 290, 160, 90, "Lignes", plateau.getNbLig());
+        dessinBoutons.dessinerCompteur(fenetre, compteurX, 390, 160, 90, "Colonnes", plateau.getNbCol());
 
         //grille de jeu
         // Dessine les lignes HORIZONTALES (de gauche à droite)
