@@ -34,14 +34,21 @@ public class Plateau {
     private GestionIA gestionIA = new GestionIA();
 
     public Plateau(int nbColonnes, int nbLignes, int nbTypes) {
+        // Bloque immédiatement si le nombre de types de tuiles est insuffisant
+        if (nbTypes < 2 || nbTypes>14 || (nbColonnes>30) ||(nbLignes>20)) {
+            throw new IllegalArgumentException("Erreur");
+        }
+
         this.nbCol = nbColonnes;
         this.nbLig = nbLignes;
         this.nbTypesTuile = nbTypes;
         this.score = 0;
         this.lesColonnes = new Colonne[nbColonnes];
+        
         for (int i = 0; i < nbColonnes; i++) {
             this.lesColonnes[i] = new Colonne(nbLignes, nbTypes);
         }
+        
         System.out.println("Colonnes creees, suppression des matchs...");
         suppressionMatchs.supprimerTousLesMatchs(this, new Random());
         System.out.println("Plateau pret !");
@@ -68,9 +75,19 @@ public class Plateau {
     // -------------------------------------------------------------------------
 
     public Plateau(int nbColonnes, int nbLignes, int nbTypes, long seed) {
+        
+        if (nbTypes < 2 || nbTypes>14 || (nbColonnes>25) ||(nbLignes>25)) {
+            throw new IllegalArgumentException("Erreur");
+        }
         this.nbCol = nbColonnes;
         this.nbLig = nbLignes;
-        this.nbTypesTuile = nbTypes;
+        if (nbTypes >= 2) {
+            this.nbTypesTuile = nbTypes;
+        }
+        else{
+            System.out.println("Il ne peut pas y avoir un seul type de tuile");
+            
+        }
         this.score = 0;
         this.lesColonnes = new Colonne[nbColonnes];
         Random rand = new Random(seed);

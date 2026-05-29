@@ -73,13 +73,16 @@ public class GestionClics {
                 if (boutonClique(clicX, clicY, boutonX, 180, 160, 30)) {
                     return new Coord(-5, 0);
                 }
+                if (boutonClique(clicX, clicY, boutonX, 220, 160, 30)) {
+                    return new Coord(-6, 0);
+                }
 
-                int deltaLig = clicSurCompteur(clicX, clicY, boutonX, 200, 160, 90);
+                int deltaLig = clicSurCompteur(clicX, clicY, boutonX, 240, 160, 90);
                 if (deltaLig != 0) {
                     return new Coord(-10, deltaLig);
                 }
 
-                int deltaCol = clicSurCompteur(clicX, clicY, boutonX, 300, 160, 90);
+                int deltaCol = clicSurCompteur(clicX, clicY, boutonX, 340, 160, 90);
                 if (deltaCol != 0) {
                     return new Coord(-11, deltaCol);
                 }
@@ -104,31 +107,6 @@ public class GestionClics {
                 }
             }
             fenetre.attendre(0.02);
-        }
-    }
-
-    public int lireChoix(Plateau plateau, FenetreGraphique fenetre) {
-        int boutonX = 20 + plateau.getNbCol() * Tuile.TAILLE + 20;
-
-        while (true) {
-            if (fenetre.unClicAEuLieu()) {
-                int clicX = fenetre.getXDernierClic();
-                int clicY = fenetre.getYDernierClic();
-                fenetre.effacerDernierClic();
-
-                if (boutonClique(clicX, clicY, boutonX, 20, 160, 30)) {
-                    return 1; // Jouer
-                }
-                if (boutonClique(clicX, clicY, boutonX, 60, 160, 30)) {
-                    return 2; // Coups possibles
-                }
-                if (boutonClique(clicX, clicY, boutonX, 100, 160, 30)) {
-                    return 3; // Nouvelle partie
-                }
-                if (boutonClique(clicX, clicY, boutonX, 140, 160, 30)) {
-                    return 4; // Quitter
-                }
-            }
         }
     }
 }
