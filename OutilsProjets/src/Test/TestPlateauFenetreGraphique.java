@@ -128,7 +128,7 @@ public class TestPlateauFenetreGraphique {
     }
 
     // Boucle complète : clignotement → suppression → animation de chute
-    private static void jouerCascade(Plateau plateau, FenetreGraphique fenetre,
+    public static void jouerCascade(Plateau plateau, FenetreGraphique fenetre,
             Random rand, double pauseCligno, double pauseChute) {
         boolean encoreDesMatchs = true;
         while (encoreDesMatchs) {
@@ -160,11 +160,11 @@ public class TestPlateauFenetreGraphique {
         }
     }
 
-    private static FenetreGraphique creerFenetre(int nbCol, int nbLig, String titre) {
+    public static FenetreGraphique creerFenetre(int nbCol, int nbLig, String titre) {
         return new FenetreGraphique(titre, nbCol * Tuile.TAILLE + 300, nbLig * Tuile.TAILLE + 300);
     }
 
-    private static boolean verifierFinDePartie(Plateau plateau, GestionIA ia) {
+    public static boolean verifierFinDePartie(Plateau plateau, GestionIA ia) {
         if (ia.listEchange(plateau).isEmpty()) {
             System.out.println("\n[ATTENTION] Aucun coup légal restant !");
             SonManager.jouer(Son.RACISME);
