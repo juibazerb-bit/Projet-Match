@@ -2,22 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package Affichage;
+package Jouer;
 
 import LogiqueJeu.GestionIA;
 import Modele.Coord;
 import Modele.Plateau;
 import Modele.Tuile;
-import Jouer.PanneauJeu;
+import Affichage.PanneauJeu;
 import java.awt.Dimension;
 import java.util.ArrayList;
 /**
  *
  * @author fpauvert
  */
-public class FenetreGraphiquePropre extends javax.swing.JFrame {
+public class FenetreGraphiquePropreV1 extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FenetreGraphiquePropre.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FenetreGraphiquePropreV1.class.getName());
     private Plateau plateau;
     private PanneauJeu panneauJeu;
     private GestionIA ia;
@@ -27,7 +27,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
      */
     
     
-    public FenetreGraphiquePropre() {
+    public FenetreGraphiquePropreV1() {
         
         initComponents();
         int lig = 15;
@@ -312,7 +312,7 @@ private void redimensionnerPanneau() {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FenetreGraphiquePropre().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new FenetreGraphiquePropreV1().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
