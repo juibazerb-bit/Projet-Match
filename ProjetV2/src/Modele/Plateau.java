@@ -200,7 +200,7 @@ public class Plateau {
     private static void validerNbTypes(int nbTypes) {
         if (nbTypes < NB_TYPES_MIN || nbTypes > NB_TYPES_MAX) {
             throw new IllegalArgumentException(
-                    "Le nombre de types de tuiles doit être entre "
+                    "Le nombre de types de tuiles doit etre entre "
                     + NB_TYPES_MIN + " et " + NB_TYPES_MAX + ".");
         }
     }
