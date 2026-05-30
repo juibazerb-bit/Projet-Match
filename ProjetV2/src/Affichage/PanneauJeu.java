@@ -86,7 +86,20 @@ public class PanneauJeu extends JPanel implements MouseListener {
             flashTimer = null;
         }
         initialiserPosY();
+        revalidate(); // recalcule preferredSize après changement de plateau
         repaint();
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        if (plateau == null) {
+            return new Dimension(400, 400);
+        }
+        // paintComponent trace la grille de margeY+TAILLE à margeY+(nbLig+1)*TAILLE en Y
+        // et de offsetX à offsetX+nbCol*TAILLE en X, avec offsetX = margeX+TAILLE
+        int w = margeX + Tuile.TAILLE + plateau.getNbCol() * Tuile.TAILLE + margeX;
+        int h = margeY + (plateau.getNbLig() + 1) * Tuile.TAILLE + margeY;
+        return new Dimension(w, h);
     }
 
     // ══════════════════════════════════════════════════════════════════

@@ -319,16 +319,47 @@ public class FenetreGraphiquePropre extends JFrame {
     private JPanel buildGamePanel() {
         JPanel panel = new JPanel(new BorderLayout(0, 0));
         panel.setBackground(BG_DEEP);
-
         panel.add(buildTopBar(), BorderLayout.NORTH);
 
         panneauJeu = new PanneauJeu();
         panneauJeu.setBackground(new Color(0x12121E));
-        JScrollPane scroll = new JScrollPane(panneauJeu);
+
+        // Wrapper avec GridBagLayout : centre le plateau dans l'espace disponible.
+        // Sa preferredSize est dynamiquement ajustée pour être toujours au moins
+        // aussi grande que le viewport → GridBagLayout centre correctement.
+        // Si le plateau dépasse le viewport, les scrollbars deviennent actives.
+        JPanel wrapper = new JPanel(new GridBagLayout());
+        wrapper.setBackground(new Color(0x12121E));
+        GridBagConstraints gbcW = new GridBagConstraints();
+        gbcW.anchor  = GridBagConstraints.CENTER;
+        gbcW.fill    = GridBagConstraints.NONE;
+        gbcW.weightx = 1.0;
+        gbcW.weighty = 1.0;
+        wrapper.add(panneauJeu, gbcW);
+
+        JScrollPane scroll = new JScrollPane();
+        scroll.setViewportView(wrapper);
         scroll.setBorder(BorderFactory.createLineBorder(BORDER_COLOR, 1));
         scroll.getViewport().setBackground(new Color(0x12121E));
-        panel.add(scroll, BorderLayout.CENTER);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scroll.getVerticalScrollBar().setUnitIncrement(Tuile.TAILLE);
+        scroll.getHorizontalScrollBar().setUnitIncrement(Tuile.TAILLE);
 
+        // Ajuste wrapper.preferredSize = max(viewport, plateau) à chaque resize
+        scroll.getViewport().addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent e) {
+                Dimension vp   = scroll.getViewport().getSize();
+                Dimension pref = panneauJeu.getPreferredSize();
+                int w = Math.max(vp.width,  pref.width);
+                int h = Math.max(vp.height, pref.height);
+                wrapper.setPreferredSize(new Dimension(w, h));
+                wrapper.revalidate();
+            }
+        });
+
+        panel.add(scroll, BorderLayout.CENTER);
         panel.add(buildSidePanel(), BorderLayout.EAST);
         return panel;
     }
@@ -446,9 +477,9 @@ public class FenetreGraphiquePropre extends JFrame {
 
         side.add(sectionTitle("RÉGLAGES (mode libre)"));
         side.add(Box.createVerticalStrut(8));
-        spinLig = buildSpinner(3, 20, nbLig);
-        spinCol = buildSpinner(3, 20, nbCol);
-        spinTypes = buildSpinner(2, 7, nbTypes);
+        spinLig = buildSpinner(3, 15, nbLig);
+        spinCol = buildSpinner(3, 25, nbCol);
+        spinTypes = buildSpinner(2, 14, nbTypes);
         side.add(buildSpinnerRow("Lignes", spinLig));
         side.add(Box.createVerticalStrut(5));
         side.add(buildSpinnerRow("Colonnes", spinCol));
