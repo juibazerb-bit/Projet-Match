@@ -1,5 +1,6 @@
 package Controleur;
 
+import Affichage.DessinPlateau;
 import FenetreGraphique.FenetreGraphique;
 import Modele.Coord;
 import Modele.Plateau;
@@ -9,22 +10,24 @@ import Modele.Tuile;
  * Gère la détection et l'interprétation des clics souris dans la fenêtre
  * FenetreGraphique (mode non-Swing).
  *
- * Retourne un ActionJoueur explicite au lieu de Coord avec valeurs négatives.
+ * IMPORTANT – cohérence boutons : boutonX = margeX + nbCol * TAILLE +
+ * BOUTON_OFFSET BOUTON_OFFSET est défini dans DessinPlateau et réutilisé ici.
+ * Les positions Y des boutons et compteurs sont identiques dans
+ * DessinPlateau.dessinerBoutons() et ici.
  */
 public class GestionClics {
 
     // -------------------------------------------------------------------------
     // CONVERSION PIXEL → COORDONNÉE GRILLE
     // -------------------------------------------------------------------------
-
     /**
      * Convertit des coordonnées pixels en coordonnées logiques du plateau.
      * Retourne null si le clic est en dehors de la grille.
      */
     public Coord clicVersCoord(Plateau plateau, int clicX, int clicY, int margeX, int margeY) {
-        int col     = (clicX - margeX) / Tuile.TAILLE;
+        int col = (clicX - margeX) / Tuile.TAILLE;
         int basGrille = margeY + (plateau.getNbLig() + 1) * Tuile.TAILLE;
-        int lig     = (basGrille - clicY) / Tuile.TAILLE;
+        int lig = (basGrille - clicY) / Tuile.TAILLE;
 
         if (col >= 0 && col < plateau.getNbCol() && lig >= 0 && lig < plateau.getNbLig()) {
             return new Coord(col, lig);
@@ -35,13 +38,13 @@ public class GestionClics {
     // -------------------------------------------------------------------------
     // ATTENTE D'UN CLIC
     // -------------------------------------------------------------------------
-
     /**
-     * Bloque jusqu'à ce que le joueur clique quelque part,
-     * puis retourne un ActionJoueur décrivant ce qui a été cliqué.
+     * Bloque jusqu'à ce que le joueur clique quelque part, puis retourne un
+     * ActionJoueur décrivant ce qui a été cliqué.
      */
-    public ActionJoueur attendreAction(Plateau plateau, FenetreGraphique fenetre, int margeX, int margeY) {
-        int boutonX = margeX + plateau.getNbCol() * Tuile.TAILLE + 20;
+    public ActionJoueur attendreAction(Plateau plateau, FenetreGraphique fenetre,int margeX, int margeY) {
+        // boutonX : même calcul que DessinPlateau.dessinerBoutons()
+        int boutonX = margeX + plateau.getNbCol() * Tuile.TAILLE + DessinPlateau.BOUTON_OFFSET;
 
         while (true) {
             if (fenetre.unClicAEuLieu()) {
@@ -50,7 +53,9 @@ public class GestionClics {
                 fenetre.effacerDernierClic();
 
                 ActionJoueur action = interpreterClic(plateau, boutonX, x, y, margeX, margeY);
-                if (action != null) return action;
+                if (action != null) {
+                    return action;
+                }
             }
             fenetre.attendre(0.02);
         }
@@ -59,28 +64,42 @@ public class GestionClics {
     // -------------------------------------------------------------------------
     // INTERPRÉTATION D'UN CLIC
     // -------------------------------------------------------------------------
+    private ActionJoueur interpreterClic(Plateau plateau, int boutonX,int clicX, int clicY, int margeX, int margeY) {
 
-    private ActionJoueur interpreterClic(Plateau plateau, int boutonX,
-            int clicX, int clicY, int margeX, int margeY) {
+        // Boutons fixes (Y, largeur=160, hauteur=30)
+        if (surBouton(clicX, clicY, boutonX, 60, 160, 30)) {
+            return new ActionJoueur(ActionJoueur.Type.COUPS_POSSIBLES);
+        }
+        if (surBouton(clicX, clicY, boutonX, 100, 160, 30)) {
+            return new ActionJoueur(ActionJoueur.Type.NOUVELLE_PARTIE);
+        }
+        if (surBouton(clicX, clicY, boutonX, 140, 160, 30)) {
+            return new ActionJoueur(ActionJoueur.Type.QUITTER);
+        }
+        if (surBouton(clicX, clicY, boutonX, 180, 160, 30)) {
+            return new ActionJoueur(ActionJoueur.Type.MEILLEUR_COUP);
+        }
+        if (surBouton(clicX, clicY, boutonX, 220, 160, 30)) {
+            return new ActionJoueur(ActionJoueur.Type.ORDI_JOUE);
+        }
 
-        // Boutons fixes
-        if (surBouton(clicX, clicY, boutonX, 60,  160, 30)) return new ActionJoueur(ActionJoueur.Type.COUPS_POSSIBLES);
-        if (surBouton(clicX, clicY, boutonX, 100, 160, 30)) return new ActionJoueur(ActionJoueur.Type.NOUVELLE_PARTIE);
-        if (surBouton(clicX, clicY, boutonX, 140, 160, 30)) return new ActionJoueur(ActionJoueur.Type.QUITTER);
-        if (surBouton(clicX, clicY, boutonX, 180, 160, 30)) return new ActionJoueur(ActionJoueur.Type.MEILLEUR_COUP);
-        if (surBouton(clicX, clicY, boutonX, 220, 160, 30)) return new ActionJoueur(ActionJoueur.Type.ORDI_JOUE);
-
-        // Compteur Lignes
+        // Compteur Lignes   (Y=290, hauteur=90)
         int deltaLig = clicSurCompteur(clicX, clicY, boutonX, 290, 160, 90);
-        if (deltaLig != 0) return new ActionJoueur(ActionJoueur.Type.DELTA_LIGNES, deltaLig);
+        if (deltaLig != 0) {
+            return new ActionJoueur(ActionJoueur.Type.DELTA_LIGNES, deltaLig);
+        }
 
-        // Compteur Colonnes
+        // Compteur Colonnes (Y=390, hauteur=90)
         int deltaCol = clicSurCompteur(clicX, clicY, boutonX, 390, 160, 90);
-        if (deltaCol != 0) return new ActionJoueur(ActionJoueur.Type.DELTA_COLONNES, deltaCol);
+        if (deltaCol != 0) {
+            return new ActionJoueur(ActionJoueur.Type.DELTA_COLONNES, deltaCol);
+        }
 
         // Clic sur la grille
         Coord coord = clicVersCoord(plateau, clicX, clicY, margeX, margeY);
-        if (coord != null) return new ActionJoueur(coord);
+        if (coord != null) {
+            return new ActionJoueur(coord);
+        }
 
         return null; // clic ignoré (zone vide)
     }
@@ -88,8 +107,9 @@ public class GestionClics {
     // -------------------------------------------------------------------------
     // UTILITAIRES
     // -------------------------------------------------------------------------
-
-    /** Retourne true si (clicX, clicY) est dans le rectangle donné. */
+    /**
+     * Retourne true si (clicX, clicY) est dans le rectangle donné.
+     */
     public boolean surBouton(int clicX, int clicY, int x, int y, int largeur, int hauteur) {
         return clicX >= x && clicX <= x + largeur && clicY >= y && clicY <= y + hauteur;
     }
@@ -100,8 +120,12 @@ public class GestionClics {
      */
     public int clicSurCompteur(int clicX, int clicY, int x, int y, int largeur, int hauteur) {
         int tiers = hauteur / 3;
-        if (surBouton(clicX, clicY, x, y,               largeur, tiers)) return  1;
-        if (surBouton(clicX, clicY, x, y + 2 * tiers,   largeur, tiers)) return -1;
+        if (surBouton(clicX, clicY, x, y, largeur, tiers)) {
+            return 1;
+        }
+        if (surBouton(clicX, clicY, x, y + 2 * tiers, largeur, tiers)) {
+            return -1;
+        }
         return 0;
     }
 }

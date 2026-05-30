@@ -17,33 +17,32 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Mode libre avec FenetreGraphique (sans système de niveaux).
- * Permet de jouer, de changer la taille du plateau et de faire jouer l'IA.
+ * Mode libre avec FenetreGraphique (sans système de niveaux). Permet de jouer,
+ * de changer la taille du plateau et de faire jouer l'IA.
  */
 public class TestPlateauFenetreGraphique {
 
-    private static final int MARGE_X   = 100;
-    private static final int MARGE_Y   = 100;
-    private static final int NB_TYPES  = 5;
+    private static final int MARGE_X = 100;
+    private static final int MARGE_Y = 100;
+    private static final int NB_TYPES = 5;
 
-    private static final DessinPlateau     dessin      = new DessinPlateau();
-    private static final Animation         animation   = new Animation();
+    private static final DessinPlateau dessin = new DessinPlateau();
+    private static final Animation animation = new Animation();
     private static final SuppressionMatchs suppression = new SuppressionMatchs();
-    private static final DetectionMatchs   detection   = new DetectionMatchs();
-    private static final GestionClics      clics       = new GestionClics();
-    private static final GestionIA         ia          = new GestionIA();
+    private static final DetectionMatchs detection = new DetectionMatchs();
+    private static final GestionClics clics = new GestionClics();
+    private static final GestionIA ia = new GestionIA();
 
     public static void main(String[] args) {
-        int nbLig = 15, nbCol = 10;
-        Plateau plateau          = new Plateau(nbLig, nbCol, NB_TYPES, 0);
-        FenetreGraphique fenetre = creerFenetre(nbCol,nbLig );
+        int nbLig = 10, nbCol = 15;
+        Plateau plateau = new Plateau(nbCol, nbLig, NB_TYPES, 0);
+        FenetreGraphique fenetre = creerFenetre(nbLig, nbCol);
         Animation.clearConsole();
-
         dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
         verifierFinDePartie(plateau);
 
-        Coord    premierClic = null;
-        boolean  continuer   = true;
+        Coord premierClic = null;
+        boolean continuer = true;
 
         while (continuer) {
             ActionJoueur action = clics.attendreAction(plateau, fenetre, MARGE_X, MARGE_Y);
@@ -56,7 +55,7 @@ public class TestPlateauFenetreGraphique {
                     break;
 
                 case NOUVELLE_PARTIE:
-                    plateau = new Plateau(nbLig, nbCol, NB_TYPES);
+                    plateau = new Plateau(nbCol, nbLig, NB_TYPES);    
                     dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
                     verifierFinDePartie(plateau);
                     premierClic = null;
@@ -83,10 +82,11 @@ public class TestPlateauFenetreGraphique {
                     break;
 
                 case DELTA_LIGNES:
+
                     nbLig = Math.max(3, nbLig + action.delta);
                     fenetre.dispose();
-                    fenetre  = creerFenetre(nbLig, nbCol);
-                    plateau  = new Plateau(nbLig, nbCol, NB_TYPES);
+                    fenetre = creerFenetre(nbLig, nbCol);
+                    plateau = new Plateau(nbCol, nbLig, NB_TYPES);
                     dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
                     verifierFinDePartie(plateau);
                     premierClic = null;
@@ -95,8 +95,8 @@ public class TestPlateauFenetreGraphique {
                 case DELTA_COLONNES:
                     nbCol = Math.max(3, nbCol + action.delta);
                     fenetre.dispose();
-                    fenetre  = creerFenetre(nbLig, nbCol);
-                    plateau  = new Plateau(nbLig, nbCol, NB_TYPES);
+                    fenetre = creerFenetre(nbLig, nbCol);
+                    plateau = new Plateau(nbCol, nbLig, NB_TYPES);
                     dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
                     verifierFinDePartie(plateau);
                     premierClic = null;
@@ -104,8 +104,15 @@ public class TestPlateauFenetreGraphique {
 
                 case TUILE_SELECTIONNEE:
                     if (premierClic == null) {
+                        // Premier clic : on mémorise et on affiche la case jaune
                         premierClic = action.coord;
+                        dessin.afficherPlateauAvecSelection(plateau, fenetre, MARGE_X, MARGE_Y, premierClic);
+                    } else if (action.coord.equals(premierClic)) {
+                        // Misclick : même tuile recliquée → on annule la sélection
+                        premierClic = null;
+                        dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
                     } else {
+                        // Deuxième clic sur une autre tuile : on tente l'échange
                         animation.fixerPositionsActuelles(plateau, MARGE_Y);
                         boolean echangeOk = plateau.echangerTuiles(premierClic, action.coord);
 
@@ -114,9 +121,15 @@ public class TestPlateauFenetreGraphique {
                             System.out.println("Score : " + plateau.getScore());
                             verifierFinDePartie(plateau);
                         } else if (echangeOk) {
+                            // L'échange ne crée pas de match : on annule
                             System.out.println("Pas de match, annulation.");
                             plateau.echangerTuiles(action.coord, premierClic);
                             dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
+                        } else {
+                            // Tuiles non voisines : on change juste la sélection
+                            premierClic = action.coord;
+                            dessin.afficherPlateauAvecSelection(plateau, fenetre, MARGE_X, MARGE_Y, premierClic);
+                            continue; // on ne remet pas premierClic à null
                         }
                         premierClic = null;
                     }
@@ -126,7 +139,6 @@ public class TestPlateauFenetreGraphique {
     }
 
     // -------------------------------------------------------------------------
-
     private static void jouerCascade(Plateau plateau, FenetreGraphique fenetre) {
         Random rand = new Random();
         boolean encoreDesMatchs = true;
@@ -152,7 +164,10 @@ public class TestPlateauFenetreGraphique {
         Random rand = new Random();
         for (int i = 0; i < n; i++) {
             ArrayList<Coord> coup = ia.aideOrdi(plateau);
-            if (coup.isEmpty()) { System.out.println("IA bloquée après " + i + " coups."); break; }
+            if (coup.isEmpty()) {
+                System.out.println("IA bloquee apres " + i + " coups.");
+                break;
+            }
 
             System.out.println("IA coup " + (i + 1) + " : " + coup.get(0) + " ↔ " + coup.get(1));
             animation.fixerPositionsActuelles(plateau, MARGE_Y);
@@ -164,14 +179,18 @@ public class TestPlateauFenetreGraphique {
     }
 
     private static FenetreGraphique creerFenetre(int nbLig, int nbCol) {
-        return new FenetreGraphique("CandyCrush",
-            nbCol * Tuile.TAILLE + 300,
-            nbLig * Tuile.TAILLE + 300);
+        // Largeur : marge gauche + grille + offset + largeur bouton + marge droite
+        int largeur = MARGE_X + nbCol * Tuile.TAILLE
+                + DessinPlateau.BOUTON_OFFSET + 160 + 40;
+        // Hauteur : marge haut + grille (+ 1 ligne pour la grille) + marge bas
+        //           + 500 pour les boutons (compteurs descendent jusqu'à ~490)
+        int hauteur = MARGE_Y + (nbLig + 2) * Tuile.TAILLE + 250;
+        return new FenetreGraphique("CandyCrush", largeur, hauteur);
     }
 
     private static boolean verifierFinDePartie(Plateau plateau) {
         if (ia.listEchange(plateau).isEmpty()) {
-            System.out.println("[FIN] Aucun coup légal restant !");
+            System.out.println("[FIN] Aucun coup legal restant !");
             SonManager.jouer(Son.PERDU);
             return true;
         }

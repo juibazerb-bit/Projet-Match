@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package LogiqueJeu;
 
 import Modele.Coord;
@@ -6,51 +10,54 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Supprime les tuiles alignées du plateau en cascade :
- * tant qu'il existe des matchs, on collecte, on supprime, on recommence.
  *
- * La collecte est déléguée à TypesCombinaisons qui gère les priorités
- * et les bonus (T, L, x4, x5…).
+ * @author flo66
  */
 public class SuppressionMatchs {
 
-    private final TypesCombinaisons combinaisons = new TypesCombinaisons();
+    private TypesCombinaisons typesCombinaisons = new TypesCombinaisons();
+    // Collecte toutes les positions à supprimer (vertical + horizontal) sans rien supprimer
 
-    /**
-     * Collecte toutes les tuiles à supprimer (sans rien modifier).
-     * Délègue à TypesCombinaisons.
-     */
     public ArrayList<Coord> collecterToutesLesTuilesASupprimer(Plateau plateau) {
-        return combinaisons.collecterToutesLesTuilesASupprimer(plateau);
+        return typesCombinaisons.collecterToutesLesTuilesASupprimer(plateau);
     }
 
-    /**
-     * Supprime en cascade tous les matchs du plateau.
-     * Retourne le nombre total de tuiles supprimées.
-     */
-    public int supprimerTousLesMatchs(Plateau plateau, Random rand) {
-        int total = 0;
-        ArrayList<Coord> aSupprimer;
-        while (!(aSupprimer = collecterToutesLesTuilesASupprimer(plateau)).isEmpty()) {
-            total += supprimerCoords(plateau, aSupprimer, rand);
+    // Vérifie si une Coord est déjà dans la liste (pour éviter les doublons)
+    public boolean contient(ArrayList<Coord> liste, Coord c) {
+        boolean flag = false;
+        for (Coord coord : liste) {
+            if (coord.equals(c)) {
+                flag = true;
+            }
         }
-        return total;
+        return flag;
     }
 
-    /**
-     * Supprime les tuiles aux coordonnées indiquées et remplace chacune
-     * par une nouvelle tuile aléatoire en haut de sa colonne.
-     * Retourne le nombre de tuiles supprimées.
-     */
+    public int supprimerTousLesMatchs(Plateau plateau, Random rand) {
+        int totalSupprimees = 0;
+        boolean matchTrouve = true;
+        while (matchTrouve) {
+            ArrayList<Coord> aSupprimer = collecterToutesLesTuilesASupprimer(plateau);
+            if (aSupprimer.isEmpty()) {
+                matchTrouve = false;
+            } else {
+                totalSupprimees += supprimerCoords(plateau, aSupprimer, rand);
+            }
+        }
+        return totalSupprimees;
+    }
+
     public int supprimerCoords(Plateau plateau, ArrayList<Coord> aSupprimer, Random rand) {
         for (int col = 0; col < plateau.getNbCol(); col++) {
-            ArrayList<Integer> lignes = new ArrayList<>();
+            ArrayList<Integer> lignesASupprimer = new ArrayList<>();
             for (Coord c : aSupprimer) {
-                if (c.getAbscisse() == col) lignes.add(c.getOrdonnee());
+                if (c.getAbscisse() == col) {
+                    lignesASupprimer.add(c.getOrdonnee());
+                }
             }
-            if (!lignes.isEmpty()) {
-                lignes.sort(Integer::compareTo);
-                plateau.getLesColonnes()[col].supprimerTuiles(lignes, rand);
+            if (!lignesASupprimer.isEmpty()) {
+                lignesASupprimer.sort((a, b) -> a - b);
+                plateau.getLesColonnes()[col].supprimerTuiles(lignesASupprimer, rand);
             }
         }
         return aSupprimer.size();

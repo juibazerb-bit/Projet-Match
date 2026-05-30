@@ -4,7 +4,7 @@ import FenetreGraphique.FenetreGraphique;
 import Modele.Coord;
 import Modele.Plateau;
 import Modele.Tuile;
-import IHM.Niveau;
+import Vue.Niveau;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -14,13 +14,22 @@ import java.util.ArrayList;
 /**
  * Responsable de tout le rendu graphique du plateau dans une FenetreGraphique.
  *
+ * IMPORTANT – cohérence boutons :
+ *   boutonX = margeX + nbCol * TAILLE + BOUTON_OFFSET
+ *   Cette constante est la même ici (dessin) et dans GestionClics (détection).
+ *
  * Méthodes principales :
- *  - afficherPlateau()            → dessin complet (tuiles + grille + boutons)
- *  - afficherPlateauClignotant()  → surligne certaines tuiles en noir
- *  - afficherPlateauAvecAide()    → surligne le meilleur coup avec une flèche
- *  - afficherInfosNiveau()        → bandeau score/coups en cours de partie
+ *  - afficherPlateau()                → dessin complet (tuiles + grille + boutons)
+ *  - afficherPlateauAvecSelection()   → idem + case jaune sur la tuile sélectionnée
+ *  - afficherPlateauClignotant()      → surligne certaines tuiles en noir
+ *  - afficherPlateauAvecAide()        → surligne le meilleur coup avec une flèche
+ *  - afficherInfosNiveau()            → bandeau score/coups en cours de partie
  */
 public class DessinPlateau {
+
+    /** Décalage horizontal entre le bord droit de la grille et le bord gauche des boutons.
+     *  Doit être identique à GestionClics.BOUTON_OFFSET. */
+    public static final int BOUTON_OFFSET = 20;
 
     private final DessinBoutons dessinBoutons = new DessinBoutons();
 
@@ -31,11 +40,43 @@ public class DessinPlateau {
     public void afficherPlateau(Plateau plateau, FenetreGraphique fenetre, int margeX, int margeY) {
         fenetre.effacer();
         Graphics2D g = fenetre.getGraphics2D();
-
         dessinerTuiles(plateau, g, margeX, margeY);
         dessinerGrille(plateau, g, margeX, margeY);
         dessinerBoutons(plateau, fenetre, margeX);
+        fenetre.actualiser();
+    }
 
+    /**
+     * Affiche le plateau et entoure en JAUNE la tuile sélectionnée par le joueur.
+     * À appeler à la place de afficherPlateau() dès qu'un premier clic a eu lieu.
+     *
+     * @param selection coordonnée de la tuile sélectionnée (null = pas de sélection)
+     */
+    public void afficherPlateauAvecSelection(Plateau plateau, FenetreGraphique fenetre,
+            int margeX, int margeY, Coord selection) {
+        fenetre.effacer();
+        Graphics2D g = fenetre.getGraphics2D();
+        dessinerTuiles(plateau, g, margeX, margeY);
+
+        // Case jaune épaisse sur la tuile sélectionnée
+        if (selection != null) {
+            int hauteurPlateau = plateau.getNbLig() * Tuile.TAILLE;
+            int sx = margeX + selection.getAbscisse() * Tuile.TAILLE;
+            int sy = margeY + hauteurPlateau - selection.getOrdonnee() * Tuile.TAILLE;
+
+            // Remplissage semi-transparent jaune
+            g.setColor(new Color(255, 255, 0, 60));
+            g.fillRect(sx, sy, Tuile.TAILLE, Tuile.TAILLE);
+
+            // Bordure jaune épaisse
+            g.setColor(Color.YELLOW);
+            g.setStroke(new BasicStroke(4));
+            g.drawRect(sx + 2, sy + 2, Tuile.TAILLE - 4, Tuile.TAILLE - 4);
+            g.setStroke(new BasicStroke(1));
+        }
+
+        dessinerGrille(plateau, g, margeX, margeY);
+        dessinerBoutons(plateau, fenetre, margeX);
         fenetre.actualiser();
     }
 
@@ -76,14 +117,12 @@ public class DessinPlateau {
         int x2 = margeX + c2.getAbscisse() * Tuile.TAILLE;
         int y2 = margeY + hauteurPlateau - c2.getOrdonnee() * Tuile.TAILLE;
 
-        // Surlignage tuile 1 (vert) et tuile 2 (cyan)
         g.setStroke(new BasicStroke(4));
         g.setColor(Color.GREEN);
         g.drawRoundRect(x1 + 3, y1 + 3, Tuile.TAILLE - 6, Tuile.TAILLE - 6, 8, 8);
         g.setColor(Color.CYAN);
         g.drawRoundRect(x2 + 3, y2 + 3, Tuile.TAILLE - 6, Tuile.TAILLE - 6, 8, 8);
 
-        // Flèche entre les centres
         int cx1 = x1 + Tuile.TAILLE / 2;
         int cy1 = y1 + Tuile.TAILLE / 2;
         int cx2 = x2 + Tuile.TAILLE / 2;
@@ -93,7 +132,6 @@ public class DessinPlateau {
         g.drawLine(cx1, cy1, cx2, cy2);
         dessinerPointeDefleche(g, cx1, cy1, cx2, cy2);
 
-        // Texte
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 13));
         g.drawString("Meilleur coup !", margeX, margeY - 10);
@@ -105,7 +143,7 @@ public class DessinPlateau {
     public void afficherInfosNiveau(Plateau plateau, FenetreGraphique fenetre,
             Niveau niveau, int coupsJoues, int margeX) {
         Graphics2D g = fenetre.getGraphics2D();
-        int x = margeX + plateau.getNbCol() * Tuile.TAILLE + 20;
+        int x = margeX + plateau.getNbCol() * Tuile.TAILLE + BOUTON_OFFSET;
 
         g.setColor(new Color(230, 230, 250));
         g.fillRoundRect(x - 5, 5, 170, 55, 10, 10);
@@ -160,13 +198,16 @@ public class DessinPlateau {
     }
 
     private void dessinerBoutons(Plateau plateau, FenetreGraphique fenetre, int margeX) {
-        int bx = margeX + plateau.getNbCol() * Tuile.TAILLE + 150;
-        dessinBoutons.dessinerBouton(fenetre, "Coups possibles",          bx, 60,  160, 30);
-        dessinBoutons.dessinerBouton(fenetre, "Nouvelle partie",          bx, 100, 160, 30);
-        dessinBoutons.dessinerBouton(fenetre, "Quitter",                  bx, 140, 160, 30);
-        dessinBoutons.dessinerBouton(fenetre, "Meilleur Coup Statistique",bx, 180, 160, 30);
-        dessinBoutons.dessinerBouton(fenetre, "Ordi joue 10 coups",       bx, 220, 160, 30);
+        // boutonX = même calcul que dans GestionClics.attendreAction
+        int bx = margeX + plateau.getNbCol() * Tuile.TAILLE + BOUTON_OFFSET;
+        dessinBoutons.dessinerBouton(fenetre, "Coups possibles",           bx, 60,  160, 30);
+        dessinBoutons.dessinerBouton(fenetre, "Nouvelle partie",           bx, 100, 160, 30);
+        dessinBoutons.dessinerBouton(fenetre, "Quitter",                   bx, 140, 160, 30);
+        dessinBoutons.dessinerBouton(fenetre, "Meilleur Coup Statistique", bx, 180, 160, 30);
+        dessinBoutons.dessinerBouton(fenetre, "Ordi joue 10 coups",        bx, 220, 160, 30);
+        // Compteur Lignes   → Y=290, hauteur=90  (même que GestionClics)
         dessinBoutons.dessinerCompteur(fenetre, bx, 290, 160, 90, "Lignes",   plateau.getNbLig());
+        // Compteur Colonnes → Y=390, hauteur=90  (même que GestionClics)
         dessinBoutons.dessinerCompteur(fenetre, bx, 390, 160, 90, "Colonnes", plateau.getNbCol());
     }
 

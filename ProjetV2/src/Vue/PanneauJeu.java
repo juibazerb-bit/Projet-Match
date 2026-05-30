@@ -1,11 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package IHM;
+package Vue;
 
 import Controleur.GestionClics;
-import Controleur.GestionPartie;
+import LogiqueJeu.GestionPartie;   // ← CORRECTION : était Controleur.GestionPartie
 import Modele.Plateau;
 import Modele.Coord;
 import Modele.Tuile;
@@ -18,8 +14,8 @@ import LogiqueJeu.GestionIA;
 public class PanneauJeu extends JPanel implements MouseListener {
 
     private Plateau plateau;
-    private int margeX = 10, margeY = 10;  //position de la grille
-    private Coord premierClic = null; // Pour gérer les deux clics successifs
+    private int margeX = 10, margeY = 10;
+    private Coord premierClic = null;
     private Runnable coupJouer;
     private GestionClics gestionClics = new GestionClics();
     private GestionPartie gestionPartie = new GestionPartie();
@@ -32,13 +28,14 @@ public class PanneauJeu extends JPanel implements MouseListener {
 
     public void setPlateau(Plateau p) {
         this.plateau = p;
+        premierClic = null;         // ← CORRECTION : reset la sélection au changement de plateau
+        surbrillanceIA.clear();
         repaint();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g); //efface le contenu precedent
-        // le .super permet d'appeller la focntion d'origine 
+        super.paintComponent(g);
         if (plateau == null) {
             return;
         }
@@ -46,8 +43,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
         Graphics2D g2 = (Graphics2D) g;
         int hauteurPlateau = plateau.getNbLig() * Tuile.TAILLE;
         int largeurPlateau = plateau.getNbCol() * Tuile.TAILLE;
-
-        int offsetX = margeX + Tuile.TAILLE; // décalage d'une case à droite
+        int offsetX = margeX + Tuile.TAILLE;
 
         // Dessin des tuiles
         for (int lig = plateau.getNbLig() - 1; lig >= 0; lig--) {
@@ -60,56 +56,34 @@ public class PanneauJeu extends JPanel implements MouseListener {
             }
         }
 
-        // Surbrillance par dessus la tuile sélectionnée
         surbrillance(g2, offsetX);
-
-        // Grille
         grille(g2, hauteurPlateau, largeurPlateau, offsetX);
-        
-        // Surbrillance suggestion IA (en bleu)
-for (int i = 0; i < surbrillanceIA.size(); i += 2) {
-    // première tuile
-    int col1 = surbrillanceIA.get(i).getAbscisse();
-    int lig1 = surbrillanceIA.get(i).getOrdonnee();
-    int posX1 = offsetX + col1 * Tuile.TAILLE;
-    int posY1 = margeY + (plateau.getNbLig() - lig1) * Tuile.TAILLE;
 
-    g2.setColor(new Color(0, 100, 255, 120)); // bleu semi-transparent
-    g2.fillRect(posX1, posY1, Tuile.TAILLE, Tuile.TAILLE);
-    g2.setColor(Color.BLUE);
-    g2.drawRect(posX1, posY1, Tuile.TAILLE - 1, Tuile.TAILLE - 1);
+        // Surbrillance IA (bleu)
+        for (int i = 0; i + 1 < surbrillanceIA.size(); i += 2) {
+            dessinerSurbrillanceBleu(g2, surbrillanceIA.get(i), offsetX);
+            dessinerSurbrillanceBleu(g2, surbrillanceIA.get(i + 1), offsetX);
+        }
+    }
 
-    // deuxième tuile
-    int col2 = surbrillanceIA.get(i + 1).getAbscisse();
-    int lig2 = surbrillanceIA.get(i + 1).getOrdonnee();
-    int posX2 = offsetX + col2 * Tuile.TAILLE;
-    int posY2 = margeY + (plateau.getNbLig() - lig2) * Tuile.TAILLE;
-
-    g2.setColor(new Color(0, 100, 255, 120));
-    g2.fillRect(posX2, posY2, Tuile.TAILLE, Tuile.TAILLE);
-    g2.setColor(Color.BLUE);
-    g2.drawRect(posX2, posY2, Tuile.TAILLE - 1, Tuile.TAILLE - 1);
-}
+    private void dessinerSurbrillanceBleu(Graphics2D g2, Coord c, int offsetX) {
+        int posX = offsetX + c.getAbscisse() * Tuile.TAILLE;
+        int posY = margeY + (plateau.getNbLig() - c.getOrdonnee()) * Tuile.TAILLE;
+        g2.setColor(new Color(0, 100, 255, 120));
+        g2.fillRect(posX, posY, Tuile.TAILLE, Tuile.TAILLE);
+        g2.setColor(Color.BLUE);
+        g2.drawRect(posX, posY, Tuile.TAILLE - 1, Tuile.TAILLE - 1);
     }
 
     public void surbrillance(Graphics g2, int offsetX) {
         if (premierClic != null) {
-            int col = premierClic.getAbscisse();
-            int lig = premierClic.getOrdonnee();
-
-            int posX = offsetX + col * Tuile.TAILLE;
-            int posY = margeY + (plateau.getNbLig() - lig) * Tuile.TAILLE;
-
-            g2.setColor(new Color(255, 255, 0, 100)); // jaune semi-transparent
+            int posX = offsetX + premierClic.getAbscisse() * Tuile.TAILLE;
+            int posY = margeY + (plateau.getNbLig() - premierClic.getOrdonnee()) * Tuile.TAILLE;
+            g2.setColor(new Color(255, 255, 0, 100));
             g2.fillRect(posX, posY, Tuile.TAILLE, Tuile.TAILLE);
-
             g2.setColor(Color.YELLOW);
-            g2.drawRect(posX, posY, Tuile.TAILLE - 1, Tuile.TAILLE - 1); // bordure
+            g2.drawRect(posX, posY, Tuile.TAILLE - 1, Tuile.TAILLE - 1);
         }
-    }
-    
-    public void surbrillance(ArrayList<Coord> matchs){
-        
     }
 
     public void grille(Graphics g2, int hauteurPlateau, int largeurPlateau, int offsetX) {
@@ -129,29 +103,24 @@ for (int i = 0; i < surbrillanceIA.size(); i += 2) {
         if (plateau == null) {
             return;
         }
+
         Coord clic = gestionClics.clicVersCoord(plateau, e.getX() - Tuile.TAILLE, e.getY(), margeX, margeY);
         if (clic == null) {
             return;
         }
 
-        // <editor-fold desc="à enlever a la TOUTE FIN: aide pour verifier que les trucs marche">
-        System.out.println("Clic pixel : x=" + e.getX() + " y=" + e.getY());
-        System.out.println("Coord tuile : " + (clic == null ? "NULL (hors plateau)" : "col=" + clic.getAbscisse() + " lig=" + clic.getOrdonnee()));
-        // </editor-fold>
-
-        // a la fin retirer les "System.out.println" si voulu
         if (premierClic == null) {
             premierClic = clic;
-            repaint();
-            System.out.println("Premier clic enregistré : col=" + premierClic.getAbscisse() + " lig=" + premierClic.getOrdonnee());
-        }
-        else {
-            System.out.println("Tentative échange : (" + premierClic.getAbscisse() + "," + premierClic.getOrdonnee() + ") <-> (" + clic.getAbscisse() + "," + clic.getOrdonnee() + ")");
             surbrillanceIA.clear();
-            gestionPartie.jouerUnCoup(plateau, premierClic, clic);
+            repaint();
+        } else if (clic.equals(premierClic)) {
+            // ← CORRECTION : misclick sur la même tuile → déselectionner
             premierClic = null;
             repaint();
-            // actualisation du score
+        } else {
+            boolean coupValide = gestionPartie.jouerUnCoup(plateau, premierClic, clic);
+            premierClic = null;
+            repaint();
             if (coupJouer != null) {
                 coupJouer.run();
             }
@@ -165,17 +134,12 @@ for (int i = 0; i < surbrillanceIA.size(); i += 2) {
     public String aideOrdiString(Plateau plateau) {
         GestionIA ia = new GestionIA();
         ArrayList<Coord> matchs = ia.aideOrdi(plateau);
-        
         surbrillanceIA.clear();
-        surbrillanceIA.addAll(matchs); // on stocke les 2 coords
+        surbrillanceIA.addAll(matchs);
         repaint();
-        
-        
-        return matchs + " ";
-
+        return matchs.isEmpty() ? "Aucun coup possible" : matchs.get(0) + " ↔ " + matchs.get(1);
     }
-    
-    // Méthodes vides obligatoires de MouseListener
+
     @Override
     public void mousePressed(MouseEvent e) {
     }

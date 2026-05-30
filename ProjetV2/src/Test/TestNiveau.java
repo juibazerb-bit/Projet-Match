@@ -5,7 +5,7 @@ import Affichage.DessinPlateau;
 import Controleur.ActionJoueur;
 import Controleur.GestionClics;
 import FenetreGraphique.FenetreGraphique;
-import IHM.Niveau;
+import Vue.Niveau;
 import LogiqueJeu.DetectionMatchs;
 import LogiqueJeu.GestionIA;
 import LogiqueJeu.SuppressionMatchs;
@@ -19,18 +19,18 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Point d'entrée du jeu en mode niveaux avec FenetreGraphique.
- * Gère la boucle de jeu, les animations et la progression entre niveaux.
+ * Point d'entrée du jeu en mode niveaux avec FenetreGraphique. Gère la boucle
+ * de jeu, les animations et la progression entre niveaux.
  */
 public class TestNiveau {
 
     // Services partagés (instanciés une seule fois)
-    private static final DessinPlateau    dessin     = new DessinPlateau();
-    private static final Animation        animation  = new Animation();
-    private static final DetectionMatchs  detection  = new DetectionMatchs();
+    private static final DessinPlateau dessin = new DessinPlateau();
+    private static final Animation animation = new Animation();
+    private static final DetectionMatchs detection = new DetectionMatchs();
     private static final SuppressionMatchs suppression = new SuppressionMatchs();
-    private static final GestionClics     clics      = new GestionClics();
-    private static final GestionIA        ia         = new GestionIA();
+    private static final GestionClics clics = new GestionClics();
+    private static final GestionIA ia = new GestionIA();
 
     private static final int MARGE_X = 100;
     private static final int MARGE_Y = 100;
@@ -39,18 +39,19 @@ public class TestNiveau {
         int numeroNiveau = 1;
 
         while (true) {
-            Niveau  niveau  = new Niveau(numeroNiveau);
+            Niveau niveau = new Niveau(numeroNiveau);
             Plateau plateau = new Plateau(niveau.getNbColonnes(), niveau.getNbLignes(), niveau.getNbTypes());
 
             FenetreGraphique fenetre = new FenetreGraphique(
-                "CandyCrush - Niveau " + numeroNiveau,
-                niveau.getNbColonnes() * Tuile.TAILLE + 300,
-                niveau.getNbLignes()   * Tuile.TAILLE + 300);
+                    "CandyCrush - Niveau " + numeroNiveau,
+                    MARGE_X + niveau.getNbColonnes() * Tuile.TAILLE
+                    + DessinPlateau.BOUTON_OFFSET + 160 + 40,
+                    MARGE_Y + (niveau.getNbLignes() + 2) * Tuile.TAILLE + 250);
 
             System.out.println("=== " + niveau + " ===");
             dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
 
-            int   coupsJoues = 0;
+            int coupsJoues = 0;
             Coord premierClic = null;
             boolean niveauEnCours = true;
 
@@ -102,6 +103,11 @@ public class TestNiveau {
                     case TUILE_SELECTIONNEE:
                         if (premierClic == null) {
                             premierClic = action.coord;
+                            dessin.afficherPlateauAvecSelection(plateau, fenetre, MARGE_X, MARGE_Y, premierClic);
+                        } else if (action.coord.equals(premierClic)) {
+                            // Misclick : même tuile → déselection
+                            premierClic = null;
+                            dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
                         } else {
                             animation.fixerPositionsActuelles(plateau, MARGE_Y);
                             boolean echangeOk = plateau.echangerTuiles(premierClic, action.coord);
@@ -126,6 +132,11 @@ public class TestNiveau {
                             } else if (echangeOk) {
                                 plateau.echangerTuiles(action.coord, premierClic);
                                 dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
+                            } else {
+                                // Non voisines : changer la sélection
+                                premierClic = action.coord;
+                                dessin.afficherPlateauAvecSelection(plateau, fenetre, MARGE_X, MARGE_Y, premierClic);
+                                break;
                             }
                             premierClic = null;
                         }
@@ -138,7 +149,6 @@ public class TestNiveau {
     // -------------------------------------------------------------------------
     // BOUCLE CASCADE
     // -------------------------------------------------------------------------
-
     private static void jouerCascade(Plateau plateau, FenetreGraphique fenetre) {
         Random rand = new Random();
         boolean encoreDesMatchs = true;
@@ -164,12 +174,11 @@ public class TestNiveau {
     // -------------------------------------------------------------------------
     // MESSAGE DE FIN
     // -------------------------------------------------------------------------
-
     private static void afficherMessageFin(FenetreGraphique fenetre, Plateau plateau,
             String message, Color couleur) {
         Graphics2D g = fenetre.getGraphics2D();
         int cx = MARGE_X + (plateau.getNbCol() * Tuile.TAILLE) / 2;
-        int cy = 150     + (plateau.getNbLig() * Tuile.TAILLE) / 2;
+        int cy = 150 + (plateau.getNbLig() * Tuile.TAILLE) / 2;
 
         g.setColor(new Color(0, 0, 0, 150));
         g.fillRoundRect(cx - 150, cy - 40, 300, 80, 20, 20);

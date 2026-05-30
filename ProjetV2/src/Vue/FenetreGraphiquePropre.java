@@ -1,4 +1,4 @@
-package IHM;
+package Vue;
 
 import LogiqueJeu.GestionIA;
 import Modele.Coord;
