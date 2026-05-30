@@ -1,4 +1,4 @@
-package Vue;
+package Jouer;
 
 /**
  * Définit la configuration d'un niveau de jeu : dimensions du plateau, nombre

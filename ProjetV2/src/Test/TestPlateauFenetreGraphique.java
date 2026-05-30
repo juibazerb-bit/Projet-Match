@@ -34,13 +34,14 @@ public class TestPlateauFenetreGraphique {
     private static final GestionIA ia = new GestionIA();
 
     public static void main(String[] args) {
+        SonManager.desactiver();
         int nbLig = 10, nbCol = 15;
         Plateau plateau = new Plateau(nbCol, nbLig, NB_TYPES, 0);
         FenetreGraphique fenetre = creerFenetre(nbLig, nbCol);
         Animation.clearConsole();
         dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
         verifierFinDePartie(plateau);
-
+        SonManager.activer();
         Coord premierClic = null;
         boolean continuer = true;
 
@@ -55,10 +56,12 @@ public class TestPlateauFenetreGraphique {
                     break;
 
                 case NOUVELLE_PARTIE:
+                    SonManager.desactiver();
                     plateau = new Plateau(nbCol, nbLig, NB_TYPES);    
                     dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
                     verifierFinDePartie(plateau);
                     premierClic = null;
+                    SonManager.activer();
                     break;
 
                 case QUITTER:

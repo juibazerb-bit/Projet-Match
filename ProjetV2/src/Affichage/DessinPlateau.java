@@ -4,7 +4,7 @@ import FenetreGraphique.FenetreGraphique;
 import Modele.Coord;
 import Modele.Plateau;
 import Modele.Tuile;
-import Vue.Niveau;
+import Jouer.Niveau;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;

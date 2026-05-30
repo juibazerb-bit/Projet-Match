@@ -1,4 +1,4 @@
-package Vue;
+package Jouer;
 
 import Controleur.GestionClics;
 import LogiqueJeu.GestionPartie;   // ← CORRECTION : était Controleur.GestionPartie

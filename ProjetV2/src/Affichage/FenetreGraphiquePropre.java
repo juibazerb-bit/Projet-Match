@@ -8,7 +8,7 @@ import LogiqueJeu.GestionIA;
 import Modele.Coord;
 import Modele.Plateau;
 import Modele.Tuile;
-import Vue.PanneauJeu;
+import Jouer.PanneauJeu;
 import java.awt.Dimension;
 import java.util.ArrayList;
 /**
