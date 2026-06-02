@@ -1,4 +1,4 @@
-package Jouer;
+package Controleur;
 
 /**
  * Définit la configuration d'un niveau de jeu : dimensions du plateau, nombre

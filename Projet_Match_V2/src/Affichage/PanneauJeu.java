@@ -13,6 +13,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
 import LogiqueJeu.GestionIA;
+import Sons.SonManager;
 
 /**
  * Panneau de jeu Swing avec : - Animation de chute des tuiles ciblée (Timer
@@ -72,6 +73,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
     }
 
     public void setPlateau(Plateau p) {
+        SonManager.desactiver();
         this.plateau = p;
         premierClic = null;
         surbrillanceIA.clear();
@@ -88,6 +90,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
         initialiserPosY();
         revalidate(); // recalcule preferredSize après changement de plateau
         repaint();
+        SonManager.activer();
     }
 
     @Override

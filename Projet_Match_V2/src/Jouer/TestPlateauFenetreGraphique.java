@@ -1,4 +1,4 @@
-package Test;
+package Jouer;
 
 import Affichage.Animation;
 import Affichage.DessinPlateau;

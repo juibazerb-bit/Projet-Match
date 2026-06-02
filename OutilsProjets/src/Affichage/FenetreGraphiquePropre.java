@@ -11,12 +11,13 @@ import Modele.Tuile;
 import Plateau.PanneauJeu;
 import java.awt.Dimension;
 import java.util.ArrayList;
+
 /**
  *
  * @author fpauvert
  */
 public class FenetreGraphiquePropre extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FenetreGraphiquePropre.class.getName());
     private Plateau plateau;
     private PanneauJeu panneauJeu;
@@ -25,35 +26,34 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
     /**
      * Creates new form FenetreGraphique
      */
-    
-    
     public FenetreGraphiquePropre() {
-        
+
         initComponents();
         int lig = 15;
         int col = 15;
-        int nbType =7;
+        int nbType = 7;
         boutonTypesTuile.setValue(nbType); //nombre de type de tuiles
         boutonNbLigne.setValue(col); // nombre de ligne
         boutonNbColonne.setValue(lig); // nombre de colonne
-        plateau= new Plateau(col,lig,nbType,42);
+        plateau = new Plateau(col, lig, nbType, 42);
         panneauJeu = new PanneauJeu();
         panneauJeu.setPlateau(plateau);
         jScrollPane1.setViewportView(panneauJeu); // assosie le panneau à la zone de dessin
         redimensionnerPanneau();
 //        panneauJeu.setPreferredSize(new Dimension(500, 500)); // permet de géré les plateau très grand si on le modifie proportionnellement
         panneauJeu.setCoupJouer(() -> {
-    Score.setText(String.valueOf(plateau.getScore()));
-});
+            Score.setText(String.valueOf(plateau.getScore()));
+        });
     }
-    
-private void redimensionnerPanneau() {
-    int largeur = (plateau.getNbCol() + 2) * Tuile.TAILLE; // +2 pour les marges
-    int hauteur = (plateau.getNbLig() + 2) * Tuile.TAILLE;
-    panneauJeu.setPreferredSize(new Dimension(largeur, hauteur));
-    panneauJeu.revalidate(); // recalcule la mise en page
-    panneauJeu.repaint();
-}
+
+    private void redimensionnerPanneau() {
+        int largeur = (plateau.getNbCol() + 2) * Tuile.TAILLE; // +2 pour les marges
+        int hauteur = (plateau.getNbLig() + 2) * Tuile.TAILLE;
+        panneauJeu.setPreferredSize(new Dimension(largeur, hauteur));
+        panneauJeu.revalidate(); // recalcule la mise en page
+        panneauJeu.repaint();
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -243,8 +243,8 @@ private void redimensionnerPanneau() {
 
     private void boutonGénérerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonGénérerActionPerformed
         int nbTypes = (int) boutonTypesTuile.getValue();
-        int nbLig   = (int) boutonNbLigne.getValue();
-        int nbCol   = (int) boutonNbColonne.getValue();
+        int nbLig = (int) boutonNbLigne.getValue();
+        int nbCol = (int) boutonNbColonne.getValue();
         plateau = new Plateau(nbCol, nbLig, nbTypes, 42);
         panneauJeu.setPlateau(plateau);
         redimensionnerPanneau();
@@ -259,8 +259,7 @@ private void redimensionnerPanneau() {
 
     }//GEN-LAST:event_ScoreMouseMoved
 
-    
-    
+
     private void boutonQuitterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonQuitterActionPerformed
         System.exit(0);
     }//GEN-LAST:event_boutonQuitterActionPerformed
@@ -274,9 +273,9 @@ private void redimensionnerPanneau() {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String s =panneauJeu.aideOrdiString(plateau);
+        String s = panneauJeu.aideOrdiString(plateau);
         jTextField1.setText(s);
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -288,11 +287,10 @@ private void redimensionnerPanneau() {
             Score.setText(String.valueOf(plateau.getScore()));
         }
     }
-    
+
     /**
      * @param args the command line arguments
      */
-    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

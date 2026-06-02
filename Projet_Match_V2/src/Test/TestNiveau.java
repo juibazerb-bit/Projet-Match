@@ -5,7 +5,7 @@ import Affichage.DessinPlateau;
 import Controleur.ActionJoueur;
 import Controleur.GestionClics;
 import FenetreGraphique.FenetreGraphique;
-import Jouer.Niveau;
+import Controleur.Niveau;
 import LogiqueJeu.DetectionMatchs;
 import LogiqueJeu.GestionIA;
 import LogiqueJeu.SuppressionMatchs;
