@@ -242,7 +242,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
         int nbLig = plateau.getNbLig();
         posY = new double[nbCol][nbLig];
 
-        // Calcul intelligent des décalages colonne par colonne
+        // Calcul des décalages colonne par colonne
         for (int col = 0; col < nbCol; col++) {
             // 1. On répertorie les lignes qui ont été supprimées dans cette colonne
             boolean[] supprDansCol = new boolean[nbLig];
