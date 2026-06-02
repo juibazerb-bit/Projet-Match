@@ -11,7 +11,7 @@ import java.util.Random;
 /**
  * Intelligence artificielle du jeu.
  *
- * Fournit trois services : - listEchange() : tous les échanges légaux qui
+ * Fournit trois methodes principalesa : - listEchange() : tous les échanges légaux qui
  * créent un match - aideOrdi() : le meilleur coup (déterministe, par
  * simulation) - obtenirMeilleurCoupStatistique() : le meilleur coup
  * (Monte-Carlo) - aideNCoups() : fait jouer l'IA seule pendant N coups

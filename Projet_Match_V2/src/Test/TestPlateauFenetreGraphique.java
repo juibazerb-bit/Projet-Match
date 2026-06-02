@@ -25,6 +25,7 @@ public class TestPlateauFenetreGraphique {
     private static final int MARGE_X = 100;
     private static final int MARGE_Y = 100;
     private static final int NB_TYPES = 5;
+    private static final int NB_COUP_IA = 10;
 
     private static final DessinPlateau dessin = new DessinPlateau();
     private static final Animation animation = new Animation();
@@ -80,7 +81,7 @@ public class TestPlateauFenetreGraphique {
                     break;
 
                 case ORDI_JOUE:
-                    jouerIANCoups(plateau, fenetre, 10);
+                    jouerIANCoups(plateau, fenetre, NB_COUP_IA);
                     premierClic = null;
                     break;
 
@@ -111,7 +112,7 @@ public class TestPlateauFenetreGraphique {
                         premierClic = action.coord;
                         dessin.afficherPlateauAvecSelection(plateau, fenetre, MARGE_X, MARGE_Y, premierClic);
                     } else if (action.coord.equals(premierClic)) {
-                        // Misclick : même tuile recliquée → on annule la sélection
+                        // Misclick : on annule la sélection
                         premierClic = null;
                         dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
                     } else {
