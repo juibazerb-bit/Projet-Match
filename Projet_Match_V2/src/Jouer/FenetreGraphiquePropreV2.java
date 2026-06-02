@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * graphique ▸ Sélecteur du nombre de coups IA (spinner) ▸ Sélection de niveau
  * (écran dédié, niveaux 1-9 + libre)
  */
-public class FenetreGraphiquePropre extends JFrame {
+public class FenetreGraphiquePropreV2 extends JFrame {
 
     // ── Palette ───────────────────────────────────────────────────────
     private static final Color BG_DEEP = new Color(0x0D0D14);
@@ -63,7 +63,7 @@ public class FenetreGraphiquePropre extends JFrame {
     private final java.util.List<float[]> particles = new java.util.ArrayList<>();
 
     // ─────────────────────────────────────────────────────────────────
-    public FenetreGraphiquePropre() {
+    public FenetreGraphiquePropreV2() {
         super("✦ GemCrush");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(1140, 740));
@@ -1044,6 +1044,6 @@ public class FenetreGraphiquePropre extends JFrame {
         UIManager.put("Panel.background", BG_PANEL);
         UIManager.put("OptionPane.messageForeground", TEXT_MAIN);
 
-        SwingUtilities.invokeLater(() -> new FenetreGraphiquePropre());
+        SwingUtilities.invokeLater(() -> new FenetreGraphiquePropreV2());
     }
 }

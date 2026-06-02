@@ -2,13 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package Affichage;
+package Jouer;
 
+import Affichage.PanneauJeu;
 import LogiqueJeu.GestionIA;
 import Modele.Coord;
 import Modele.Plateau;
 import Modele.Tuile;
-import Plateau.PanneauJeu;
+import Affichage.PanneauJeu;
 import java.awt.Dimension;
 import java.util.ArrayList;
 /**
@@ -66,6 +67,7 @@ private void redimensionnerPanneau() {
         jLabel6 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        popupMenu1 = new java.awt.PopupMenu();
         boutonTypesTuile = new javax.swing.JSpinner();
         boutonGénérer = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -90,6 +92,8 @@ private void redimensionnerPanneau() {
                 jButton3ActionPerformed(evt);
             }
         });
+
+        popupMenu1.setLabel("popupMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -335,5 +339,6 @@ private void redimensionnerPanneau() {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
+    private java.awt.PopupMenu popupMenu1;
     // End of variables declaration//GEN-END:variables
 }
