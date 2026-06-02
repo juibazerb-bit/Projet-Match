@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package Affichage;
 
 import FenetreGraphique.FenetreGraphique;
@@ -5,52 +9,31 @@ import Modele.Plateau;
 import Modele.Tuile;
 
 /**
- * Gère l'animation de chute des tuiles après une suppression.
  *
- * Principe :
- *  1. fixerPositionsActuelles() mémorise la position Y actuelle de chaque tuile.
- *  2. Après la suppression+régénération, les nouvelles tuiles ont posYVisuelle=-1,
- *     ce qui signale qu'elles partent du haut de l'écran.
- *  3. animerChute() déplace progressivement chaque tuile vers sa position cible.
+ * @author flo66
  */
 public class Animation {
 
-    private final DessinPlateau dessinPlateau = new DessinPlateau();
+    private DessinPlateau dessinPlateau = new DessinPlateau();
 
-    /** Mémorise la position Y actuelle de chaque tuile (avant suppression). */
     public void fixerPositionsActuelles(Plateau plateau, int margeY) {
         int hauteurPlateau = plateau.getNbLig() * Tuile.TAILLE;
         for (int col = 0; col < plateau.getNbCol(); col++) {
             for (int lig = 0; lig < plateau.getNbLig(); lig++) {
                 Tuile t = plateau.getTuile(col, lig);
                 if (t != null) {
-                    t.setPosYVisuelle(margeY + hauteurPlateau - lig * Tuile.TAILLE);
+                    // On enregistre sa position Y actuelle en pixels
+                    int yActuel = margeY + hauteurPlateau - (lig * Tuile.TAILLE);
+                    t.setPosYVisuelle(yActuel);
                 }
             }
         }
     }
 
-    /** Réinitialise toutes les positions visuelles (plus d'animation en cours). */
-    public void reinitialiserPositionsVisuelles(Plateau plateau) {
-        for (int col = 0; col < plateau.getNbCol(); col++) {
-            for (int lig = 0; lig < plateau.getNbLig(); lig++) {
-                Tuile t = plateau.getTuile(col, lig);
-                if (t != null) { // correction du bug crash null
-                    t.setPosYVisuelle(-1);
-                }
-            }
-        }
-    }
-
-    /**
-     * Anime la chute de toutes les tuiles vers leur position cible.
-     * Les nouvelles tuiles (posYVisuelle == -1) partent du haut de la grille.
-     * Les tuiles déjà positionnées continuent leur descente.
-     */
     public void animerChute(Plateau plateau, FenetreGraphique fenetre, int margeX, int margeY) {
         int hauteurPlateau = plateau.getNbLig() * Tuile.TAILLE;
         boolean enMouvement = true;
-        double vitesseBase = 1.0;
+        double vitesse = 1.0; // pixels par frame
         double boostParLigne = 1.0;
 
         while (enMouvement) {
@@ -59,32 +42,48 @@ public class Animation {
             for (int col = 0; col < plateau.getNbCol(); col++) {
                 for (int lig = 0; lig < plateau.getNbLig(); lig++) {
                     Tuile t = plateau.getTuile(col, lig);
-                    if (t == null) continue;
+                    if (t == null) {
+                        continue;
+                    }
 
-                    int yCible = margeY + hauteurPlateau - lig * Tuile.TAILLE;
-                    double vitesse = vitesseBase + (plateau.getNbLig() - lig) * boostParLigne;
+                    int yCible = margeY + hauteurPlateau - (lig * Tuile.TAILLE);
+                    double vitesseTuile = vitesse + ((plateau.getNbLig() - lig) * boostParLigne);
 
-                    // Nouvelle tuile : part du haut
+                    // Nouvelle tuile : elle part du haut de la grille
                     if (t.getPosYVisuelle() == -1) {
-                        t.setPosYVisuelle(margeY - (lig - plateau.getNbLig() + 3) * Tuile.TAILLE / 2);
+                        // Plus la tuile est haute dans la grille (lig grand), plus elle part de loin
+                        t.setPosYVisuelle(margeY - (lig - plateau.getNbLig() + 3) * Tuile.TAILLE/2 );
                         enMouvement = true;
                     }
 
+                    // Déplacement vers la cible
                     if (t.getPosYVisuelle() < yCible) {
-                        t.setPosYVisuelle(Math.min(yCible, t.getPosYVisuelle() + vitesse));
+                        // On avance selon la vitesse propre à cette ligne
+                        t.setPosYVisuelle(Math.min(yCible, t.getPosYVisuelle() + vitesseTuile));
                         enMouvement = true;
                     }
                 }
             }
 
             dessinPlateau.afficherPlateau(plateau, fenetre, margeX, margeY);
+            
+            // Petite pause pour que l'animation soit visible
             fenetre.attendre(0.002);
         }
         fenetre.actualiser();
     }
 
-    /** Vide la console (utilitaire debug). */
+    public void reinitialiserPositionsVisuelles(Plateau plateau) {
+        for (int col = 0; col < plateau.getNbCol(); col++) {
+            for (int lig = 0; lig < plateau.getNbLig(); lig++) {
+                plateau.getTuile(col, lig).setPosYVisuelle(-1);
+            }
+        }
+    }
+
     public static void clearConsole() {
-        for (int i = 0; i < 50; i++) System.out.println();
+        for (int i = 0; i < 50; i++) {
+            System.out.println();
+        }
     }
 }

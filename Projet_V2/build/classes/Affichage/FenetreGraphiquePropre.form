@@ -22,6 +22,11 @@
         <AuxValue name="classDetails" type="java.lang.String" value="Box.Filler.HorizontalGlue"/>
       </AuxValues>
     </Component>
+    <Menu class="java.awt.PopupMenu" name="popupMenu1">
+      <Properties>
+        <Property name="label" type="java.lang.String" value="popupMenu1"/>
+      </Properties>
+    </Menu>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>

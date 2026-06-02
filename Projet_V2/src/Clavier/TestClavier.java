@@ -8,7 +8,7 @@ import Modele.Coord;
  */
 public class TestClavier {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         
         System.out.println("Veuillez entrer un entier : ");
         int unEntier = Clavier.getInt();
