@@ -69,29 +69,29 @@ public class Niveau {
                 nbCoupsMax = 12;
                 break;
             case 7:
-                nbLignes = 12;
-                nbColonnes = 12;
+                nbLignes = 11;
+                nbColonnes = 11;
                 nbTypes = 6;
                 scoreObjectif = 10000;
                 nbCoupsMax = 10;
                 break;
             case 8:
-                nbLignes = 14;
-                nbColonnes = 14;
+                nbLignes = 12;
+                nbColonnes = 12;
                 nbTypes = 7;
                 scoreObjectif = 15000;
                 nbCoupsMax = 10;
                 break;
             case 9:
-                nbLignes = 16;
-                nbColonnes = 16;
+                nbLignes = 13;
+                nbColonnes = 13;
                 nbTypes = 7;
                 scoreObjectif = 20000;
                 nbCoupsMax = 8;
                 break;
             default:
-                nbLignes = Math.min(20, 16 + (numeroNiveau - 9));
-                nbColonnes = Math.min(20, 16 + (numeroNiveau - 9));
+                nbLignes = Math.min(20, 13 + (numeroNiveau - 9));
+                nbColonnes = Math.min(20, 13 + (numeroNiveau - 9));
                 nbTypes = 7;
                 scoreObjectif = 20000 + (numeroNiveau - 9) * 5000;
                 nbCoupsMax = Math.max(5, 8 - (numeroNiveau - 9));
