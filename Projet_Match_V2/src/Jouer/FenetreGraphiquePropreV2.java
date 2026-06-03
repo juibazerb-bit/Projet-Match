@@ -1,13 +1,10 @@
 package Jouer;
 
-import Controleur.Niveau;
 import LogiqueJeu.GestionIA;
 import Modele.Coord;
 import Modele.Plateau;
 import Modele.Tuile;
 import Affichage.PanneauJeu;
-import Sons.Son;
-import Sons.SonManager;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -17,7 +14,12 @@ import java.awt.geom.*;
 import java.util.ArrayList;
 
 /**
- * Fenêtre principale 
+ * Fenêtre principale – dark theme moderne.
+ *
+ * Nouveautés v3 : ▸ Animation de chute des tuiles (Timer Swing 60 fps) ▸
+ * Clignotement avant suppression ▸ IA animée et respectueuse de la boucle
+ * graphique ▸ Sélecteur du nombre de coups IA (spinner) ▸ Sélection de niveau
+ * (écran dédié, niveaux 1-9 + libre)
  */
 public class FenetreGraphiquePropreV2 extends JFrame {
 
@@ -85,7 +87,7 @@ public class FenetreGraphiquePropreV2 extends JFrame {
         root.add(cardContainer, BorderLayout.CENTER);
 
         cardLayout.show(cardContainer, "menu");
-        demarerAnimationParticules();
+        startParticleAnimation();
 
         pack();
         setLocationRelativeTo(null);
@@ -210,7 +212,7 @@ public class FenetreGraphiquePropreV2 extends JFrame {
         JButton btnRetour = makeTopButton("← Retour");
         btnRetour.addActionListener(e -> {
             cardLayout.show(cardContainer, "menu");
-            demarerAnimationParticules();
+            startParticleAnimation();
         });
         topPanel.add(btnRetour, BorderLayout.WEST);
 
@@ -384,7 +386,7 @@ public class FenetreGraphiquePropreV2 extends JFrame {
         JButton btnMenu = makeTopButton("⬅ Menu");
         btnMenu.addActionListener(e -> {
             cardLayout.show(cardContainer, "menu");
-            demarerAnimationParticules();
+            startParticleAnimation();
         });
         right.add(btnMenu);
 
@@ -788,7 +790,7 @@ public class FenetreGraphiquePropreV2 extends JFrame {
     // ══════════════════════════════════════════════════════════════════
     // LOGIQUE JEU ET IA ANIMÉE
     // ══════════════════════════════════════════════════════════════════
-    public void lancerNiveau(int numero) {
+    private void lancerNiveau(int numero) {
         niveauActuel = new Niveau(numero);
         nbLig = niveauActuel.getNbLignes();
         nbCol = niveauActuel.getNbColonnes();
@@ -804,7 +806,7 @@ public class FenetreGraphiquePropreV2 extends JFrame {
         cardLayout.show(cardContainer, "game");
     }
 
-    public void lancerPartieLibre() {
+    private void lancerPartieLibre() {
         niveauActuel = null;
         coupsJoues = 0;
         plateau = new Plateau(nbCol, nbLig, nbTypes, System.currentTimeMillis());
@@ -820,7 +822,7 @@ public class FenetreGraphiquePropreV2 extends JFrame {
      * Initialise ou réinitialise le panneau de jeu avec le plateau actuel et
      * configure le callback de fin de mouvement.
      */
-    public void mettreEnPlaceJeu() {
+    private void mettreEnPlaceJeu() {
         panneauJeu.setPlateau(plateau); // Transmet le nouveau plateau au composant graphique
 
         // Configuration du callback déclenché à CHAQUE coup valide du joueur ou de l'IA
@@ -839,7 +841,7 @@ public class FenetreGraphiquePropreV2 extends JFrame {
      * Met à jour les étiquettes de texte et les barres de progression de
      * l'interface.
      */
-    public void mettreAJourStats() {
+    private void mettreAJourStats() {
         int scoreActuel = plateau.getScore(); // En supposant que votre classe Plateau possède getScore()
         scoreValLabel.setText(String.valueOf(scoreActuel));
         coupsValLabel.setText(String.valueOf(coupsJoues));
@@ -862,7 +864,7 @@ public class FenetreGraphiquePropreV2 extends JFrame {
      * Vérifie si les conditions de victoire ou de défaite d'un niveau sont
      * atteintes.
      */
-    public boolean verifierFinDePartie() {
+    private boolean verifierFinDePartie() {
         if (niveauActuel == null) {
             return false; // Pas de fin automatique en mode libre
         }
@@ -873,21 +875,18 @@ public class FenetreGraphiquePropreV2 extends JFrame {
         if (scoreActuel >= scoreObjectif) {
             statusLabel.setText("🏆 VICTOIRE !");
             statusLabel.setForeground(GOLD);
-            SonManager.jouer(Son.GAGNE);
             JOptionPane.showMessageDialog(this, "Félicitations ! Niveau réussi !", "✦ Victoire", JOptionPane.INFORMATION_MESSAGE);
-            
             return true;
         } else if (coupsJoues >= coupsMax) {
             statusLabel.setText("❌ PLUS DE COUPS");
             statusLabel.setForeground(ACCENT2);
             JOptionPane.showMessageDialog(this, "Dommage ! Vous avez épuisé vos coups.", "✦ Fin de partie", JOptionPane.ERROR_MESSAGE);
-            SonManager.jouer(Son.PERDU);
             return true;
         }
         return false;
     }
 
-    public void nouvellePartie() {
+    private void nouvellePartie() {
         if (niveauActuel != null) {
             lancerNiveau(niveauActuel.getNumeroNiveau()); // Relance le niveau en cours
         } else {
@@ -895,7 +894,7 @@ public class FenetreGraphiquePropreV2 extends JFrame {
         }
     }
 
-    public void afficherAide() {
+    private void afficherAide() {
         if (panneauJeu.isAnimEnCours()) {
             return;
         }
@@ -904,7 +903,7 @@ public class FenetreGraphiquePropreV2 extends JFrame {
         statusLabel.setForeground(GOLD);
     }
 
-    public void afficherCoupsPossibles() {
+    private void afficherCoupsPossibles() {
         if (panneauJeu.isAnimEnCours()) {
             return;
         }
@@ -923,7 +922,7 @@ public class FenetreGraphiquePropreV2 extends JFrame {
      * Fait jouer l'IA de manière asynchrone pour respecter les animations
      * graphiques.
      */
-    public void iaJoueNCoups(int n) {
+    private void iaJoueNCoups(int n) {
         if (n <= 0 || verifierFinDePartie()) {
             return;
         }
@@ -964,7 +963,7 @@ public class FenetreGraphiquePropreV2 extends JFrame {
         iaTimer.start();
     }
 
-    public void appliquerReglages() {
+    private void appliquerReglages() {
         if (niveauActuel != null) {
             JOptionPane.showMessageDialog(this, "Quittez le mode niveau pour modifier la taille librement.", "Info", JOptionPane.WARNING_MESSAGE);
             return;
@@ -978,7 +977,7 @@ public class FenetreGraphiquePropreV2 extends JFrame {
     // ══════════════════════════════════════════════════════════════════
     // ANIMATION PARTICULES (MENU)
     // ══════════════════════════════════════════════════════════════════
-    public void demarerAnimationParticules() {
+    private void startParticleAnimation() {
         if (particleTimer != null) {
             return;
         }
@@ -1020,7 +1019,7 @@ public class FenetreGraphiquePropreV2 extends JFrame {
         particleTimer.start();
     }
 
-    public void stopParticleAnimation() {
+    private void stopParticleAnimation() {
         if (particleTimer != null) {
             particleTimer.stop();
             particleTimer = null;

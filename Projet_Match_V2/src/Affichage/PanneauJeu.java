@@ -13,7 +13,6 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
 import LogiqueJeu.GestionIA;
-import Sons.SonManager;
 
 /**
  * Panneau de jeu Swing avec : - Animation de chute des tuiles ciblée (Timer
@@ -35,8 +34,8 @@ public class PanneauJeu extends JPanel implements MouseListener {
     // ── Constantes animation ──────────────────────────────────────────
     private static final int FPS = 60;
     private static final int TIMER_DELAY = 1000 / FPS;
-    private static final double GRAVITE = 10;   // px/frame
-    private static final double BOOST_LENTE = 1.5;   // px supplémentaires par ligne de hauteur
+    private static final double GRAVITE = 3.5;   // px/frame
+    private static final double BOOST_LENTE = 0.8;   // px supplémentaires par ligne de hauteur
     private static final int NB_CLIGNOTS = 4;     // nb d'alternances avant suppression
     private static final int CLIGNOT_MS = 90;    // durée d'une demi-alternance
 
@@ -73,7 +72,6 @@ public class PanneauJeu extends JPanel implements MouseListener {
     }
 
     public void setPlateau(Plateau p) {
-        SonManager.desactiver();
         this.plateau = p;
         premierClic = null;
         surbrillanceIA.clear();
@@ -90,7 +88,6 @@ public class PanneauJeu extends JPanel implements MouseListener {
         initialiserPosY();
         revalidate(); // recalcule preferredSize après changement de plateau
         repaint();
-        SonManager.activer();
     }
 
     @Override
@@ -177,7 +174,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
             g2.setStroke(new BasicStroke(1f));
         }
 
-        // Surbrillance IA (bleu )
+        // Surbrillance IA (bleu pulsé)
         for (int i = 0; i + 1 < surbrillanceIA.size(); i += 2) {
             dessinerSurbrillanceIA(g2, surbrillanceIA.get(i), offsetX, nbLig, i == 0);
             dessinerSurbrillanceIA(g2, surbrillanceIA.get(i + 1), offsetX, nbLig, false);
@@ -245,7 +242,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
         int nbLig = plateau.getNbLig();
         posY = new double[nbCol][nbLig];
 
-        // Calcul des décalages colonne par colonne
+        // Calcul intelligent des décalages colonne par colonne
         for (int col = 0; col < nbCol; col++) {
             // 1. On répertorie les lignes qui ont été supprimées dans cette colonne
             boolean[] supprDansCol = new boolean[nbLig];
@@ -396,8 +393,8 @@ public class PanneauJeu extends JPanel implements MouseListener {
     }
 
     /**
-     * Tente l'échange c1↔c2. Séquence : échange visuel → collecte matchs →
-     * flash → suppression → chute → cascade.
+     * Tente l'échange c1↔c2.
+     * Séquence : échange visuel → collecte matchs → flash → suppression → chute → cascade.
      */
     private void jouerCoupAvecAnimation(Coord c1, Coord c2) {
         // 1. Effectue uniquement l'échange (sans supprimer) pour vérifier la validité
@@ -425,8 +422,8 @@ public class PanneauJeu extends JPanel implements MouseListener {
     }
 
     /**
-     * Flash les tuiles marquées, les supprime, anime la chute, puis relance une
-     * cascade si de nouveaux matchs apparaissent.
+     * Flash les tuiles marquées, les supprime, anime la chute, puis relance
+     * une cascade si de nouveaux matchs apparaissent.
      */
     private void lancerFlashPuisSupprimerPuisChute(ArrayList<Coord> aSupprimer, Runnable apres) {
         lancerFlash(aSupprimer, () -> {
@@ -452,8 +449,8 @@ public class PanneauJeu extends JPanel implements MouseListener {
     }
 
     /**
-     * Méthode publique pour que l'IA puisse déclencher un coup directement sans
-     * simuler des événements souris.
+     * Méthode publique pour que l'IA puisse déclencher un coup directement
+     * sans simuler des événements souris.
      */
     public void jouerCoup(Coord c1, Coord c2) {
         if (plateau == null || isAnimEnCours()) {

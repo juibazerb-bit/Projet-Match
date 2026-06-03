@@ -5,15 +5,13 @@ import Affichage.DessinPlateau;
 import Controleur.ActionJoueur;
 import Controleur.GestionClics;
 import FenetreGraphique.FenetreGraphique;
-import Controleur.Niveau;
+import Jouer.Niveau;
 import LogiqueJeu.DetectionMatchs;
 import LogiqueJeu.GestionIA;
 import LogiqueJeu.SuppressionMatchs;
 import Modele.Coord;
 import Modele.Plateau;
 import Modele.Tuile;
-import Sons.Son;
-import Sons.SonManager;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -120,14 +118,12 @@ public class TestNiveau {
                                 System.out.println("Score = " + plateau.getScore());
 
                                 if (niveau.objectifAtteint(plateau.getScore())) {
-                                    SonManager.jouer(Son.GAGNE);
                                     afficherMessageFin(fenetre, plateau, "NIVEAU RÉUSSI !", new Color(50, 200, 50));
                                     fenetre.attendre(2);
                                     numeroNiveau++;
                                     niveauEnCours = false;
                                     fenetre.dispose();
                                 } else if (niveau.plusDeCoup(coupsJoues)) {
-                                    SonManager.jouer(Son.PERDU);
                                     afficherMessageFin(fenetre, plateau, "PERDU !", new Color(200, 50, 50));
                                     fenetre.attendre(2);
                                     niveauEnCours = false;

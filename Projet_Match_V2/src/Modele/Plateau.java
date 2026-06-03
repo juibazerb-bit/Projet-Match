@@ -204,10 +204,4 @@ public class Plateau {
                     + NB_TYPES_MIN + " et " + NB_TYPES_MAX + ".");
         }
     }
-
-    public static class PanneauJeu {
-
-        public PanneauJeu() {
-        }
-    }
 }
