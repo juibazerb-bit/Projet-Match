@@ -92,6 +92,7 @@ private void redimensionnerPanneau() {
         });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(245, 245, 245));
 
         boutonTypesTuile.addContainerListener(new java.awt.event.ContainerAdapter() {
             public void componentAdded(java.awt.event.ContainerEvent evt) {
@@ -108,6 +109,9 @@ private void redimensionnerPanneau() {
         });
 
         jLabel1.setText("nb Lignes");
+
+        jScrollPane1.setBackground(new java.awt.Color(255, 13, 20));
+        jScrollPane1.setForeground(new java.awt.Color(255, 0, 0));
 
         boutonQuitter.setText("Quitter");
         boutonQuitter.addActionListener(new java.awt.event.ActionListener() {
