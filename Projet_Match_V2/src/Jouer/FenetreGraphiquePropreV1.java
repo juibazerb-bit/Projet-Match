@@ -36,7 +36,7 @@ public class FenetreGraphiquePropreV1 extends javax.swing.JFrame {
         boutonTypesTuile.setValue(nbType); //nombre de type de tuiles
         boutonNbLigne.setValue(col); // nombre de ligne
         boutonNbColonne.setValue(lig); // nombre de colonne
-        plateau= new Plateau(col,lig,nbType,42);
+        plateau= new Plateau(col,lig,nbType,0,true);
         panneauJeu = new PanneauJeu();
         panneauJeu.setPlateau(plateau);
         jScrollPane1.setViewportView(panneauJeu); // assosie le panneau à la zone de dessin
@@ -249,7 +249,7 @@ private void redimensionnerPanneau() {
         int nbTypes = (int) boutonTypesTuile.getValue();
         int nbLig   = (int) boutonNbLigne.getValue();
         int nbCol   = (int) boutonNbColonne.getValue();
-        plateau = new Plateau(nbCol, nbLig, nbTypes, 42);
+        plateau = new Plateau(nbCol, nbLig, nbTypes, 0,true);
         panneauJeu.setPlateau(plateau);
         redimensionnerPanneau();
         mettreAJourScore();

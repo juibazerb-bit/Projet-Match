@@ -36,9 +36,10 @@ public class Plateau {
      * Crée un plateau aléatoire sans graine fixe. Les matchs initiaux sont
      * supprimés automatiquement.
      */
-    public Plateau(int nbColonnes, int nbLignes, int nbTypes) {
+    public Plateau(int nbColonnes, int nbLignes, int nbTypes,boolean infini) {
         SonManager.desactiver();
-        validerPlateau(nbTypes,nbLignes,nbColonnes);
+        if(infini){validerPlateauInfini(nbTypes,nbLignes,nbColonnes);}
+        else{validerPlateauPetit(nbTypes,nbLignes,nbColonnes);}
         this.nbCol = nbColonnes;
         this.nbLig = nbLignes;
         this.nbTypesTuile = nbTypes;
@@ -57,9 +58,10 @@ public class Plateau {
      * Crée un plateau avec une graine fixe (reproductible). Utile pour les
      * tests et les niveaux déterministes.
      */
-    public Plateau(int nbColonnes, int nbLignes, int nbTypes, long seed) {
+    public Plateau(int nbColonnes, int nbLignes, int nbTypes, long seed,boolean infini) {
         SonManager.desactiver();
-        validerPlateau(nbTypes,nbLignes,nbColonnes);
+        if(infini){validerPlateauInfini(nbTypes,nbLignes,nbColonnes);}
+        else{validerPlateauPetit(nbTypes,nbLignes,nbColonnes);}
         this.nbCol = nbColonnes;
         this.nbLig = nbLignes;
         this.nbTypesTuile = nbTypes;
@@ -78,8 +80,10 @@ public class Plateau {
     /**
      * Constructeur privé vide — utilisé uniquement par copy().
      */
-    private Plateau(int nbColonnes, int nbLignes, int nbTypes, boolean vide) {
+    private Plateau(int nbColonnes, int nbLignes, int nbTypes, boolean vide,boolean infini) {
         SonManager.desactiver();
+        if(infini){validerPlateauInfini(nbTypes,nbLignes,nbColonnes);}
+        else{validerPlateauPetit(nbTypes,nbLignes,nbColonnes);}
         this.nbCol = nbColonnes;
         this.nbLig = nbLignes;
         this.nbTypesTuile = nbTypes;
@@ -208,10 +212,19 @@ public class Plateau {
     // -------------------------------------------------------------------------
     // VALIDATION
     // -------------------------------------------------------------------------
-    private static void validerPlateau(int nbTypes,int nbLignes,int nbCol) {
+    private static void validerPlateauPetit(int nbTypes,int nbLignes,int nbCol) {
         if ((nbTypes < NB_TYPES_MIN || nbTypes > NB_TYPES_MAX)
                 ||(nbLignes < NB_LIG_MIN || nbLignes > NB_LIG_MAX)
                 ||(nbCol < NB_COL_MIN || nbCol > NB_COL_MAX)) {
+            throw new IllegalArgumentException(
+                    "Le nombre de types de tuiles doit etre entre "
+                    + NB_TYPES_MIN + " et " + NB_TYPES_MAX + ".");
+        }
+    }
+    private static void validerPlateauInfini(int nbTypes,int nbLignes,int nbCol) {
+        if ((nbTypes < NB_TYPES_MIN || nbTypes > NB_TYPES_MAX)
+                ||(nbLignes < NB_LIG_MIN )
+                ||(nbCol < NB_COL_MIN )) {
             throw new IllegalArgumentException(
                     "Le nombre de types de tuiles doit etre entre "
                     + NB_TYPES_MIN + " et " + NB_TYPES_MAX + ".");
