@@ -13,6 +13,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
 import LogiqueJeu.GestionIA;
+import Sons.SonManager;
 
 /**
  * Panneau de jeu Swing avec : - Animation de chute des tuiles ciblée (Timer
@@ -114,6 +115,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
 
         Graphics2D g2 = (Graphics2D) g;
 
+
         int offsetX = margeX + Tuile.TAILLE;
         int nbLig = plateau.getNbLig();
         int nbCol = plateau.getNbCol();
@@ -187,7 +189,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
 
         g2.dispose();
     }
-
+    
     private void dessinerSurbrillanceIA(Graphics2D g2, Coord c, int offsetX, int nbLig, boolean isPrimary) {
         int px = offsetX + c.getAbscisse() * Tuile.TAILLE;
         int py = margeY + (nbLig - c.getOrdonnee()) * Tuile.TAILLE;
@@ -386,25 +388,27 @@ public class PanneauJeu extends JPanel implements MouseListener {
     }
 
     /**
-     * Tente l'échange c1↔c2. Séquence : échange visuel → collecte matchs →
-     * flash → suppression → chute → cascade.
+     * Tente l'échange c1↔c2.
+     * Séquence : échange visuel → collecte matchs → flash → suppression → chute → cascade.
      */
     private void jouerCoupAvecAnimation(Coord c1, Coord c2) {
-        // 1. On fait un échanger BRUT des deux tuiles dans le modèle pour tester
-        // (Remplacez par le nom de votre méthode qui intervertit juste deux tuiles sans rien calculer d'autre)
-        plateau.echangerTuiles(c1, c2);
-
-        // 2. On regarde si cet échange génère des alignements
-        ArrayList<Coord> premiersMatchs = suppression.collecterToutesLesTuilesASupprimer(plateau);
-
-        if (premiersMatchs.isEmpty()) {
-            // Aucun match créé : le coup est invalide, on annule l'échange (on re-swap)
-            plateau.echangerTuiles(c2, c1);
+        // 1. Effectue uniquement l'échange (sans supprimer) pour vérifier la validité
+        boolean ok = gestionPartie.jouerUnCoup1(plateau, c1, c2);
+        if (!ok) {
             repaint();
             return;
         }
 
-        // 3. Un match existe ! On lance la chaîne d'animation propre
+        // 2. Collecte les matchs AVANT toute suppression
+        ArrayList<Coord> premiersMatchs = suppression.collecterToutesLesTuilesASupprimer(plateau);
+        if (premiersMatchs.isEmpty()) {
+            // Échange invalide : on annule et on revient en arrière
+            gestionPartie.jouerUnCoup1(plateau, c2, c1);
+            repaint();
+            return;
+        }
+
+        // 3. Flash → suppression → chute → cascade → callback fin de coup
         lancerFlashPuisSupprimerPuisChute(premiersMatchs, () -> {
             if (onCoupJoue != null) {
                 SwingUtilities.invokeLater(onCoupJoue);
@@ -413,8 +417,8 @@ public class PanneauJeu extends JPanel implements MouseListener {
     }
 
     /**
-     * Flash les tuiles marquées, les supprime, anime la chute, puis relance une
-     * cascade si de nouveaux matchs apparaissent.
+     * Flash les tuiles marquées, les supprime, anime la chute, puis relance
+     * une cascade si de nouveaux matchs apparaissent.
      */
     private void lancerFlashPuisSupprimerPuisChute(ArrayList<Coord> aSupprimer, Runnable apres) {
         lancerFlash(aSupprimer, () -> {
@@ -440,8 +444,8 @@ public class PanneauJeu extends JPanel implements MouseListener {
     }
 
     /**
-     * Méthode publique pour que l'IA puisse déclencher un coup directement sans
-     * simuler des événements souris.
+     * Méthode publique pour que l'IA puisse déclencher un coup directement
+     * sans simuler des événements souris.
      */
     public void jouerCoup(Coord c1, Coord c2) {
         if (plateau == null || isAnimEnCours()) {
