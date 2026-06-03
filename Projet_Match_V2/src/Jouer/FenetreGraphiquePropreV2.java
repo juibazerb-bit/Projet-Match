@@ -1,5 +1,6 @@
 package Jouer;
 
+import Plateau.Niveau;
 import LogiqueJeu.GestionIA;
 import Modele.Coord;
 import Modele.Plateau;
