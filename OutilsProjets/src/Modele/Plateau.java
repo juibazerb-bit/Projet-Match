@@ -242,12 +242,6 @@ public class Plateau {
         fenetre.effacer();
         dessinPlateau.afficherPlateau(this, fenetre, margeX, margeY);
     }
-    // -------------------------------------------------------------------------
-    // CHUTTE TUILE (REELLE)
-    // -------------------------------------------------------------------------
 
-    public Object getGestionGraphique() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 
 }
