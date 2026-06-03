@@ -15,7 +15,7 @@ public class JouerModeConsole {
     public static void main(String[] args) {
         int nbLignes = 10, nbCol = 10, nbTypes = 7;
 
-        Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes,false);
+        Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes);
         GestionIA ia = new GestionIA();
         GestionPartie gestionPartie = new GestionPartie();
 

@@ -797,7 +797,7 @@ public class FenetreGraphiquePropreV2 extends JFrame {
         nbCol = niveauActuel.getNbColonnes();
         nbTypes = niveauActuel.getNbTypes();
         coupsJoues = 0;
-        plateau = new Plateau(nbCol, nbLig, nbTypes, System.currentTimeMillis(),true);
+        plateau = new Plateau(nbCol, nbLig, nbTypes, System.currentTimeMillis());
         mettreEnPlaceJeu();
 
         objectifLabel.setText("Niveau " + numero + " — Objectif : " + niveauActuel.getScoreObjectif() + " pts");
@@ -810,7 +810,7 @@ public class FenetreGraphiquePropreV2 extends JFrame {
     private void lancerPartieLibre() {
         niveauActuel = null;
         coupsJoues = 0;
-        plateau = new Plateau(nbCol, nbLig, nbTypes, System.currentTimeMillis(),true);
+        plateau = new Plateau(nbCol, nbLig, nbTypes, System.currentTimeMillis());
         mettreEnPlaceJeu();
         objectifLabel.setText("Mode libre");
         coupsMaxLabel.setText("");

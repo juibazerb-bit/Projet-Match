@@ -40,7 +40,7 @@ public class TestNiveau {
 
         while (true) {
             Niveau niveau = new Niveau(numeroNiveau);
-            Plateau plateau = new Plateau(niveau.getNbColonnes(), niveau.getNbLignes(), niveau.getNbTypes(),false);
+            Plateau plateau = new Plateau(niveau.getNbColonnes(), niveau.getNbLignes(), niveau.getNbTypes());
 
             FenetreGraphique fenetre = new FenetreGraphique(
                     "CandyCrush - Niveau " + numeroNiveau,
@@ -69,7 +69,7 @@ public class TestNiveau {
                         break;
 
                     case NOUVELLE_PARTIE:
-                        plateau = new Plateau(niveau.getNbColonnes(), niveau.getNbLignes(), niveau.getNbTypes(),false);
+                        plateau = new Plateau(niveau.getNbColonnes(), niveau.getNbLignes(), niveau.getNbTypes());
                         coupsJoues = 0;
                         premierClic = null;
                         dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
