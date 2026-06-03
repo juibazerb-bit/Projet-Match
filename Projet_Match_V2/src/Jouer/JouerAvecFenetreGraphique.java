@@ -35,7 +35,7 @@ public class JouerAvecFenetreGraphique {
 
     public static void main(String[] args) {
         int nbLig = 10, nbCol = 15;
-        Plateau plateau = new Plateau(nbCol, nbLig, NB_TYPES, 0);
+        Plateau plateau = new Plateau(nbCol, nbLig, NB_TYPES, 0,false);
         FenetreGraphique fenetre = creerFenetre(nbLig, nbCol);
         Animation.clearConsole();
         dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
@@ -55,7 +55,7 @@ public class JouerAvecFenetreGraphique {
 
                 case NOUVELLE_PARTIE:
                     SonManager.desactiver();
-                    plateau = new Plateau(nbCol, nbLig, NB_TYPES);    
+                    plateau = new Plateau(nbCol, nbLig, NB_TYPES,false);    
                     dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
                     verifierFinDePartie(plateau);
                     premierClic = null;
@@ -87,7 +87,7 @@ public class JouerAvecFenetreGraphique {
                     nbLig = Math.max(3, nbLig + action.delta);
                     fenetre.dispose();
                     fenetre = creerFenetre(nbLig, nbCol);
-                    plateau = new Plateau(nbCol, nbLig, NB_TYPES);
+                    plateau = new Plateau(nbCol, nbLig, NB_TYPES,false);
                     dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
                     verifierFinDePartie(plateau);
                     premierClic = null;
@@ -97,7 +97,7 @@ public class JouerAvecFenetreGraphique {
                     nbCol = Math.max(3, nbCol + action.delta);
                     fenetre.dispose();
                     fenetre = creerFenetre(nbLig, nbCol);
-                    plateau = new Plateau(nbCol, nbLig, NB_TYPES);
+                    plateau = new Plateau(nbCol, nbLig, NB_TYPES,false);
                     dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
                     verifierFinDePartie(plateau);
                     premierClic = null;
