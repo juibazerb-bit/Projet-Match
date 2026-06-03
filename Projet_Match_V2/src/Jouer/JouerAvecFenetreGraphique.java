@@ -20,7 +20,7 @@ import java.util.Random;
  * Mode libre avec FenetreGraphique (sans système de niveaux). Permet de jouer,
  * de changer la taille du plateau et de faire jouer l'IA.
  */
-public class TestPlateauFenetreGraphique {
+public class JouerAvecFenetreGraphique {
 
     private static final int MARGE_X = 100;
     private static final int MARGE_Y = 100;

@@ -1,4 +1,4 @@
-package Test;
+package Jouer;
 
 import Clavier.Clavier;
 import LogiqueJeu.GestionIA;
@@ -10,7 +10,7 @@ import Modele.Plateau;
  * Mode console : jouer sans interface graphique. Utile pour tester la logique
  * de jeu rapidement.
  */
-public class TestPlateauConsole {
+public class JouerModeConsole {
 
     public static void main(String[] args) {
         int nbLignes = 10, nbCol = 10, nbTypes = 7;
