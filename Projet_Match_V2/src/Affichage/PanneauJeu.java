@@ -13,6 +13,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
 import LogiqueJeu.GestionIA;
+import Sons.SonManager;
 
 /**
  * Panneau de jeu Swing avec : - Animation de chute des tuiles ciblée (Timer
@@ -34,8 +35,8 @@ public class PanneauJeu extends JPanel implements MouseListener {
     // ── Constantes animation ──────────────────────────────────────────
     private static final int FPS = 60;
     private static final int TIMER_DELAY = 1000 / FPS;
-    private static final double GRAVITE = 3.5;   // px/frame
-    private static final double BOOST_LENTE = 0.8;   // px supplémentaires par ligne de hauteur
+    private static final double GRAVITE = 10;   // px/frame
+    private static final double BOOST_LENTE = 3;   // px supplémentaires par ligne de hauteur
     private static final int NB_CLIGNOTS = 4;     // nb d'alternances avant suppression
     private static final int CLIGNOT_MS = 90;    // durée d'une demi-alternance
 

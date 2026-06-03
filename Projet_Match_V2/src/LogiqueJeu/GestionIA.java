@@ -73,10 +73,8 @@ public class GestionIA {
      * d'égalité.
      */
     public ArrayList<Coord> aideOrdi(Plateau plateau) {
-        SonManager.desactiver();
         ArrayList<Coord> matchs = listEchange(plateau);
         if (matchs.isEmpty()) {
-            SonManager.activer();
             return new ArrayList<>();
         }
 
@@ -101,7 +99,7 @@ public class GestionIA {
                 meilleur.add(c2);
             }
         }
-        SonManager.activer();
+        
 
         if (!meilleur.isEmpty()) {
             System.out.println("Meilleur coup : " + meilleur.get(0) + " ↔ " + meilleur.get(1)
@@ -120,6 +118,7 @@ public class GestionIA {
      * Retourne le nombre total de tuiles supprimées.
      */
     public int simulerMatchsDeterministe(Plateau plateau) {
+        SonManager.desactiver();
         int total = 0;
         ArrayList<Coord> aSupprimer;
 
@@ -136,6 +135,7 @@ public class GestionIA {
                 compacterColonne(plateau, col);
             }
         }
+        SonManager.activer();
         return total;
     }
 
