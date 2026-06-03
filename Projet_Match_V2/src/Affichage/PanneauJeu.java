@@ -13,6 +13,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
 import LogiqueJeu.GestionIA;
+import Sons.SonManager;
 
 /**
  * Panneau de jeu Swing avec : - Animation de chute des tuiles ciblée (Timer
@@ -68,7 +69,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
     // ─────────────────────────────────────────────────────────────────
     public PanneauJeu() {
         addMouseListener(this);
-        setBackground(BG_GRILLE);
+        setBackground(Color.WHITE);
     }
 
     public void setPlateau(Plateau p) {
@@ -112,20 +113,14 @@ public class PanneauJeu extends JPanel implements MouseListener {
             return;
         }
 
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        Graphics2D g2 = (Graphics2D) g;
+
 
         int offsetX = margeX + Tuile.TAILLE;
         int nbLig = plateau.getNbLig();
         int nbCol = plateau.getNbCol();
         int hPlateau = nbLig * Tuile.TAILLE;
         int lPlateau = nbCol * Tuile.TAILLE;
-
-        // Fond du plateau
-        g2.setColor(new Color(0x0D0D18));
-        g2.fillRoundRect(offsetX - 4, margeY + Tuile.TAILLE - 4,
-                lPlateau + 8, hPlateau + 8, 8, 8);
 
         // Tuiles
         for (int lig = nbLig - 1; lig >= 0; lig--) {
@@ -194,7 +189,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
 
         g2.dispose();
     }
-
+    
     private void dessinerSurbrillanceIA(Graphics2D g2, Coord c, int offsetX, int nbLig, boolean isPrimary) {
         int px = offsetX + c.getAbscisse() * Tuile.TAILLE;
         int py = margeY + (nbLig - c.getOrdonnee()) * Tuile.TAILLE;
