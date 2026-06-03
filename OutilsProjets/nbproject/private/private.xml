@@ -3,17 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file://HERMES/EDU$/fpauvert/Documents/Bleu/Info/PROJET/Projet-Match/OutilsProjets/src/Plateau/PanneauJeu.java</file>
-            <file>file://HERMES/EDU$/fpauvert/Documents/Bleu/Info/PROJET/Projet-Match/OutilsProjets/src/Test/TestPlateauFenetreGraphique.java</file>
-            <file>file://HERMES/EDU$/fpauvert/Documents/Bleu/Info/PROJET/Projet-Match/OutilsProjets/src/Affichage/DessinBoutons.java</file>
-            <file>file://HERMES/EDU$/fpauvert/Documents/Bleu/Info/PROJET/Projet-Match/OutilsProjets/src/Affichage/DessinPlateau.java</file>
-            <file>file://HERMES/EDU$/fpauvert/Documents/Bleu/Info/PROJET/Projet-Match/OutilsProjets/src/LogiqueJeu/TypesCombinaisons.java</file>
-            <file>file://HERMES/EDU$/fpauvert/Documents/Bleu/Info/PROJET/Projet-Match/OutilsProjets/src/LogiqueJeu/GestionIA.java</file>
-            <file>file://HERMES/EDU$/fpauvert/Documents/Bleu/Info/PROJET/Projet-Match/OutilsProjets/src/Plateau/Niveau.java</file>
-            <file>file://HERMES/EDU$/fpauvert/Documents/Bleu/Info/PROJET/Projet-Match/OutilsProjets/src/Test/TestNiveau.java</file>
-            <file>file://HERMES/EDU$/fpauvert/Documents/Bleu/Info/PROJET/Projet-Match/OutilsProjets/src/Affichage/FenetreGraphiquePropre.java</file>
-            <file>file://HERMES/EDU$/fpauvert/Documents/Bleu/Info/PROJET/Projet-Match/OutilsProjets/src/Sons/Son.java</file>
-            <file>file://HERMES/EDU$/fpauvert/Documents/Bleu/Info/PROJET/Projet-Match/OutilsProjets/src/Sons/SonManager.java</file>
+            <file>file://HERMES/EDU$/aguenich/Documents/BLEU/TP%20info/Projet/Projet-Match/OutilsProjets/src/Plateau/PanneauJeu.java</file>
+            <file>file://HERMES/EDU$/aguenich/Documents/BLEU/TP%20info/Projet/Projet-Match/OutilsProjets/src/Test/TestPlateauConsole.java</file>
+            <file>file://HERMES/EDU$/aguenich/Documents/BLEU/TP%20info/Projet/Projet-Match/OutilsProjets/src/Plateau/PropositionIdee.java</file>
+            <file>file://HERMES/EDU$/aguenich/Documents/BLEU/TP%20info/Projet/Projet-Match/OutilsProjets/src/Affichage/FenetreGraphiquePropre.java</file>
+            <file>file://HERMES/EDU$/aguenich/Documents/BLEU/TP%20info/Projet/Projet-Match/OutilsProjets/src/LogiqueJeu/GestionIA.java</file>
+            <file>file://HERMES/EDU$/aguenich/Documents/BLEU/TP%20info/Projet/Projet-Match/OutilsProjets/src/Test/TestPlateauFenetreGraphique.java</file>
         </group>
     </open-files>
 </project-private>
