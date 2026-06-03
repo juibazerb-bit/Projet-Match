@@ -34,14 +34,12 @@ public class JouerAvecFenetreGraphique {
     private static final GestionIA ia = new GestionIA();
 
     public static void main(String[] args) {
-        SonManager.desactiver();
         int nbLig = 10, nbCol = 15;
         Plateau plateau = new Plateau(nbCol, nbLig, NB_TYPES, 0);
         FenetreGraphique fenetre = creerFenetre(nbLig, nbCol);
         Animation.clearConsole();
         dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
         verifierFinDePartie(plateau);
-        SonManager.activer();
         Coord premierClic = null;
         boolean continuer = true;
 

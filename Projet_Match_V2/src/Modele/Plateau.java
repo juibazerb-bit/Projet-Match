@@ -1,6 +1,7 @@
 package Modele;
 
 import LogiqueJeu.SuppressionMatchs;
+import Sons.SonManager;
 import java.util.Random;
 
 /**
@@ -17,6 +18,10 @@ public class Plateau {
 
     private static final int NB_TYPES_MIN = 2;
     private static final int NB_TYPES_MAX = 14;
+    private static final int NB_LIG_MIN = 3;
+    private static final int NB_LIG_MAX = 15;
+    private static final int NB_COL_MIN = 3;
+    private static final int NB_COL_MAX = 25;
 
     private Colonne[] lesColonnes;
     private int nbCol;
@@ -32,7 +37,8 @@ public class Plateau {
      * supprimés automatiquement.
      */
     public Plateau(int nbColonnes, int nbLignes, int nbTypes) {
-        validerNbTypes(nbTypes);
+        SonManager.desactiver();
+        validerPlateau(nbTypes,nbLignes,nbColonnes);
         this.nbCol = nbColonnes;
         this.nbLig = nbLignes;
         this.nbTypesTuile = nbTypes;
@@ -44,6 +50,7 @@ public class Plateau {
         }
         new SuppressionMatchs().supprimerTousLesMatchs(this, new Random());
         this.score = 0; // remet à 0 après la suppression initiale
+        SonManager.activer();
     }
 
     /**
@@ -51,7 +58,8 @@ public class Plateau {
      * tests et les niveaux déterministes.
      */
     public Plateau(int nbColonnes, int nbLignes, int nbTypes, long seed) {
-        validerNbTypes(nbTypes);
+        SonManager.desactiver();
+        validerPlateau(nbTypes,nbLignes,nbColonnes);
         this.nbCol = nbColonnes;
         this.nbLig = nbLignes;
         this.nbTypesTuile = nbTypes;
@@ -64,17 +72,20 @@ public class Plateau {
         }
         new SuppressionMatchs().supprimerTousLesMatchs(this, rand);
         this.score = 0;
+        SonManager.activer();
     }
 
     /**
      * Constructeur privé vide — utilisé uniquement par copy().
      */
     private Plateau(int nbColonnes, int nbLignes, int nbTypes, boolean vide) {
+        SonManager.desactiver();
         this.nbCol = nbColonnes;
         this.nbLig = nbLignes;
         this.nbTypesTuile = nbTypes;
         this.score = 0;
         this.lesColonnes = new Colonne[nbColonnes];
+        SonManager.activer();
     }
 
     // -------------------------------------------------------------------------
@@ -197,11 +208,15 @@ public class Plateau {
     // -------------------------------------------------------------------------
     // VALIDATION
     // -------------------------------------------------------------------------
-    private static void validerNbTypes(int nbTypes) {
-        if (nbTypes < NB_TYPES_MIN || nbTypes > NB_TYPES_MAX) {
+    private static void validerPlateau(int nbTypes,int nbLignes,int nbCol) {
+        if ((nbTypes < NB_TYPES_MIN || nbTypes > NB_TYPES_MAX)
+                ||(nbLignes < NB_LIG_MIN || nbLignes > NB_LIG_MAX)
+                ||(nbCol < NB_COL_MIN || nbCol > NB_COL_MAX)) {
             throw new IllegalArgumentException(
                     "Le nombre de types de tuiles doit etre entre "
                     + NB_TYPES_MIN + " et " + NB_TYPES_MAX + ".");
         }
     }
+    
+    
 }
