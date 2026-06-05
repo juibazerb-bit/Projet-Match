@@ -68,12 +68,14 @@ public class JouerAvecFenetreGraphique {
                     break;
 
                 case MEILLEUR_COUP:
+                    SonManager.desactiver();
                     ArrayList<Coord> coup = ia.obtenirMeilleurCoupStatistique(plateau, 200);
                     if (coup.isEmpty()) {
                         System.out.println("Aucun coup possible !");
                     } else {
                         dessin.afficherPlateauAvecAide(plateau, fenetre, MARGE_X, MARGE_Y, coup);
                     }
+                    SonManager.activer();
                     premierClic = null;
                     break;
 

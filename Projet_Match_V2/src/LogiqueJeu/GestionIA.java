@@ -158,7 +158,6 @@ public class GestionIA {
         boolean simulationPossible = true;
         
         for (int sim = 0; sim < nbSimulations && simulationPossible; sim++) {
-            SonManager.desactiver();
             ArrayList<Coord> possibles = listEchange(plateau);
             if (possibles.isEmpty()) {
                 simulationPossible = false;
@@ -192,7 +191,7 @@ public class GestionIA {
             }
         }
 
-        SonManager.activer();
+        
         ArrayList<Coord> resultat = new ArrayList<>();
 
         if (stats.isEmpty()) {
@@ -228,7 +227,7 @@ public class GestionIA {
             resultat.add(meilleur.c1);
             resultat.add(meilleur.c2);
         }
-        
+        SonManager.activer();
         return resultat;
     }
 
