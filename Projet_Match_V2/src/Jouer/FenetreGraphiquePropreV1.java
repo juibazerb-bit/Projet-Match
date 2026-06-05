@@ -203,56 +203,69 @@ public class FenetreGraphiquePropreV1 extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         panneauConteneur = new javax.swing.JPanel();
-        MenuPrincipal = new javax.swing.JPanel();
-        labelTitreJeu = new javax.swing.JLabel();
-        boutonJouer = new javax.swing.JButton();
-        boutonNiveaux = new javax.swing.JButton();
-        MenuNiveaux = new javax.swing.JPanel();
-        labelTitreNiveaux = new javax.swing.JLabel();
-        boutonNiveau1 = new javax.swing.JButton();
-        boutonNiveau2 = new javax.swing.JButton();
-        boutonNiveau3 = new javax.swing.JButton();
-        boutonNiveau4 = new javax.swing.JButton();
-        boutonNiveau5 = new javax.swing.JButton();
-        boutonNiveau6 = new javax.swing.JButton();
-        boutonNiveau7 = new javax.swing.JButton();
-        boutonNiveau8 = new javax.swing.JButton();
-        boutonNiveau9 = new javax.swing.JButton();
-        boutonRetourNiveaux = new javax.swing.JButton();
-        scrollGrille = new javax.swing.JScrollPane();
-        MenuJeu = new javax.swing.JPanel();
-        labelTitre4 = new javax.swing.JLabel();
-        separateur25 = new javax.swing.JSeparator();
-        labelLignes4 = new javax.swing.JLabel();
-        spinnerLignes4 = new javax.swing.JSpinner();
-        labelColonnes4 = new javax.swing.JLabel();
-        spinnerColonnes4 = new javax.swing.JSpinner();
-        labelTypes4 = new javax.swing.JLabel();
-        spinnerTypes4 = new javax.swing.JSpinner();
-        separateur26 = new javax.swing.JSeparator();
-        boutonGenerer4 = new javax.swing.JButton();
+
+        // ── MenuPrincipal ────────────────────────────────────────────────────
+        MenuPrincipal    = new javax.swing.JPanel();
+        labelTitreJeu    = new javax.swing.JLabel();
+        boutonJouer      = new javax.swing.JButton();
+        boutonNiveaux    = new javax.swing.JButton();
+
+        // ── MenuNiveaux ──────────────────────────────────────────────────────
+        MenuNiveaux          = new javax.swing.JPanel();
+        labelTitreNiveaux    = new javax.swing.JLabel();
+        boutonNiveau1        = new javax.swing.JButton();
+        boutonNiveau2        = new javax.swing.JButton();
+        boutonNiveau3        = new javax.swing.JButton();
+        boutonNiveau4        = new javax.swing.JButton();
+        boutonNiveau5        = new javax.swing.JButton();
+        boutonNiveau6        = new javax.swing.JButton();
+        boutonNiveau7        = new javax.swing.JButton();
+        boutonNiveau8        = new javax.swing.JButton();
+        boutonNiveau9        = new javax.swing.JButton();
+        boutonRetourNiveaux  = new javax.swing.JButton();
+
+        // ── Écran de jeu : panneauEcranJeu (carte "MenuJeu") ─────────────────
+        // Architecture :
+        //   panneauEcranJeu (JPanel, BorderLayout)
+        //     ├─ CENTER : scrollGrille (JScrollPane) ← reçoit panneauJeu dans configurerPanneauJeu()
+        //     └─ EAST   : MenuJeu (JPanel, contrôles latéraux)
+        panneauEcranJeu  = new javax.swing.JPanel();
+        scrollGrille     = new javax.swing.JScrollPane();
+        MenuJeu          = new javax.swing.JPanel();
+
+        // ── Composants de MenuJeu ────────────────────────────────────────────
+        labelTitre4         = new javax.swing.JLabel();
+        separateur25        = new javax.swing.JSeparator();
+        labelLignes4        = new javax.swing.JLabel();
+        spinnerLignes4      = new javax.swing.JSpinner();
+        labelColonnes4      = new javax.swing.JLabel();
+        spinnerColonnes4    = new javax.swing.JSpinner();
+        labelTypes4         = new javax.swing.JLabel();
+        spinnerTypes4       = new javax.swing.JSpinner();
+        separateur26        = new javax.swing.JSeparator();
+        boutonGenerer4      = new javax.swing.JButton();
         boutonNouvellePartie4 = new javax.swing.JButton();
-        boutonAide4 = new javax.swing.JButton();
+        boutonAide4         = new javax.swing.JButton();
         boutonMeilleurCoup4 = new javax.swing.JButton();
-        separateur27 = new javax.swing.JSeparator();
-        labelIaCoups4 = new javax.swing.JLabel();
-        spinnerIaCoups4 = new javax.swing.JSpinner();
-        boutonIaJoue4 = new javax.swing.JButton();
-        separateur28 = new javax.swing.JSeparator();
-        labelScore4 = new javax.swing.JLabel();
-        champScore4 = new javax.swing.JTextField();
-        barreScore4 = new javax.swing.JProgressBar();
-        labelObjectif4 = new javax.swing.JLabel();
-        labelCoupsMax4 = new javax.swing.JLabel();
-        separateur29 = new javax.swing.JSeparator();
-        labelStatus4 = new javax.swing.JLabel();
-        separateur30 = new javax.swing.JSeparator();
-        scrollMessages4 = new javax.swing.JScrollPane();
-        zoneMessages4 = new javax.swing.JTextArea();
-        boutonQuitter5 = new javax.swing.JButton();
+        separateur27        = new javax.swing.JSeparator();
+        labelIaCoups4       = new javax.swing.JLabel();
+        spinnerIaCoups4     = new javax.swing.JSpinner();
+        boutonIaJoue4       = new javax.swing.JButton();
+        separateur28        = new javax.swing.JSeparator();
+        labelScore4         = new javax.swing.JLabel();
+        champScore4         = new javax.swing.JTextField();
+        barreScore4         = new javax.swing.JProgressBar();
+        labelObjectif4      = new javax.swing.JLabel();
+        labelCoupsMax4      = new javax.swing.JLabel();
+        separateur29        = new javax.swing.JSeparator();
+        labelStatus4        = new javax.swing.JLabel();
+        separateur30        = new javax.swing.JSeparator();
+        scrollMessages4     = new javax.swing.JScrollPane();
+        zoneMessages4       = new javax.swing.JTextArea();
+        boutonQuitter5      = new javax.swing.JButton();
 
+        // ── Composants hors écran (non visuels) ──────────────────────────────
         jLabel6.setText("jLabel6");
-
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -264,12 +277,15 @@ public class FenetreGraphiquePropreV1 extends javax.swing.JFrame {
 
         panneauConteneur.setLayout(new java.awt.CardLayout());
 
-        labelTitreJeu.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
-        labelTitreJeu.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        // ─────────────────────────────────────────────────────────────────────
+        // CARTE 1 : MenuPrincipal
+        // ─────────────────────────────────────────────────────────────────────
+        labelTitreJeu.setFont(new java.awt.Font("Dialog", java.awt.Font.BOLD, 36));
         labelTitreJeu.setText("✦ GemCrush");
+        labelTitreJeu.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        boutonJouer.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         boutonJouer.setText("▶  Jouer");
+        boutonJouer.setFont(new java.awt.Font("Dialog", java.awt.Font.BOLD, 18));
         boutonJouer.setToolTipText("");
         boutonJouer.setActionCommand("BoutonJouer");
         boutonJouer.addActionListener(new java.awt.event.ActionListener() {
@@ -278,8 +294,8 @@ public class FenetreGraphiquePropreV1 extends javax.swing.JFrame {
             }
         });
 
-        boutonNiveaux.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         boutonNiveaux.setText("☆  Niveaux");
+        boutonNiveaux.setFont(new java.awt.Font("Dialog", java.awt.Font.PLAIN, 16));
         boutonNiveaux.setToolTipText("");
         boutonNiveaux.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -290,141 +306,105 @@ public class FenetreGraphiquePropreV1 extends javax.swing.JFrame {
         javax.swing.GroupLayout MenuPrincipalLayout = new javax.swing.GroupLayout(MenuPrincipal);
         MenuPrincipal.setLayout(MenuPrincipalLayout);
         MenuPrincipalLayout.setHorizontalGroup(
-            MenuPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MenuPrincipalLayout.createSequentialGroup()
+            MenuPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+            .addGroup(MenuPrincipalLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(MenuPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(labelTitreJeu, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(boutonJouer, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(boutonNiveaux, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(MenuPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(labelTitreJeu,  javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(boutonJouer,    javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(boutonNiveaux,  javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         MenuPrincipalLayout.setVerticalGroup(
             MenuPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MenuPrincipalLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(labelTitreJeu, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(labelTitreJeu,  javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(50, 50, 50)
-                .addComponent(boutonJouer, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(boutonJouer,    javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
-                .addComponent(boutonNiveaux, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(boutonNiveaux,  javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         panneauConteneur.add(MenuPrincipal, "MenuPrincipal");
         MenuPrincipal.getAccessibleContext().setAccessibleName("");
 
-        labelTitreNiveaux.setFont(new java.awt.Font("Dialog", 1, 26)); // NOI18N
-        labelTitreNiveaux.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        // ─────────────────────────────────────────────────────────────────────
+        // CARTE 2 : MenuNiveaux
+        // ─────────────────────────────────────────────────────────────────────
+        labelTitreNiveaux.setFont(new java.awt.Font("Dialog", java.awt.Font.BOLD, 26));
         labelTitreNiveaux.setText("Choisissez un niveau");
+        labelTitreNiveaux.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        boutonNiveau1.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
-        boutonNiveau1.setText("Niveau 1");
-        boutonNiveau1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boutonNiveau1ActionPerformed(evt);
-            }
-        });
+        String[] textesBoutons = {
+            "Niveau 1","Niveau 2","Niveau 3",
+            "Niveau 4","Niveau 5","Niveau 6",
+            "Niveau 7","Niveau 8","Niveau 9"
+        };
+        javax.swing.JButton[] boutonsNiveau = {
+            boutonNiveau1, boutonNiveau2, boutonNiveau3,
+            boutonNiveau4, boutonNiveau5, boutonNiveau6,
+            boutonNiveau7, boutonNiveau8, boutonNiveau9
+        };
+        for (int i = 0; i < boutonsNiveau.length; i++) {
+            boutonsNiveau[i].setText(textesBoutons[i]);
+            boutonsNiveau[i].setFont(new java.awt.Font("Dialog", java.awt.Font.PLAIN, 15));
+        }
+        boutonNiveau1.addActionListener(e -> lancerNiveau(1));
+        boutonNiveau2.addActionListener(e -> lancerNiveau(2));
+        boutonNiveau3.addActionListener(e -> lancerNiveau(3));
+        boutonNiveau4.addActionListener(e -> lancerNiveau(4));
+        boutonNiveau5.addActionListener(e -> lancerNiveau(5));
+        boutonNiveau6.addActionListener(e -> lancerNiveau(6));
+        boutonNiveau7.addActionListener(e -> lancerNiveau(7));
+        boutonNiveau8.addActionListener(e -> lancerNiveau(8));
+        boutonNiveau9.addActionListener(e -> lancerNiveau(9));
 
-        boutonNiveau2.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
-        boutonNiveau2.setText("Niveau 2");
-        boutonNiveau2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boutonNiveau2ActionPerformed(evt);
-            }
-        });
-
-        boutonNiveau3.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
-        boutonNiveau3.setText("Niveau 3");
-        boutonNiveau3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boutonNiveau3ActionPerformed(evt);
-            }
-        });
-
-        boutonNiveau4.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
-        boutonNiveau4.setText("Niveau 4");
-        boutonNiveau4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boutonNiveau4ActionPerformed(evt);
-            }
-        });
-
-        boutonNiveau5.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
-        boutonNiveau5.setText("Niveau 5");
-        boutonNiveau5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boutonNiveau5ActionPerformed(evt);
-            }
-        });
-
-        boutonNiveau6.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
-        boutonNiveau6.setText("Niveau 6");
-        boutonNiveau6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boutonNiveau6ActionPerformed(evt);
-            }
-        });
-
-        boutonNiveau7.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
-        boutonNiveau7.setText("Niveau 7");
-        boutonNiveau7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boutonNiveau7ActionPerformed(evt);
-            }
-        });
-
-        boutonNiveau8.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
-        boutonNiveau8.setText("Niveau 8");
-        boutonNiveau8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boutonNiveau8ActionPerformed(evt);
-            }
-        });
-
-        boutonNiveau9.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
-        boutonNiveau9.setText("Niveau 9");
-        boutonNiveau9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boutonNiveau9ActionPerformed(evt);
-            }
-        });
-
-        boutonRetourNiveaux.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         boutonRetourNiveaux.setText("← Retour");
+        boutonRetourNiveaux.setFont(new java.awt.Font("Dialog", java.awt.Font.PLAIN, 14));
         boutonRetourNiveaux.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 boutonRetourNiveauxActionPerformed(evt);
             }
         });
 
+        int BW = 160, BH = 70;
         javax.swing.GroupLayout MenuNiveauxLayout = new javax.swing.GroupLayout(MenuNiveaux);
         MenuNiveaux.setLayout(MenuNiveauxLayout);
         MenuNiveauxLayout.setHorizontalGroup(
-            MenuNiveauxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            MenuNiveauxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
             .addGroup(MenuNiveauxLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(MenuNiveauxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelTitreNiveaux, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(MenuNiveauxLayout.createSequentialGroup()
-                        .addComponent(boutonNiveau1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(boutonNiveau2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(boutonNiveau3, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(MenuNiveauxLayout.createSequentialGroup()
-                        .addComponent(boutonNiveau4, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(boutonNiveau5, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(boutonNiveau6, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(MenuNiveauxLayout.createSequentialGroup()
-                        .addComponent(boutonNiveau7, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(boutonNiveau8, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(boutonNiveau9, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(boutonRetourNiveaux, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(labelTitreNiveaux, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(MenuNiveauxLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(boutonNiveau1, javax.swing.GroupLayout.PREFERRED_SIZE, BW, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(boutonNiveau2, javax.swing.GroupLayout.PREFERRED_SIZE, BW, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(boutonNiveau3, javax.swing.GroupLayout.PREFERRED_SIZE, BW, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(MenuNiveauxLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(boutonNiveau4, javax.swing.GroupLayout.PREFERRED_SIZE, BW, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(boutonNiveau5, javax.swing.GroupLayout.PREFERRED_SIZE, BW, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(boutonNiveau6, javax.swing.GroupLayout.PREFERRED_SIZE, BW, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(MenuNiveauxLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(boutonNiveau7, javax.swing.GroupLayout.PREFERRED_SIZE, BW, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(boutonNiveau8, javax.swing.GroupLayout.PREFERRED_SIZE, BW, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(boutonNiveau9, javax.swing.GroupLayout.PREFERRED_SIZE, BW, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(MenuNiveauxLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(boutonRetourNiveaux, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         MenuNiveauxLayout.setVerticalGroup(
@@ -434,19 +414,19 @@ public class FenetreGraphiquePropreV1 extends javax.swing.JFrame {
                 .addComponent(labelTitreNiveaux, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addGroup(MenuNiveauxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(boutonNiveau1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(boutonNiveau2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(boutonNiveau3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(boutonNiveau1, javax.swing.GroupLayout.PREFERRED_SIZE, BH, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(boutonNiveau2, javax.swing.GroupLayout.PREFERRED_SIZE, BH, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(boutonNiveau3, javax.swing.GroupLayout.PREFERRED_SIZE, BH, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(16, 16, 16)
                 .addGroup(MenuNiveauxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(boutonNiveau4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(boutonNiveau5, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(boutonNiveau6, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(boutonNiveau4, javax.swing.GroupLayout.PREFERRED_SIZE, BH, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(boutonNiveau5, javax.swing.GroupLayout.PREFERRED_SIZE, BH, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(boutonNiveau6, javax.swing.GroupLayout.PREFERRED_SIZE, BH, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(16, 16, 16)
                 .addGroup(MenuNiveauxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(boutonNiveau7, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(boutonNiveau8, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(boutonNiveau9, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(boutonNiveau7, javax.swing.GroupLayout.PREFERRED_SIZE, BH, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(boutonNiveau8, javax.swing.GroupLayout.PREFERRED_SIZE, BH, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(boutonNiveau9, javax.swing.GroupLayout.PREFERRED_SIZE, BH, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addComponent(boutonRetourNiveaux, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -454,17 +434,21 @@ public class FenetreGraphiquePropreV1 extends javax.swing.JFrame {
 
         panneauConteneur.add(MenuNiveaux, "MenuNiveaux");
 
-        MenuJeu.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        MenuJeu.setMaximumSize(new java.awt.Dimension(1000, 912));
-        MenuJeu.setPreferredSize(new java.awt.Dimension(1000, 912));
+        // ─────────────────────────────────────────────────────────────────────
+        // CARTE 3 : panneauEcranJeu (clé "MenuJeu")
+        //   BorderLayout : scrollGrille (CENTER) + MenuJeu contrôles (EAST)
+        // ─────────────────────────────────────────────────────────────────────
+        panneauEcranJeu.setLayout(new java.awt.BorderLayout());
+        panneauEcranJeu.add(scrollGrille, java.awt.BorderLayout.CENTER);
+
+        // ── MenuJeu : panneau de contrôle latéral (EAST) ─────────────────────
+        MenuJeu.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
         labelTitre4.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
         labelTitre4.setText("✦ GemCrush");
 
         labelLignes4.setText("Lignes :");
-
         labelColonnes4.setText("Colonnes :");
-
         labelTypes4.setText("Types de tuiles :");
 
         boutonGenerer4.setText("Générer");
@@ -511,9 +495,7 @@ public class FenetreGraphiquePropreV1 extends javax.swing.JFrame {
         champScore4.setText("0");
 
         labelObjectif4.setText("Objectif : —");
-
         labelCoupsMax4.setText("Coups max : —");
-
         labelStatus4.setText("Prêt à jouer…");
 
         zoneMessages4.setEditable(false);
@@ -534,7 +516,7 @@ public class FenetreGraphiquePropreV1 extends javax.swing.JFrame {
         MenuJeuLayout.setHorizontalGroup(
             MenuJeuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(labelTitre4)
-            .addComponent(separateur25, 0, 4472, Short.MAX_VALUE)
+            .addComponent(separateur25, 0, 4484, Short.MAX_VALUE)
             .addGroup(MenuJeuLayout.createSequentialGroup()
                 .addComponent(labelLignes4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -547,30 +529,30 @@ public class FenetreGraphiquePropreV1 extends javax.swing.JFrame {
                 .addComponent(labelTypes4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(spinnerTypes4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(separateur26, 0, 4472, Short.MAX_VALUE)
-            .addComponent(boutonGenerer4, 0, 4472, Short.MAX_VALUE)
-            .addComponent(boutonNouvellePartie4, 0, 4472, Short.MAX_VALUE)
-            .addComponent(boutonAide4, 0, 4472, Short.MAX_VALUE)
-            .addComponent(boutonMeilleurCoup4, 0, 4472, Short.MAX_VALUE)
-            .addComponent(separateur27, 0, 4472, Short.MAX_VALUE)
+            .addComponent(separateur26, 0, 4484, Short.MAX_VALUE)
+            .addComponent(boutonGenerer4, 0, 4484, Short.MAX_VALUE)
+            .addComponent(boutonNouvellePartie4, 0, 4484, Short.MAX_VALUE)
+            .addComponent(boutonAide4, 0, 4484, Short.MAX_VALUE)
+            .addComponent(boutonMeilleurCoup4, 0, 4484, Short.MAX_VALUE)
+            .addComponent(separateur27, 0, 4484, Short.MAX_VALUE)
             .addGroup(MenuJeuLayout.createSequentialGroup()
                 .addComponent(labelIaCoups4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(spinnerIaCoups4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(boutonIaJoue4, 0, 4472, Short.MAX_VALUE)
-            .addComponent(separateur28, 0, 4472, Short.MAX_VALUE)
+            .addComponent(boutonIaJoue4, 0, 4484, Short.MAX_VALUE)
+            .addComponent(separateur28, 0, 4484, Short.MAX_VALUE)
             .addGroup(MenuJeuLayout.createSequentialGroup()
                 .addComponent(labelScore4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(champScore4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(barreScore4, 0, 4472, Short.MAX_VALUE)
+            .addComponent(barreScore4, 0, 4484, Short.MAX_VALUE)
             .addComponent(labelObjectif4)
             .addComponent(labelCoupsMax4)
-            .addComponent(separateur29, 0, 4472, Short.MAX_VALUE)
+            .addComponent(separateur29, 0, 4484, Short.MAX_VALUE)
             .addComponent(labelStatus4)
-            .addComponent(separateur30, 0, 4472, Short.MAX_VALUE)
-            .addComponent(scrollMessages4, 0, 4472, Short.MAX_VALUE)
-            .addComponent(boutonQuitter5, 0, 4472, Short.MAX_VALUE)
+            .addComponent(separateur30, 0, 4484, Short.MAX_VALUE)
+            .addComponent(scrollMessages4, 0, 4484, Short.MAX_VALUE)
+            .addComponent(boutonQuitter5, 0, 4484, Short.MAX_VALUE)
         );
         MenuJeuLayout.setVerticalGroup(
             MenuJeuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -632,10 +614,13 @@ public class FenetreGraphiquePropreV1 extends javax.swing.JFrame {
                 .addComponent(boutonQuitter5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        scrollGrille.setViewportView(MenuJeu);
+        // MenuJeu (contrôles) est placé à l'EST de panneauEcranJeu
+        panneauEcranJeu.add(MenuJeu, java.awt.BorderLayout.EAST);
 
-        panneauConteneur.add(scrollGrille, "MenuJeu");
+        // panneauEcranJeu est la carte "MenuJeu" du CardLayout
+        panneauConteneur.add(panneauEcranJeu, "MenuJeu");
 
+        // ── Ajout de panneauConteneur à la fenêtre ───────────────────────────
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
@@ -833,6 +818,7 @@ public class FenetreGraphiquePropreV1 extends javax.swing.JFrame {
     private javax.swing.JLabel labelTitreNiveaux;
     private javax.swing.JLabel labelTypes4;
     private javax.swing.JPanel panneauConteneur;
+    private javax.swing.JPanel panneauEcranJeu;
     private javax.swing.JScrollPane scrollGrille;
     private javax.swing.JScrollPane scrollMessages4;
     private javax.swing.JSeparator separateur25;
