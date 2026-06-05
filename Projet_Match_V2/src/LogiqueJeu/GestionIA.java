@@ -166,12 +166,14 @@ public class GestionIA {
                 int maxScore = -1, maxTuiles = -1;
 
                 for (int i = 0; i < possibles.size(); i += 2) {
+                    SonManager.desactiver();
                     Coord c1 = possibles.get(i);
                     Coord c2 = possibles.get(i + 1);
                     Plateau copie = plateau.copy();
                     copie.echangerTuiles(c1, c2);
                     int tuiles = suppression.supprimerTousLesMatchs(copie, rand);
                     int score = copie.getScore();
+                    SonManager.activer();
 
                     if (score > maxScore || (score == maxScore && tuiles > maxTuiles)) {
                         maxScore = score;
