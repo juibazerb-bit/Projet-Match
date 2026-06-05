@@ -1,10 +1,10 @@
 package Affichage;
 
+import Controleur.Niveau;
 import FenetreGraphique.FenetreGraphique;
 import Modele.Coord;
 import Modele.Plateau;
 import Modele.Tuile;
-import Plateau.Niveau;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;

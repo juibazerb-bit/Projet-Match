@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * @author fpauvert
  */
 public class FenetreGraphiquePropre extends javax.swing.JFrame {
-
+/** Logger de la classe pour centraliser la gestion des traces et des erreurs. */
     private static final java.util.logging.Logger LOGGER
             = java.util.logging.Logger.getLogger(FenetreGraphiquePropre.class.getName());
 
@@ -60,20 +60,31 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
      * Configure les modèles de valeurs des spinners (variables suffixe 4).
      */
     private void configurerSpinners() {
-        spinnerLignes4.setModel(new javax.swing.SpinnerNumberModel(nbLig, 3, 30, 1));
-        spinnerColonnes4.setModel(new javax.swing.SpinnerNumberModel(nbCol, 3, 30, 1));
+        spinnerLignes4.setModel(new javax.swing.SpinnerNumberModel(nbLig, 3, 92, 1));
+        spinnerColonnes4.setModel(new javax.swing.SpinnerNumberModel(nbCol, 3, 92, 1));
         spinnerTypes4.setModel(new javax.swing.SpinnerNumberModel(nbTypes, 2, 14, 1));
         spinnerIaCoups4.setModel(new javax.swing.SpinnerNumberModel(10, 1, 100, 1));
     }
 
     /**
-     * Crée et intègre le PanneauJeu dans scrollGrille.
-     * scrollGrille est le panneau GAUCHE de panneauEcranJeu (BorderLayout CENTER).
-     * MenuJeu (contrôles) est le panneau DROIT (BorderLayout EAST).
+     * Crée et intègre le PanneauJeu au centre de scrollGrille.
      */
     private void configurerPanneauJeu() {
         panneauJeu = new PanneauJeu();
-        scrollGrille.setViewportView(panneauJeu);
+        
+        // 1. Créer un conteneur intermédiaire qui va forcer le centrage
+        javax.swing.JPanel conteneurCentreur = new javax.swing.JPanel(new java.awt.GridBagLayout());
+        
+        // Optionnel : donner au conteneur la même couleur de fond que le JScrollPane/PanneauJeu
+        conteneurCentreur.setBackground(scrollGrille.getBackground()); 
+        
+        // 2. Ajouter la grille dans ce conteneur (sans contraintes, elle se place au centre)
+        conteneurCentreur.add(panneauJeu);
+        
+        // 3. Mettre le conteneur dans le JScrollPane à la place de la grille seule
+        scrollGrille.setViewportView(conteneurCentreur);
+        
+        // 4. Conserver ton écouteur de clics
         panneauJeu.setCoupJouer(this::mettreAJourScore);
     }
 
@@ -90,34 +101,38 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
      * IllegalComponentStateException sur les fenêtres déjà affichées.
      */
     private void entrerPleinEcranJeu() {
-        if (gd.isFullScreenSupported()) {
-            dispose();                      // libère la fenêtre native
-            setUndecorated(true);           // retire la barre de titre
-            setVisible(true);               // réaffiche avant de passer en plein écran
-            gd.setFullScreenWindow(this);
-        } else {
-            setExtendedState(MAXIMIZED_BOTH);
-        }
-        afficherEcran("MenuJeu");
+    if (gd.isFullScreenSupported()) {
+        dispose();                      // 1. On libère la fenêtre native
+        setUndecorated(true);           // 2. On retire la barre de titre
+        gd.setFullScreenWindow(this);   // 3. On passe en plein écran D'ABORD (gère la visibilité)
+        setVisible(true);               // 4. On s'assure qu'elle est visible
+    } else {
+        setExtendedState(MAXIMIZED_BOTH);
+        setVisible(true);
     }
+    
+    // On change d'écran ET on force Swing à recalculer les dimensions immédiatement
+    afficherEcran("EcranJeu");
+    panneauConteneur.revalidate();
+    panneauConteneur.repaint();
+}
 
-    /**
-     * Quitte le plein écran et revient à l'écran demandé.
-     * CORRECTION : dispose() + setUndecorated(false) + setVisible() dans le bon ordre.
-     */
-    private void quitterPleinEcran(String ecranCible) {
-        if (gd.getFullScreenWindow() == this) {
-            gd.setFullScreenWindow(null);
-            dispose();                      // libère la fenêtre native
-            setUndecorated(false);          // remet la barre de titre
-            setVisible(true);               // réaffiche en mode fenêtré
-            pack();
-            setLocationRelativeTo(null);
-        } else {
-            setExtendedState(NORMAL);
-        }
-        afficherEcran(ecranCible);
+private void quitterPleinEcran(String ecranCible) {
+    if (gd.getFullScreenWindow() == this) {
+        gd.setFullScreenWindow(null);   // 1. On désactive le plein écran natif
+        dispose();                      // 2. On libère la fenêtre
+        setUndecorated(false);          // 3. On remet la barre de titre
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);               // 4. On réaffiche en mode fenêtré à la fin
+    } else {
+        setExtendedState(NORMAL);
     }
+    
+    afficherEcran(ecranCible);
+    panneauConteneur.revalidate();
+    panneauConteneur.repaint();
+}
 
     /** Mode libre : lance une partie sans contrainte de niveau. */
     private void lancerModeLibre() {
@@ -191,6 +206,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
             logMessage("Niveau terminé avec " + score + " points !");
         }
     }
+    
 
     // ─────────────────────────────────────────────────────────────────────────
     // CODE GÉNÉRÉ PAR NETBEANS – NE PAS MODIFIER MANUELLEMENT
@@ -198,7 +214,6 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jLabel6 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
@@ -220,6 +235,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         boutonNiveau8 = new javax.swing.JButton();
         boutonNiveau9 = new javax.swing.JButton();
         boutonRetourNiveaux = new javax.swing.JButton();
+        EcranJeu = new javax.swing.JPanel();
         scrollGrille = new javax.swing.JScrollPane();
         MenuJeu = new javax.swing.JPanel();
         labelTitre4 = new javax.swing.JLabel();
@@ -256,7 +272,6 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1000, 1000));
-        getContentPane().setLayout(new java.awt.GridBagLayout());
 
         panneauConteneur.setMaximumSize(new java.awt.Dimension(1000, 1000));
         panneauConteneur.setMinimumSize(new java.awt.Dimension(1000, 1000));
@@ -290,13 +305,14 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         MenuPrincipal.setLayout(MenuPrincipalLayout);
         MenuPrincipalLayout.setHorizontalGroup(
             MenuPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MenuPrincipalLayout.createSequentialGroup()
-                .addContainerGap(2070, Short.MAX_VALUE)
-                .addGroup(MenuPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(labelTitreJeu, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(boutonJouer, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(boutonNiveaux, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(2070, Short.MAX_VALUE))
+            .addGroup(MenuPrincipalLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(MenuPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(MenuPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                        .addComponent(boutonNiveaux, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(labelTitreJeu, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(boutonJouer, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         MenuPrincipalLayout.setVerticalGroup(
             MenuPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -452,7 +468,9 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         );
 
         panneauConteneur.add(MenuNiveaux, "MenuNiveaux");
-        panneauConteneur.add(scrollGrille, "MenuJeu");
+
+        EcranJeu.setLayout(new java.awt.BorderLayout());
+        EcranJeu.add(scrollGrille, java.awt.BorderLayout.CENTER);
 
         MenuJeu.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
@@ -468,28 +486,28 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         boutonGenerer4.setText("Générer");
         boutonGenerer4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boutonGenererActionPerformed(evt);
+                boutonGenerer4ActionPerformed(evt);
             }
         });
 
         boutonNouvellePartie4.setText("Nouvelle partie");
         boutonNouvellePartie4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boutonNouvellePartieActionPerformed(evt);
+                boutonNouvellePartie4ActionPerformed(evt);
             }
         });
 
         boutonAide4.setText("Aide (meilleur coup)");
         boutonAide4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boutonAideActionPerformed(evt);
+                boutonAide4ActionPerformed(evt);
             }
         });
 
         boutonMeilleurCoup4.setText("Meilleur coup stat.");
         boutonMeilleurCoup4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boutonMeilleurCoupActionPerformed(evt);
+                boutonMeilleurCoup4ActionPerformed(evt);
             }
         });
 
@@ -498,7 +516,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         boutonIaJoue4.setText("IA joue N coups");
         boutonIaJoue4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boutonIaJoueActionPerformed(evt);
+                boutonIaJoue4ActionPerformed(evt);
             }
         });
 
@@ -523,7 +541,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         boutonQuitter5.setText("Quitter");
         boutonQuitter5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boutonQuitterActionPerformed(evt);
+                boutonQuitter5ActionPerformed(evt);
             }
         });
 
@@ -532,7 +550,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         MenuJeuLayout.setHorizontalGroup(
             MenuJeuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(labelTitre4)
-            .addComponent(separateur25, 0, 4538, Short.MAX_VALUE)
+            .addComponent(separateur25, 0, 367, Short.MAX_VALUE)
             .addGroup(MenuJeuLayout.createSequentialGroup()
                 .addComponent(labelLignes4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -545,30 +563,33 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
                 .addComponent(labelTypes4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(spinnerTypes4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(separateur26, 0, 4538, Short.MAX_VALUE)
-            .addComponent(boutonGenerer4, 0, 4538, Short.MAX_VALUE)
-            .addComponent(boutonNouvellePartie4, 0, 4538, Short.MAX_VALUE)
-            .addComponent(boutonAide4, 0, 4538, Short.MAX_VALUE)
-            .addComponent(boutonMeilleurCoup4, 0, 4538, Short.MAX_VALUE)
-            .addComponent(separateur27, 0, 4538, Short.MAX_VALUE)
+            .addComponent(separateur26, 0, 367, Short.MAX_VALUE)
+            .addComponent(boutonGenerer4, 0, 367, Short.MAX_VALUE)
+            .addComponent(boutonNouvellePartie4, 0, 367, Short.MAX_VALUE)
+            .addComponent(boutonAide4, 0, 367, Short.MAX_VALUE)
+            .addComponent(boutonMeilleurCoup4, 0, 367, Short.MAX_VALUE)
+            .addComponent(separateur27, 0, 367, Short.MAX_VALUE)
             .addGroup(MenuJeuLayout.createSequentialGroup()
                 .addComponent(labelIaCoups4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(spinnerIaCoups4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(boutonIaJoue4, 0, 4538, Short.MAX_VALUE)
-            .addComponent(separateur28, 0, 4538, Short.MAX_VALUE)
+            .addComponent(boutonIaJoue4, 0, 367, Short.MAX_VALUE)
+            .addComponent(separateur28, 0, 367, Short.MAX_VALUE)
             .addGroup(MenuJeuLayout.createSequentialGroup()
                 .addComponent(labelScore4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(champScore4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(barreScore4, 0, 4538, Short.MAX_VALUE)
+            .addComponent(barreScore4, 0, 367, Short.MAX_VALUE)
             .addComponent(labelObjectif4)
             .addComponent(labelCoupsMax4)
-            .addComponent(separateur29, 0, 4538, Short.MAX_VALUE)
+            .addComponent(separateur29, 0, 367, Short.MAX_VALUE)
             .addComponent(labelStatus4)
-            .addComponent(separateur30, 0, 4538, Short.MAX_VALUE)
-            .addComponent(scrollMessages4, 0, 4538, Short.MAX_VALUE)
-            .addComponent(boutonQuitter5, 0, 4538, Short.MAX_VALUE)
+            .addComponent(separateur30, 0, 367, Short.MAX_VALUE)
+            .addComponent(scrollMessages4, 0, 367, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MenuJeuLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(boutonQuitter5, 0, 355, Short.MAX_VALUE)
+                .addContainerGap())
         );
         MenuJeuLayout.setVerticalGroup(
             MenuJeuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -624,94 +645,22 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
                 .addComponent(labelStatus4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
                 .addComponent(separateur30, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(scrollMessages4, javax.swing.GroupLayout.PREFERRED_SIZE, 483, Short.MAX_VALUE)
-                .addGap(8, 8, 8)
-                .addComponent(boutonQuitter5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(scrollMessages4, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(boutonQuitter5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(170, 170, 170))
         );
 
-        panneauConteneur.add(MenuJeu, "card5");
+        EcranJeu.add(MenuJeu, java.awt.BorderLayout.EAST);
+        MenuJeu.getAccessibleContext().setAccessibleName("card5");
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        getContentPane().add(panneauConteneur, gridBagConstraints);
+        panneauConteneur.add(EcranJeu, "EcranJeu");
+
+        getContentPane().add(panneauConteneur, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    // ─────────────────────────────────────────────────────────────────────────
-    // GESTIONNAIRES D'ÉVÉNEMENTS
-    // ─────────────────────────────────────────────────────────────────────────
-
-    private void boutonGenererActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonGenererActionPerformed
-        int lig   = (int) spinnerLignes4.getValue();
-        int col   = (int) spinnerColonnes4.getValue();
-        int types = (int) spinnerTypes4.getValue();
-        initialiserPlateau(lig, col, types);
-    }//GEN-LAST:event_boutonGenererActionPerformed
-
-    private void boutonNouvellePartieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonNouvellePartieActionPerformed
-        initialiserPlateau(nbLig, nbCol, nbTypes);
-    }//GEN-LAST:event_boutonNouvellePartieActionPerformed
-
-    private void boutonAideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonAideActionPerformed
-        if (plateau == null) return;
-        String conseil = panneauJeu.aideOrdiString(plateau);
-        labelStatus4.setText("💡 " + conseil);
-        logMessage("Aide : " + conseil);
-    }//GEN-LAST:event_boutonAideActionPerformed
-
-    private void boutonMeilleurCoupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonMeilleurCoupActionPerformed
-        if (plateau == null) return;
-        labelStatus4.setText("Calcul en cours…");
-        // Lance dans un thread pour ne pas bloquer l'EDT
-        new Thread(() -> {
-            ArrayList<Coord> coup = ia.obtenirMeilleurCoupStatistique(plateau, 200);
-            javax.swing.SwingUtilities.invokeLater(() -> {
-                if (coup.isEmpty()) {
-                    labelStatus4.setText("Aucun coup possible !");
-                } else {
-                    String txt = coup.get(0) + " ↔ " + coup.get(1);
-                    labelStatus4.setText("📊 Stat : " + txt);
-                    logMessage("Meilleur coup stat : " + txt);
-                }
-            });
-        }).start();
-    }//GEN-LAST:event_boutonMeilleurCoupActionPerformed
-
-    private void boutonIaJoueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonIaJoueActionPerformed
-        if (plateau == null) return;
-        int n = (int) spinnerIaCoups4.getValue();
-        labelStatus4.setText("🤖 IA en cours (" + n + " coups)…");
-        // Timer Swing pour animer un coup à la fois
-        javax.swing.Timer iaTimer = new javax.swing.Timer(150, null);
-        final int[] restants = {n};
-        iaTimer.addActionListener(e -> {
-            if (restants[0] <= 0 || panneauJeu.isAnimEnCours()) {
-                if (restants[0] <= 0) {
-                    iaTimer.stop();
-                    labelStatus4.setText("🤖 IA terminée. Score : " + plateau.getScore());
-                }
-                return;
-            }
-            ArrayList<Coord> coup = ia.aideOrdi(plateau);
-            if (coup.isEmpty()) {
-                iaTimer.stop();
-                labelStatus4.setText("🤖 IA bloquée – aucun coup possible.");
-                return;
-            }
-            panneauJeu.jouerCoup(coup.get(0), coup.get(1));
-            restants[0]--;
-            mettreAJourScore();
-        });
-        iaTimer.start();
-    }//GEN-LAST:event_boutonIaJoueActionPerformed
-
-    private void boutonQuitterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonQuitterActionPerformed
-        quitterPleinEcran("MenuPrincipal");
-    }//GEN-LAST:event_boutonQuitterActionPerformed
 
     private void boutonJouerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonJouerActionPerformed
         lancerModeLibre();
@@ -761,6 +710,77 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         afficherEcran("MenuPrincipal");
     }//GEN-LAST:event_boutonRetourNiveauxActionPerformed
 
+    private void boutonGenerer4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonGenerer4ActionPerformed
+        niveauCourant = null;
+        int lig   = (int) spinnerLignes4.getValue();
+        int col   = (int) spinnerColonnes4.getValue();
+        int types = (int) spinnerTypes4.getValue();
+        initialiserPlateau(lig, col, types);
+    }//GEN-LAST:event_boutonGenerer4ActionPerformed
+
+    private void boutonNouvellePartie4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonNouvellePartie4ActionPerformed
+        if (niveauCourant != null) {
+            lancerNiveau(niveauCourant.getNumeroNiveau());
+        } else {
+            initialiserPlateau(nbLig, nbCol, nbTypes);
+        }
+    }//GEN-LAST:event_boutonNouvellePartie4ActionPerformed
+
+    private void boutonAide4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonAide4ActionPerformed
+        if (plateau == null) return;
+        String conseil = panneauJeu.aideOrdiString(plateau);
+        labelStatus4.setText("💡 " + conseil);
+        logMessage("Aide : " + conseil);
+    }//GEN-LAST:event_boutonAide4ActionPerformed
+
+    private void boutonMeilleurCoup4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonMeilleurCoup4ActionPerformed
+        if (plateau == null) return;
+        labelStatus4.setText("Calcul en cours…");
+        new Thread(() -> {
+            ArrayList<Coord> coup = ia.obtenirMeilleurCoupStatistique(plateau, 200);
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                if (coup.isEmpty()) {
+                    labelStatus4.setText("Aucun coup possible !");
+                } else {
+                    String txt = coup.get(0) + " ↔ " + coup.get(1);
+                    labelStatus4.setText("📊 Stat : " + txt);
+                    logMessage("Meilleur coup stat : " + txt);
+                }
+            });
+        }).start();
+    }//GEN-LAST:event_boutonMeilleurCoup4ActionPerformed
+
+    private void boutonIaJoue4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonIaJoue4ActionPerformed
+        if (plateau == null) return;
+        int n = (int) spinnerIaCoups4.getValue();
+        labelStatus4.setText("🤖 IA en cours (" + n + " coups)…");
+        javax.swing.Timer iaTimer = new javax.swing.Timer(150, null);
+        final int[] restants = {n};
+        iaTimer.addActionListener(e -> {
+            if (restants[0] <= 0 || panneauJeu.isAnimEnCours()) {
+                if (restants[0] <= 0) {
+                    iaTimer.stop();
+                    labelStatus4.setText("🤖 IA terminée. Score : " + plateau.getScore());
+                }
+                return;
+            }
+            ArrayList<Coord> coup = ia.aideOrdi(plateau);
+            if (coup.isEmpty()) {
+                iaTimer.stop();
+                labelStatus4.setText("🤖 IA bloquée – aucun coup possible.");
+                return;
+            }
+            panneauJeu.jouerCoup(coup.get(0), coup.get(1));
+            restants[0]--;
+            mettreAJourScore();
+        });
+        iaTimer.start();
+    }//GEN-LAST:event_boutonIaJoue4ActionPerformed
+
+    private void boutonQuitter5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonQuitter5ActionPerformed
+        quitterPleinEcran("MenuPrincipal");
+    }//GEN-LAST:event_boutonQuitter5ActionPerformed
+
     // ─────────────────────────────────────────────────────────────────────────
     // UTILITAIRES
     // ─────────────────────────────────────────────────────────────────────────
@@ -792,6 +812,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
     // VARIABLES (générées par NetBeans – ne pas modifier)
     // ─────────────────────────────────────────────────────────────────────────
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel EcranJeu;
     private javax.swing.JPanel MenuJeu;
     private javax.swing.JPanel MenuNiveaux;
     private javax.swing.JPanel MenuPrincipal;

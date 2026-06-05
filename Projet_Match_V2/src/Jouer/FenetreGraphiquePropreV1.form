@@ -54,10 +54,6 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignCardLayout"/>
       <SubComponents>
-
-        <!-- ═══════════════════════════════════════════════════════════════ -->
-        <!-- MENU PRINCIPAL – boutons centrés, titrés, espacés              -->
-        <!-- ═══════════════════════════════════════════════════════════════ -->
         <Container class="javax.swing.JPanel" name="MenuPrincipal">
           <AccessibilityProperties>
             <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
@@ -71,7 +67,6 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <!-- Titre centré -->
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
@@ -103,8 +98,8 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Dialog" size="36" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="&#x2726; GemCrush"/>
                 <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="text" type="java.lang.String" value="&#x2726; GemCrush"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="boutonJouer">
@@ -134,10 +129,6 @@
             </Component>
           </SubComponents>
         </Container>
-
-        <!-- ═══════════════════════════════════════════════════════════════ -->
-        <!-- MENU NIVEAUX – grille 3×3 régulière + Retour centré            -->
-        <!-- ═══════════════════════════════════════════════════════════════ -->
         <Container class="javax.swing.JPanel" name="MenuNiveaux">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
@@ -148,46 +139,33 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <!-- Titre centré -->
-                  <Group type="102" alignment="1" attributes="0">
+                  <Group type="102" attributes="0">
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="labelTitreNiveaux" min="-2" pref="400" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
-                  <!-- Rangée 1 : N1, N2, N3 -->
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="boutonNiveau1" min="-2" pref="160" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                      <Component id="boutonNiveau2" min="-2" pref="160" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                      <Component id="boutonNiveau3" min="-2" pref="160" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
-                  <!-- Rangée 2 : N4, N5, N6 -->
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="boutonNiveau4" min="-2" pref="160" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                      <Component id="boutonNiveau5" min="-2" pref="160" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                      <Component id="boutonNiveau6" min="-2" pref="160" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
-                  <!-- Rangée 3 : N7, N8, N9 -->
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="boutonNiveau7" min="-2" pref="160" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                      <Component id="boutonNiveau8" min="-2" pref="160" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                      <Component id="boutonNiveau9" min="-2" pref="160" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
-                  <!-- Retour centré -->
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="boutonRetourNiveaux" min="-2" pref="200" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="labelTitreNiveaux" alignment="0" min="-2" pref="400" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="boutonNiveau1" min="-2" pref="160" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="boutonNiveau2" min="-2" pref="160" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="boutonNiveau3" min="-2" pref="160" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="boutonNiveau4" min="-2" pref="160" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="boutonNiveau5" min="-2" pref="160" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="boutonNiveau6" min="-2" pref="160" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="boutonNiveau7" min="-2" pref="160" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="boutonNiveau8" min="-2" pref="160" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="boutonNiveau9" min="-2" pref="160" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="boutonRetourNiveaux" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -198,28 +176,24 @@
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="labelTitreNiveaux" min="-2" pref="50" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                      <!-- Rangée 1 -->
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="boutonNiveau1" alignment="3" min="-2" pref="70" max="-2" attributes="0"/>
                           <Component id="boutonNiveau2" alignment="3" min="-2" pref="70" max="-2" attributes="0"/>
                           <Component id="boutonNiveau3" alignment="3" min="-2" pref="70" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                      <!-- Rangée 2 -->
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="boutonNiveau4" alignment="3" min="-2" pref="70" max="-2" attributes="0"/>
                           <Component id="boutonNiveau5" alignment="3" min="-2" pref="70" max="-2" attributes="0"/>
                           <Component id="boutonNiveau6" alignment="3" min="-2" pref="70" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                      <!-- Rangée 3 -->
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="boutonNiveau7" alignment="3" min="-2" pref="70" max="-2" attributes="0"/>
                           <Component id="boutonNiveau8" alignment="3" min="-2" pref="70" max="-2" attributes="0"/>
                           <Component id="boutonNiveau9" alignment="3" min="-2" pref="70" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                      <!-- Retour -->
                       <Component id="boutonRetourNiveaux" min="-2" pref="48" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
@@ -232,8 +206,8 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Dialog" size="26" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Choisissez un niveau"/>
                 <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="text" type="java.lang.String" value="Choisissez un niveau"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="boutonNiveau1">
@@ -348,10 +322,6 @@
             </Component>
           </SubComponents>
         </Container>
-
-        <!-- ═══════════════════════════════════════════════════════════════ -->
-        <!-- MENU JEU – NE PAS MODIFIER (clé corrigée : "MenuJeu")          -->
-        <!-- ═══════════════════════════════════════════════════════════════ -->
         <Container class="javax.swing.JScrollPane" name="scrollGrille">
           <AuxValues>
             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
@@ -363,281 +333,283 @@
           </Constraints>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-          <SubComponents>
-            <Container class="javax.swing.JPanel" name="MenuJeu">
-              <Properties>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                    <EmptyBorder/>
-                  </Border>
-                </Property>
-              </Properties>
+        </Container>
+        <Container class="javax.swing.JPanel" name="MenuJeu">
+          <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                <EmptyBorder/>
+              </Border>
+            </Property>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
+              <CardConstraints cardName="card5"/>
+            </Constraint>
+          </Constraints>
 
-              <Layout>
-                <DimensionLayout dim="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="labelTitre4" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="separateur25" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="labelLignes4" min="-2" pref="120" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="spinnerLignes4" min="-2" pref="70" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="labelColonnes4" min="-2" pref="120" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="spinnerColonnes4" min="-2" pref="70" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="labelTypes4" min="-2" pref="120" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="spinnerTypes4" min="-2" pref="70" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="separateur26" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
-                      <Component id="boutonGenerer4" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
-                      <Component id="boutonNouvellePartie4" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
-                      <Component id="boutonAide4" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
-                      <Component id="boutonMeilleurCoup4" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
-                      <Component id="separateur27" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="labelIaCoups4" min="-2" pref="120" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="spinnerIaCoups4" min="-2" pref="70" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="boutonIaJoue4" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
-                      <Component id="separateur28" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="labelScore4" min="-2" pref="80" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="champScore4" min="-2" pref="120" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="barreScore4" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
-                      <Component id="labelObjectif4" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="labelCoupsMax4" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="separateur29" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
-                      <Component id="labelStatus4" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="separateur30" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
-                      <Component id="scrollMessages4" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
-                      <Component id="boutonQuitter5" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="labelTitre4" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="separateur25" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="labelLignes4" min="-2" pref="120" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="spinnerLignes4" min="-2" pref="70" max="-2" attributes="0"/>
                   </Group>
-                </DimensionLayout>
-                <DimensionLayout dim="1">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="labelTitre4" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                          <Component id="separateur25" min="-2" pref="2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="labelLignes4" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="spinnerLignes4" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="labelColonnes4" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="spinnerColonnes4" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="labelTypes4" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="spinnerTypes4" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                          <Component id="separateur26" min="-2" pref="2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                          <Component id="boutonGenerer4" min="-2" pref="30" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                          <Component id="boutonNouvellePartie4" min="-2" pref="30" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                          <Component id="boutonAide4" min="-2" pref="30" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                          <Component id="boutonMeilleurCoup4" min="-2" pref="30" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                          <Component id="separateur27" min="-2" pref="2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="labelIaCoups4" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="spinnerIaCoups4" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                          <Component id="boutonIaJoue4" min="-2" pref="30" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                          <Component id="separateur28" min="-2" pref="2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="labelScore4" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="champScore4" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                          <Component id="barreScore4" min="-2" pref="18" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                          <Component id="labelObjectif4" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-                          <Component id="labelCoupsMax4" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                          <Component id="separateur29" min="-2" pref="2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                          <Component id="labelStatus4" min="-2" pref="22" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                          <Component id="separateur30" min="-2" pref="2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                          <Component id="scrollMessages4" min="-2" pref="395" max="32767" attributes="0"/>
-                          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                          <Component id="boutonQuitter5" min="-2" pref="30" max="-2" attributes="0"/>
-                      </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="labelColonnes4" min="-2" pref="120" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="spinnerColonnes4" min="-2" pref="70" max="-2" attributes="0"/>
                   </Group>
-                </DimensionLayout>
-              </Layout>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="labelTypes4" min="-2" pref="120" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="spinnerTypes4" min="-2" pref="70" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="separateur26" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
+                  <Component id="boutonGenerer4" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
+                  <Component id="boutonNouvellePartie4" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
+                  <Component id="boutonAide4" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
+                  <Component id="boutonMeilleurCoup4" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
+                  <Component id="separateur27" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="labelIaCoups4" min="-2" pref="120" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="spinnerIaCoups4" min="-2" pref="70" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="boutonIaJoue4" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
+                  <Component id="separateur28" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="labelScore4" min="-2" pref="80" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="champScore4" min="-2" pref="120" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="barreScore4" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
+                  <Component id="labelObjectif4" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelCoupsMax4" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="separateur29" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
+                  <Component id="labelStatus4" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="separateur30" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
+                  <Component id="scrollMessages4" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
+                  <Component id="boutonQuitter5" alignment="0" min="0" pref="4484" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="labelTitre4" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                      <Component id="separateur25" min="-2" pref="2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="labelLignes4" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="spinnerLignes4" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="labelColonnes4" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="spinnerColonnes4" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="labelTypes4" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="spinnerTypes4" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                      <Component id="separateur26" min="-2" pref="2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                      <Component id="boutonGenerer4" min="-2" pref="30" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                      <Component id="boutonNouvellePartie4" min="-2" pref="30" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                      <Component id="boutonAide4" min="-2" pref="30" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                      <Component id="boutonMeilleurCoup4" min="-2" pref="30" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                      <Component id="separateur27" min="-2" pref="2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="labelIaCoups4" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="spinnerIaCoups4" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                      <Component id="boutonIaJoue4" min="-2" pref="30" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                      <Component id="separateur28" min="-2" pref="2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="labelScore4" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="champScore4" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                      <Component id="barreScore4" min="-2" pref="18" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                      <Component id="labelObjectif4" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                      <Component id="labelCoupsMax4" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                      <Component id="separateur29" min="-2" pref="2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                      <Component id="labelStatus4" min="-2" pref="22" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                      <Component id="separateur30" min="-2" pref="2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                      <Component id="scrollMessages4" min="-2" pref="395" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                      <Component id="boutonQuitter5" min="-2" pref="30" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="labelTitre4">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Dialog" size="16" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="&#x2726; GemCrush"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JSeparator" name="separateur25">
+            </Component>
+            <Component class="javax.swing.JLabel" name="labelLignes4">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Lignes :"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JSpinner" name="spinnerLignes4">
+            </Component>
+            <Component class="javax.swing.JLabel" name="labelColonnes4">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Colonnes :"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JSpinner" name="spinnerColonnes4">
+            </Component>
+            <Component class="javax.swing.JLabel" name="labelTypes4">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Types de tuiles :"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JSpinner" name="spinnerTypes4">
+            </Component>
+            <Component class="javax.swing.JSeparator" name="separateur26">
+            </Component>
+            <Component class="javax.swing.JButton" name="boutonGenerer4">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="G&#xe9;n&#xe9;rer"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boutonGenerer4ActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="boutonNouvellePartie4">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Nouvelle partie"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boutonNouvellePartie4ActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="boutonAide4">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Aide (meilleur coup)"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boutonAide4ActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="boutonMeilleurCoup4">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Meilleur coup stat."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boutonMeilleurCoup4ActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JSeparator" name="separateur27">
+            </Component>
+            <Component class="javax.swing.JLabel" name="labelIaCoups4">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Coups IA :"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JSpinner" name="spinnerIaCoups4">
+            </Component>
+            <Component class="javax.swing.JButton" name="boutonIaJoue4">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="IA joue N coups"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boutonIaJoue4ActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JSeparator" name="separateur28">
+            </Component>
+            <Component class="javax.swing.JLabel" name="labelScore4">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Dialog" size="12" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Score :"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="champScore4">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="0"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JProgressBar" name="barreScore4">
+            </Component>
+            <Component class="javax.swing.JLabel" name="labelObjectif4">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Objectif : &#x2014;"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="labelCoupsMax4">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Coups max : &#x2014;"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JSeparator" name="separateur29">
+            </Component>
+            <Component class="javax.swing.JLabel" name="labelStatus4">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Pr&#xea;t &#xe0; jouer&#x2026;"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JSeparator" name="separateur30">
+            </Component>
+            <Container class="javax.swing.JScrollPane" name="scrollMessages4">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JLabel" name="labelTitre4">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Dialog" size="16" style="1"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="&#x2726; GemCrush"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JSeparator" name="separateur25">
-                </Component>
-                <Component class="javax.swing.JLabel" name="labelLignes4">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Lignes :"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JSpinner" name="spinnerLignes4">
-                </Component>
-                <Component class="javax.swing.JLabel" name="labelColonnes4">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Colonnes :"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JSpinner" name="spinnerColonnes4">
-                </Component>
-                <Component class="javax.swing.JLabel" name="labelTypes4">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Types de tuiles :"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JSpinner" name="spinnerTypes4">
-                </Component>
-                <Component class="javax.swing.JSeparator" name="separateur26">
-                </Component>
-                <Component class="javax.swing.JButton" name="boutonGenerer4">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="G&#xe9;n&#xe9;rer"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boutonGenerer4ActionPerformed"/>
-                  </Events>
-                </Component>
-                <Component class="javax.swing.JButton" name="boutonNouvellePartie4">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Nouvelle partie"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boutonNouvellePartie4ActionPerformed"/>
-                  </Events>
-                </Component>
-                <Component class="javax.swing.JButton" name="boutonAide4">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Aide (meilleur coup)"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boutonAide4ActionPerformed"/>
-                  </Events>
-                </Component>
-                <Component class="javax.swing.JButton" name="boutonMeilleurCoup4">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Meilleur coup stat."/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boutonMeilleurCoup4ActionPerformed"/>
-                  </Events>
-                </Component>
-                <Component class="javax.swing.JSeparator" name="separateur27">
-                </Component>
-                <Component class="javax.swing.JLabel" name="labelIaCoups4">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Coups IA :"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JSpinner" name="spinnerIaCoups4">
-                </Component>
-                <Component class="javax.swing.JButton" name="boutonIaJoue4">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="IA joue N coups"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boutonIaJoue4ActionPerformed"/>
-                  </Events>
-                </Component>
-                <Component class="javax.swing.JSeparator" name="separateur28">
-                </Component>
-                <Component class="javax.swing.JLabel" name="labelScore4">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Dialog" size="12" style="1"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="Score :"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JTextField" name="champScore4">
+                <Component class="javax.swing.JTextArea" name="zoneMessages4">
                   <Properties>
                     <Property name="editable" type="boolean" value="false"/>
-                    <Property name="text" type="java.lang.String" value="0"/>
+                    <Property name="columns" type="int" value="20"/>
+                    <Property name="rows" type="int" value="6"/>
+                    <Property name="text" type="java.lang.String" value="Messages de jeu&#x2026;"/>
                   </Properties>
-                </Component>
-                <Component class="javax.swing.JProgressBar" name="barreScore4">
-                </Component>
-                <Component class="javax.swing.JLabel" name="labelObjectif4">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Objectif : &#x2014;"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="labelCoupsMax4">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Coups max : &#x2014;"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JSeparator" name="separateur29">
-                </Component>
-                <Component class="javax.swing.JLabel" name="labelStatus4">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Pr&#xea;t &#xe0; jouer&#x2026;"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JSeparator" name="separateur30">
-                </Component>
-                <Container class="javax.swing.JScrollPane" name="scrollMessages4">
-                  <AuxValues>
-                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                  </AuxValues>
-
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                  <SubComponents>
-                    <Component class="javax.swing.JTextArea" name="zoneMessages4">
-                      <Properties>
-                        <Property name="editable" type="boolean" value="false"/>
-                        <Property name="columns" type="int" value="20"/>
-                        <Property name="rows" type="int" value="6"/>
-                        <Property name="text" type="java.lang.String" value="Messages de jeu&#x2026;"/>
-                      </Properties>
-                    </Component>
-                  </SubComponents>
-                </Container>
-                <Component class="javax.swing.JButton" name="boutonQuitter5">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Quitter"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boutonQuitter5ActionPerformed"/>
-                  </Events>
                 </Component>
               </SubComponents>
             </Container>
+            <Component class="javax.swing.JButton" name="boutonQuitter5">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Quitter"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boutonQuitter5ActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
-
       </SubComponents>
     </Container>
   </SubComponents>
