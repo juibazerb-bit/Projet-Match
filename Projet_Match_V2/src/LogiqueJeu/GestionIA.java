@@ -11,11 +11,10 @@ import java.util.Random;
 /**
  * Intelligence artificielle du jeu.
  *
- * Fournit trois services : 
- * - listEchange() : tous les échanges légaux qui créent un match 
- * - aideOrdi() : le meilleur coup (déterministe, par simulation) 
- * - obtenirMeilleurCoupStatistique() : le meilleur coup (Monte-Carlo) 
- * - aideNCoups() : fait jouer l'IA seule pendant N coups
+ * Fournit trois services : - listEchange() : tous les échanges légaux qui
+ * créent un match - aideOrdi() : le meilleur coup (déterministe, par
+ * simulation) - obtenirMeilleurCoupStatistique() : le meilleur coup
+ * (Monte-Carlo) - aideNCoups() : fait jouer l'IA seule pendant N coups
  */
 public class GestionIA {
 
@@ -77,7 +76,6 @@ public class GestionIA {
      * d'égalité.
      */
     public ArrayList<Coord> aideOrdi(Plateau plateau) {
-        SonManager.desactiver();
         ArrayList<Coord> matchs = listEchange(plateau);
         ArrayList<Coord> meilleur = new ArrayList<>();
 
@@ -108,7 +106,6 @@ public class GestionIA {
                         + " | Score : " + meilleurScore + " | Tuiles : " + meilleurTuiles);
             }
         }
-        SonManager.activer();
         return meilleur;
     }
 
@@ -117,7 +114,6 @@ public class GestionIA {
      * Retourne le nombre total de tuiles supprimées.
      */
     public int simulerMatchsDeterministe(Plateau plateau) {
-        SonManager.desactiver();
         int total = 0;
         ArrayList<Coord> aSupprimer = collecterAvecNullGuard(plateau);
 
@@ -133,11 +129,10 @@ public class GestionIA {
             for (int col = 0; col < plateau.getNbCol(); col++) {
                 compacterColonne(plateau, col);
             }
-            
+
             // Mise à jour de la condition de boucle
             aSupprimer = collecterAvecNullGuard(plateau);
         }
-        SonManager.activer();
         return total;
     }
 
@@ -149,14 +144,13 @@ public class GestionIA {
      * souvent choisi comme optimal.
      */
     public ArrayList<Coord> obtenirMeilleurCoupStatistique(Plateau plateau, int nbSimulations) {
-        SonManager.desactiver();
         ArrayList<StatCoup> stats = new ArrayList<>();
         Random rand = new Random();
 
-        System.out.println("Lancement de " + nbSimulations + " simulations Monte-Carlo…");
+        System.out.println("Lancement de " + nbSimulations + " simulations Monte plus vite Carlo");
 
         boolean simulationPossible = true;
-        
+
         for (int sim = 0; sim < nbSimulations && simulationPossible; sim++) {
             ArrayList<Coord> possibles = listEchange(plateau);
             if (possibles.isEmpty()) {
@@ -166,14 +160,12 @@ public class GestionIA {
                 int maxScore = -1, maxTuiles = -1;
 
                 for (int i = 0; i < possibles.size(); i += 2) {
-                    SonManager.desactiver();
                     Coord c1 = possibles.get(i);
                     Coord c2 = possibles.get(i + 1);
                     Plateau copie = plateau.copy();
                     copie.echangerTuiles(c1, c2);
-                    int tuiles = suppression.supprimerTousLesMatchs(copie, rand);
+                    int tuiles = suppression.supprimerTousLesMatchsSilencieux(copie, rand);
                     int score = copie.getScore();
-                    SonManager.activer();
 
                     if (score > maxScore || (score == maxScore && tuiles > maxTuiles)) {
                         maxScore = score;
@@ -193,7 +185,6 @@ public class GestionIA {
             }
         }
 
-        
         ArrayList<Coord> resultat = new ArrayList<>();
 
         if (stats.isEmpty()) {
@@ -213,10 +204,10 @@ public class GestionIA {
 
             System.out.println("\n===== RAPPORT IA STATISTIQUE =====");
             System.out.println("Coup : " + meilleur.c1 + " ↔ " + meilleur.c2);
-            System.out.printf("Fréquence : %.1f%% (%d/%d)%n", pct, meilleur.occurrences, nbSimulations);
+            System.out.printf("Frequence : %.1f%% (%d/%d)%n", pct, meilleur.occurrences, nbSimulations);
             System.out.printf("Score moyen    : %.2f pts%n", moyScore);
             System.out.printf("Tuiles moyennes: %.2f%n", moyTuiles);
-            System.out.printf("Écart-type     : %.2f pts%n", ecartType);
+            System.out.printf("Ecart-type     : %.2f pts%n", ecartType);
             if (ecartType < 50) {
                 System.out.println("=> Coup TRÈS STABLE.");
             } else if (ecartType < 200) {
@@ -229,7 +220,6 @@ public class GestionIA {
             resultat.add(meilleur.c1);
             resultat.add(meilleur.c2);
         }
-        SonManager.activer();
         return resultat;
     }
 
@@ -237,25 +227,23 @@ public class GestionIA {
     // IA JOUE SEULE N COUPS
     // -------------------------------------------------------------------------
     public void aideNCoups(Plateau plateau, int n) {
-        SonManager.desactiver();
         Random rand = new Random();
         boolean coupPossible = true;
 
         for (int coup = 1; coup <= n && coupPossible; coup++) {
             System.out.println("\n--- Coup IA " + coup + " / " + n + " ---");
             ArrayList<Coord> meilleur = aideOrdi(plateau);
-            
+
             if (meilleur.isEmpty()) {
                 System.out.println("Plus aucun coup possible.");
                 coupPossible = false;
             } else {
                 plateau.echangerTuiles(meilleur.get(0), meilleur.get(1));
-                suppression.supprimerTousLesMatchs(plateau, rand);
+                suppression.supprimerTousLesMatchsSilencieux(plateau, rand);
                 System.out.println("Score : " + plateau.getScore());
             }
         }
 
-        SonManager.activer();
         System.out.println("Score final : " + plateau.getScore());
     }
 
@@ -281,7 +269,7 @@ public class GestionIA {
 
     private boolean paireDejaPresente(ArrayList<Coord> liste, Coord c1, Coord c2) {
         boolean trouve = false;
-        
+
         // Suppression du 'return true' précoce : parcours contrôlé par le booléen trouve
         for (int i = 0; i < liste.size() && !trouve; i += 2) {
             if (liste.get(i).equals(c1) && liste.get(i + 1).equals(c2)) {
@@ -293,14 +281,14 @@ public class GestionIA {
 
     private StatCoup trouverOuCreerStat(ArrayList<StatCoup> stats, Coord c1, Coord c2) {
         StatCoup cible = null;
-        
+
         // Suppression du 'return s' précoce : on cherche l'élément s'il existe
         for (int i = 0; i < stats.size() && cible == null; i++) {
             if (stats.get(i).estIdentique(c1, c2)) {
                 cible = stats.get(i);
             }
         }
-        
+
         if (cible == null) {
             cible = new StatCoup(c1, c2);
             stats.add(cible);
@@ -314,7 +302,7 @@ public class GestionIA {
      */
     private ArrayList<Coord> collecterAvecNullGuard(Plateau plateau) {
         ArrayList<Coord> res = new ArrayList<>();
-        ArrayList<Coord> candidats = suppression.collecterToutesLesTuilesASupprimer(plateau);
+        ArrayList<Coord> candidats = suppression.collecterToutesLesTuilesASupprimerSilencieux(plateau);
         for (Coord c : candidats) {
             Tuile t = plateau.getTuileOuNull(c);
             if (t != null) {

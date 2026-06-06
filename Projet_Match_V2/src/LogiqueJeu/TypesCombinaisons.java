@@ -12,22 +12,21 @@ public class TypesCombinaisons {
     // MÉTHODE PRINCIPALE
     // -------------------------------------------------------------------------
     public ArrayList<Coord> collecterToutesLesTuilesASupprimer(Plateau plateau) {
+        return collecterToutesLesTuilesASupprimer(plateau, false);
+    }
+
+    public ArrayList<Coord> collecterToutesLesTuilesASupprimer(Plateau plateau, boolean silencieux) {
         ArrayList<Coord> aSupprimer = new ArrayList<>();
         ArrayList<Coord> dejaTraitees = new ArrayList<>();
 
         ArrayList<Coord> verticales = collecterMatchsVerticaux(plateau);
         ArrayList<Coord> horizontales = collecterMatchsHorizontaux(plateau);
 
-        // Priorité 1 & 3 : T/L géant puis T/L normal
-        appliquerBonusTetL(plateau, verticales, horizontales, aSupprimer, dejaTraitees, true);
-        appliquerBonusTetL(plateau, verticales, horizontales, aSupprimer, dejaTraitees, false);
-
-        // Priorité 2, 4, 6 : lignes (x5+ > x4 > x3 gérés dans appliquerEffet)
-        appliquerMatchsLignes(plateau, verticales, aSupprimer, dejaTraitees, true);
-        appliquerMatchsLignes(plateau, horizontales, aSupprimer, dejaTraitees, false);
-
-        // Priorité 5 : carré 2×2
-        appliquerCarres(plateau, aSupprimer, dejaTraitees);
+        appliquerBonusTetL(plateau, verticales, horizontales, aSupprimer, dejaTraitees, true, silencieux);
+        appliquerBonusTetL(plateau, verticales, horizontales, aSupprimer, dejaTraitees, false, silencieux);
+        appliquerMatchsLignes(plateau, verticales, aSupprimer, dejaTraitees, true, silencieux);
+        appliquerMatchsLignes(plateau, horizontales, aSupprimer, dejaTraitees, false, silencieux);
+        appliquerCarres(plateau, aSupprimer, dejaTraitees, silencieux);
 
         return aSupprimer;
     }
@@ -37,7 +36,7 @@ public class TypesCombinaisons {
     // grandUniquement = true  → ne traite que les T/L de 7 tuiles ou plus
     // grandUniquement = false → ne traite que les T/L de 5 ou 6 tuiles
     // -------------------------------------------------------------------------
-    public void appliquerBonusTetL(Plateau plateau, ArrayList<Coord> tuileVerticales, ArrayList<Coord> tuileHorizontales, ArrayList<Coord> aSupprimer, ArrayList<Coord> dejaTraitees, boolean grandUniquement) {
+    public void appliquerBonusTetL(Plateau plateau, ArrayList<Coord> tuileVerticales, ArrayList<Coord> tuileHorizontales, ArrayList<Coord> aSupprimer, ArrayList<Coord> dejaTraitees, boolean grandUniquement, boolean silencieux) {
 
         for (Coord tuileVerticale : tuileVerticales) {
             for (Coord tuileHorizontale : tuileHorizontales) {
@@ -71,13 +70,25 @@ public class TypesCombinaisons {
 
                 if (estGrand) {
                     plateau.ajouterScore(1500);
-                    if (SonManager.estActif()) System.out.println("MEGA BONUS T : Hiroshima ! +1500 pts");
-                    SonManager.jouerNsecondes(Son.HIROSHIMA, 2);
+                    if (!silencieux) {
+                        System.out.println("MEGA BONUS T : Hiroshima ! +1500 pts");
+
+                    }
+                    if (!silencieux) {
+                        SonManager.jouerNsecondes(Son.HIROSHIMA, 2);
+                    }
+
                     ajouterZoneRayon(plateau, tuileVerticale, 2, aSupprimer);
                 } else {
                     plateau.ajouterScore(800);
-                    if (SonManager.estActif()) System.out.println("BONUS T/L : Macron EXPLOSION ! +800 pts");
-                    SonManager.jouer(Son.EXPLOSION);
+                    if (!silencieux) {
+                        System.out.println("BONUS T/L : Macron EXPLOSION ! +800 pts");
+
+                    }
+                    if (!silencieux) {
+                        SonManager.jouer(Son.EXPLOSION);
+                    }
+
                     ajouterZoneRayon(plateau, tuileVerticale, 1, aSupprimer);
                 }
 
@@ -92,7 +103,7 @@ public class TypesCombinaisons {
     // -------------------------------------------------------------------------
 // MATCHS EN LIGNE (x3, x4, x5+) 
 // -------------------------------------------------------------------------
-    private void appliquerMatchsLignes(Plateau plateau, ArrayList<Coord> tuiles, ArrayList<Coord> aSupprimer, ArrayList<Coord> dejaTraitees, boolean estVertical) {
+    private void appliquerMatchsLignes(Plateau plateau, ArrayList<Coord> tuiles, ArrayList<Coord> aSupprimer, ArrayList<Coord> dejaTraitees, boolean estVertical, boolean silencieux) {
 
         // 1. Déclaration du dictionnaire pour regrouper les tuiles par ligne ou colonne Cle et valeur associé
         java.util.HashMap<Integer, ArrayList<Integer>> parAxe = new java.util.HashMap<>();
@@ -129,7 +140,7 @@ public class TypesCombinaisons {
 
                 // Validation et application des scores/effets
                 if (taille >= 3 && !toutesDejaTraitees(axe, debut, fin, estVertical, dejaTraitees)) {
-                    appliquerEffet(plateau, axe, debut, fin, taille, estVertical, aSupprimer, dejaTraitees);
+                    appliquerEffet(plateau, axe, debut, fin, taille, estVertical, aSupprimer, dejaTraitees, silencieux);
                 }
 
                 i++;
@@ -140,7 +151,7 @@ public class TypesCombinaisons {
     // -------------------------------------------------------------------------
     // CARRÉ 2×2
     // -------------------------------------------------------------------------
-    private void appliquerCarres(Plateau plateau,ArrayList<Coord> aSupprimer, ArrayList<Coord> dejaTraitees) {
+    private void appliquerCarres(Plateau plateau, ArrayList<Coord> aSupprimer, ArrayList<Coord> dejaTraitees, boolean silencieux) {
 
         for (int col = 0; col < plateau.getNbCol() - 1; col++) {
             for (int lig = 0; lig < plateau.getNbLig() - 1; lig++) {
@@ -167,8 +178,13 @@ public class TypesCombinaisons {
                 }
 
                 plateau.ajouterScore(400);
-                if (SonManager.estActif()) System.out.println("BONUS ! Carre 2x2 ! +400 pts");
-                SonManager.jouer(Son.MATCH_SIMPLE);
+                if (!silencieux) {
+                    System.out.println("BONUS ! Carre 2x2 ! +400 pts");
+
+                }
+                if (!silencieux) {
+                    SonManager.jouer(Son.MATCH_SIMPLE);
+                }
 
                 for (Coord coin : coins) {
                     ajouterSiAbsent(aSupprimer, coin);
@@ -181,18 +197,23 @@ public class TypesCombinaisons {
     // -------------------------------------------------------------------------
     // EFFET PAR TAILLE
     // -------------------------------------------------------------------------
-    private void appliquerEffet(Plateau plateau, int axe, int debut, int fin,int taille, boolean estVertical,ArrayList<Coord> aSupprimer, ArrayList<Coord> dejaTraitees) {
+    private void appliquerEffet(Plateau plateau, int axe, int debut, int fin, int taille, boolean estVertical, ArrayList<Coord> aSupprimer, ArrayList<Coord> dejaTraitees, boolean silencieux) {
 
         if (taille >= 5) {
             // Supprime toutes les tuiles du même type
-            Modele.Tuile tuileRef = estVertical? plateau.getTuile(axe, debut): plateau.getTuile(debut, axe);
+            Modele.Tuile tuileRef = estVertical ? plateau.getTuile(axe, debut) : plateau.getTuile(debut, axe);
             if (tuileRef == null) {
                 return; // garde null : ne peut pas déterminer le type cible
             }
             int typeCible = tuileRef.getType();
             plateau.ajouterScore(1000);
-            if (SonManager.estActif()) System.out.println("BONUS: OUI je suis raciste ! +1000 pts");
-            SonManager.jouer(Son.RACISME);
+            if (!silencieux) {
+                System.out.println("BONUS: OUI je suis raciste ! +1000 pts");
+            }
+            if (!silencieux) {
+                SonManager.jouer(Son.RACISME);
+            }
+
             for (int c = 0; c < plateau.getNbCol(); c++) {
                 for (int l = 0; l < plateau.getNbLig(); l++) {
                     Modele.Tuile t = plateau.getTuile(c, l);
@@ -205,8 +226,12 @@ public class TypesCombinaisons {
         } else if (taille == 4) {
             // Supprime toute la ligne ou toute la colonne
             plateau.ajouterScore(500);
-            if (SonManager.estActif()) System.out.println("BONUS: PIOU PIOU ! +500 pts");
-            SonManager.jouer(Son.BONUS_FUSEE);
+            if (!silencieux) {
+                System.out.println("BONUS: PIOU PIOU ! +500 pts");
+            }
+            if (!silencieux) {
+                SonManager.jouer(Son.BONUS_FUSEE);
+            }
             if (estVertical) {
                 for (int l = 0; l < plateau.getNbLig(); l++) {
                     ajouterSiAbsent(aSupprimer, new Coord(axe, l));
@@ -220,7 +245,12 @@ public class TypesCombinaisons {
         } else {
             // Match x3 basique
             plateau.ajouterScore(taille * 100);
-            if (SonManager.estActif()) System.out.println("Match x3! + 300 pts");
+            if (!silencieux) {
+                System.out.println("Match x3! + 300 pts");
+            }
+            if (!silencieux) {
+                SonManager.jouer(Son.MATCH_SIMPLE);
+            }
             SonManager.jouer(Son.MATCH_SIMPLE);
             for (int pos = debut; pos <= fin; pos++) {
                 Coord t = estVertical ? new Coord(axe, pos) : new Coord(pos, axe);

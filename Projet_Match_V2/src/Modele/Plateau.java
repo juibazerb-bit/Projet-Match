@@ -52,7 +52,7 @@ public class Plateau {
         for (int i = 0; i < nbColonnes; i++) {
             lesColonnes[i] = new Colonne(nbLignes, nbTypes);
         }
-        new SuppressionMatchs().supprimerTousLesMatchs(this, new Random());
+        new SuppressionMatchs().supprimerTousLesMatchsSilencieux(this, new Random());
         this.score = 0; // remet à 0 après la suppression initiale
         SonManager.activer();
     }
@@ -78,7 +78,7 @@ public class Plateau {
         for (int i = 0; i < nbColonnes; i++) {
             lesColonnes[i] = new Colonne(nbLignes, nbTypes, rand);
         }
-        new SuppressionMatchs().supprimerTousLesMatchs(this, rand);
+        new SuppressionMatchs().supprimerTousLesMatchsSilencieux(this,rand);
         this.score = 0;
         SonManager.activer();
     }
@@ -109,7 +109,6 @@ public class Plateau {
      * coups.
      */
     public Plateau copy() {
-        SonManager.desactiver();
         Plateau copie = new Plateau(nbCol, nbLig, nbTypesTuile, true);
         copie.score = this.score;
         for (int i = 0; i < nbCol; i++) {
@@ -120,7 +119,6 @@ public class Plateau {
             }
             copie.lesColonnes[i] = col;
         }
-        SonManager.activer();
         return copie;
     }
 

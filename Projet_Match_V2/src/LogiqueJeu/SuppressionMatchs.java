@@ -19,7 +19,25 @@ public class SuppressionMatchs {
     // Collecte toutes les positions à supprimer (vertical + horizontal) sans rien supprimer
 
     public ArrayList<Coord> collecterToutesLesTuilesASupprimer(Plateau plateau) {
-        return typesCombinaisons.collecterToutesLesTuilesASupprimer(plateau);
+        return typesCombinaisons.collecterToutesLesTuilesASupprimer(plateau, false);
+    }
+
+    public ArrayList<Coord> collecterToutesLesTuilesASupprimerSilencieux(Plateau plateau) {
+        return typesCombinaisons.collecterToutesLesTuilesASupprimer(plateau, true);
+    }
+
+    public int supprimerTousLesMatchsSilencieux(Plateau plateau, Random rand) {
+        int totalSupprimees = 0;
+        boolean matchTrouve = true;
+        while (matchTrouve) {
+            ArrayList<Coord> aSupprimer = collecterToutesLesTuilesASupprimerSilencieux(plateau);
+            if (aSupprimer.isEmpty()) {
+                matchTrouve = false;
+            } else {
+                totalSupprimees += supprimerCoords(plateau, aSupprimer, rand);
+            }
+        }
+        return totalSupprimees;
     }
 
     // Vérifie si une Coord est déjà dans la liste (pour éviter les doublons)
