@@ -25,7 +25,11 @@ import java.util.ArrayList;
  * @author fpauvert
  */
 public class FenetreGraphiquePropre extends javax.swing.JFrame {
-/** Logger de la classe pour centraliser la gestion des traces et des erreurs. */
+
+    /**
+     * Logger de la classe pour centraliser la gestion des traces et des
+     * erreurs.
+     */
     private static final java.util.logging.Logger LOGGER
             = java.util.logging.Logger.getLogger(FenetreGraphiquePropre.class.getName());
 
@@ -43,6 +47,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
     private int nbCol = 10;
     private int nbTypes = 5;
     private Niveau niveauCourant = null;
+    private int coupsJoues = 0;
 
     // ─────────────────────────────────────────────────────────────────────────
     // CONSTRUCTEUR
@@ -71,21 +76,24 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
      */
     private void configurerPanneauJeu() {
         panneauJeu = new PanneauJeu();
-        
+
         // 1. Créer un conteneur intermédiaire qui va forcer le centrage
         javax.swing.JPanel conteneurCentreur = new javax.swing.JPanel(new java.awt.GridBagLayout());
-        
+
         // Optionnel : donner au conteneur la même couleur de fond que le JScrollPane/PanneauJeu
-        conteneurCentreur.setBackground(scrollGrille.getBackground()); 
-        
+        conteneurCentreur.setBackground(scrollGrille.getBackground());
+
         // 2. Ajouter la grille dans ce conteneur (sans contraintes, elle se place au centre)
         conteneurCentreur.add(panneauJeu);
-        
+
         // 3. Mettre le conteneur dans le JScrollPane à la place de la grille seule
         scrollGrille.setViewportView(conteneurCentreur);
-        
+
         // 4. Conserver ton écouteur de clics
-        panneauJeu.setCoupJouer(this::mettreAJourScore);
+        panneauJeu.setCoupJouer(() -> {
+            coupsJoues++;
+            mettreAJourScore();
+        });
     }
 
     /**
@@ -96,64 +104,68 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
     }
 
     /**
-     * Passe en plein écran natif et affiche l'écran de jeu.
-     * CORRECTION : dispose() AVANT setUndecorated() pour éviter
+     * Passe en plein écran natif et affiche l'écran de jeu. CORRECTION :
+     * dispose() AVANT setUndecorated() pour éviter
      * IllegalComponentStateException sur les fenêtres déjà affichées.
      */
     private void entrerPleinEcranJeu() {
-    if (gd.isFullScreenSupported()) {
-        dispose();                      // 1. On libère la fenêtre native
-        setUndecorated(true);           // 2. On retire la barre de titre
-        gd.setFullScreenWindow(this);   // 3. On passe en plein écran D'ABORD (gère la visibilité)
-        setVisible(true);               // 4. On s'assure qu'elle est visible
-    } else {
-        setExtendedState(MAXIMIZED_BOTH);
-        setVisible(true);
-    }
-    
-    // On change d'écran ET on force Swing à recalculer les dimensions immédiatement
-    afficherEcran("EcranJeu");
-    panneauConteneur.revalidate();
-    panneauConteneur.repaint();
-}
+        if (gd.isFullScreenSupported()) {
+            dispose();                      // 1. On libère la fenêtre native
+            setUndecorated(true);           // 2. On retire la barre de titre
+            gd.setFullScreenWindow(this);   // 3. On passe en plein écran D'ABORD (gère la visibilité)
+            setVisible(true);               // 4. On s'assure qu'elle est visible
+        } else {
+            setExtendedState(MAXIMIZED_BOTH);
+            setVisible(true);
+        }
 
-private void quitterPleinEcran(String ecranCible) {
-    if (gd.getFullScreenWindow() == this) {
-        gd.setFullScreenWindow(null);   // 1. On désactive le plein écran natif
-        dispose();                      // 2. On libère la fenêtre
-        setUndecorated(false);          // 3. On remet la barre de titre
-        pack();
-        setLocationRelativeTo(null);
-        setVisible(true);               // 4. On réaffiche en mode fenêtré à la fin
-    } else {
-        setExtendedState(NORMAL);
+        // On change d'écran ET on force Swing à recalculer les dimensions immédiatement
+        afficherEcran("EcranJeu");
+        panneauConteneur.revalidate();
+        panneauConteneur.repaint();
     }
-    
-    afficherEcran(ecranCible);
-    panneauConteneur.revalidate();
-    panneauConteneur.repaint();
-}
 
-    /** Mode libre : lance une partie sans contrainte de niveau. */
+    private void quitterPleinEcran(String ecranCible) {
+        if (gd.getFullScreenWindow() == this) {
+            gd.setFullScreenWindow(null);   // 1. On désactive le plein écran natif
+            dispose();                      // 2. On libère la fenêtre
+            setUndecorated(false);          // 3. On remet la barre de titre
+            pack();
+            setLocationRelativeTo(null);
+            setVisible(true);               // 4. On réaffiche en mode fenêtré à la fin
+        } else {
+            setExtendedState(NORMAL);
+        }
+
+        afficherEcran(ecranCible);
+        panneauConteneur.revalidate();
+        panneauConteneur.repaint();
+    }
+
+    /**
+     * Mode libre : lance une partie sans contrainte de niveau.
+     */
     private void lancerModeLibre() {
         niveauCourant = null;
-        initialiserPlateau(nbLig, nbCol, nbTypes);
+        initialiserPlateau(10, 10, 5);
         entrerPleinEcranJeu();
     }
 
-    /** Charge un niveau prédéfini puis lance la partie. */
+    /**
+     * Charge un niveau prédéfini puis lance la partie.
+     */
     private void lancerNiveau(int numero) {
         niveauCourant = new Niveau(numero);
 
-        int lig   = niveauCourant.getNbLignes();
-        int col   = niveauCourant.getNbColonnes();
+        int lig = niveauCourant.getNbLignes();
+        int col = niveauCourant.getNbColonnes();
         int types = niveauCourant.getNbTypes();
 
         initialiserPlateau(lig, col, types);
 
         String nomNiveau = niveauCourant.getNomNiveau();
-        int    objectif  = niveauCourant.getNumeroNiveau();
-        int    coupsMax  = niveauCourant.getNbCoupsMax();
+        int objectif = niveauCourant.getNumeroNiveau();
+        int coupsMax = niveauCourant.getNbCoupsMax();
 
         labelStatus4.setText("▶ " + nomNiveau);
         labelObjectif4.setText("Objectif : " + objectif);
@@ -168,15 +180,16 @@ private void quitterPleinEcran(String ecranCible) {
      * Crée un nouveau plateau et redimensionne le panneau.
      */
     private void initialiserPlateau(int lignes, int colonnes, int types) {
-        nbLig   = lignes;
-        nbCol   = colonnes;
+        coupsJoues = 0; 
+        nbLig = lignes;
+        nbCol = colonnes;
         nbTypes = types;
 
         plateau = new Plateau(colonnes, lignes, types, true);
         panneauJeu.setPlateau(plateau);
 
         int largeur = (colonnes + 2) * Tuile.TAILLE;
-        int hauteur = (lignes   + 2) * Tuile.TAILLE;
+        int hauteur = (lignes + 2) * Tuile.TAILLE;
         panneauJeu.setPreferredSize(new Dimension(largeur, hauteur));
         panneauJeu.revalidate();
         panneauJeu.repaint();
@@ -196,17 +209,19 @@ private void quitterPleinEcran(String ecranCible) {
      * Rafraîchit le champ score et la barre de progression.
      */
     private void mettreAJourScore() {
-        if (plateau == null) return;
+        if (plateau == null) {
+            return;
+        }
         int score = plateau.getScore();
         champScore4.setText(String.valueOf(score));
         barreScore4.setValue(Math.min(100, score / 100));
+        ChampCoupJoue.setText(String.valueOf(coupsJoues));
 
         if (niveauCourant != null && score >= niveauCourant.getScoreObjectif()) {
             labelStatus4.setText("🎉 Objectif atteint ! Score : " + score);
             logMessage("Niveau terminé avec " + score + " points !");
         }
     }
-    
 
     // ─────────────────────────────────────────────────────────────────────────
     // CODE GÉNÉRÉ PAR NETBEANS – NE PAS MODIFIER MANUELLEMENT
@@ -267,6 +282,8 @@ private void quitterPleinEcran(String ecranCible) {
         scrollMessages4 = new javax.swing.JScrollPane();
         zoneMessages4 = new javax.swing.JTextArea();
         boutonQuitter5 = new javax.swing.JButton();
+        CoupJoue = new javax.swing.JLabel();
+        ChampCoupJoue = new javax.swing.JTextField();
 
         jLabel6.setText("jLabel6");
 
@@ -278,11 +295,16 @@ private void quitterPleinEcran(String ecranCible) {
         panneauConteneur.setPreferredSize(new java.awt.Dimension(1000, 1000));
         panneauConteneur.setLayout(new java.awt.CardLayout());
 
+        MenuPrincipal.setBackground(new java.awt.Color(51, 0, 102));
+        MenuPrincipal.setForeground(new java.awt.Color(51, 0, 102));
+
         labelTitreJeu.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+        labelTitreJeu.setForeground(new java.awt.Color(153, 0, 153));
         labelTitreJeu.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelTitreJeu.setText("✦ GemCrush");
 
         boutonJouer.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        boutonJouer.setForeground(new java.awt.Color(102, 0, 102));
         boutonJouer.setText("▶  Jouer");
         boutonJouer.setToolTipText("");
         boutonJouer.setActionCommand("BoutonJouer");
@@ -293,6 +315,7 @@ private void quitterPleinEcran(String ecranCible) {
         });
 
         boutonNiveaux.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
+        boutonNiveaux.setForeground(new java.awt.Color(102, 0, 102));
         boutonNiveaux.setText("☆  Niveaux");
         boutonNiveaux.setToolTipText("");
         boutonNiveaux.addActionListener(new java.awt.event.ActionListener() {
@@ -329,11 +352,15 @@ private void quitterPleinEcran(String ecranCible) {
         panneauConteneur.add(MenuPrincipal, "MenuPrincipal");
         MenuPrincipal.getAccessibleContext().setAccessibleName("");
 
+        MenuNiveaux.setBackground(new java.awt.Color(51, 0, 102));
+
         labelTitreNiveaux.setFont(new java.awt.Font("Dialog", 1, 26)); // NOI18N
+        labelTitreNiveaux.setForeground(new java.awt.Color(153, 0, 153));
         labelTitreNiveaux.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelTitreNiveaux.setText("Choisissez un niveau");
 
         boutonNiveau1.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
+        boutonNiveau1.setForeground(new java.awt.Color(102, 0, 102));
         boutonNiveau1.setText("Niveau 1");
         boutonNiveau1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -342,6 +369,7 @@ private void quitterPleinEcran(String ecranCible) {
         });
 
         boutonNiveau2.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
+        boutonNiveau2.setForeground(new java.awt.Color(102, 0, 102));
         boutonNiveau2.setText("Niveau 2");
         boutonNiveau2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -350,6 +378,7 @@ private void quitterPleinEcran(String ecranCible) {
         });
 
         boutonNiveau3.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
+        boutonNiveau3.setForeground(new java.awt.Color(102, 0, 102));
         boutonNiveau3.setText("Niveau 3");
         boutonNiveau3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -358,6 +387,7 @@ private void quitterPleinEcran(String ecranCible) {
         });
 
         boutonNiveau4.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
+        boutonNiveau4.setForeground(new java.awt.Color(102, 0, 102));
         boutonNiveau4.setText("Niveau 4");
         boutonNiveau4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -366,6 +396,7 @@ private void quitterPleinEcran(String ecranCible) {
         });
 
         boutonNiveau5.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
+        boutonNiveau5.setForeground(new java.awt.Color(102, 0, 102));
         boutonNiveau5.setText("Niveau 5");
         boutonNiveau5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -374,6 +405,7 @@ private void quitterPleinEcran(String ecranCible) {
         });
 
         boutonNiveau6.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
+        boutonNiveau6.setForeground(new java.awt.Color(102, 0, 102));
         boutonNiveau6.setText("Niveau 6");
         boutonNiveau6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -382,6 +414,7 @@ private void quitterPleinEcran(String ecranCible) {
         });
 
         boutonNiveau7.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
+        boutonNiveau7.setForeground(new java.awt.Color(102, 0, 102));
         boutonNiveau7.setText("Niveau 7");
         boutonNiveau7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -390,6 +423,7 @@ private void quitterPleinEcran(String ecranCible) {
         });
 
         boutonNiveau8.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
+        boutonNiveau8.setForeground(new java.awt.Color(102, 0, 102));
         boutonNiveau8.setText("Niveau 8");
         boutonNiveau8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -398,6 +432,7 @@ private void quitterPleinEcran(String ecranCible) {
         });
 
         boutonNiveau9.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
+        boutonNiveau9.setForeground(new java.awt.Color(102, 0, 102));
         boutonNiveau9.setText("Niveau 9");
         boutonNiveau9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -406,6 +441,7 @@ private void quitterPleinEcran(String ecranCible) {
         });
 
         boutonRetourNiveaux.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        boutonRetourNiveaux.setForeground(new java.awt.Color(102, 0, 102));
         boutonRetourNiveaux.setText("← Retour");
         boutonRetourNiveaux.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -469,20 +505,37 @@ private void quitterPleinEcran(String ecranCible) {
 
         panneauConteneur.add(MenuNiveaux, "MenuNiveaux");
 
+        EcranJeu.setBackground(new java.awt.Color(51, 0, 102));
         EcranJeu.setLayout(new java.awt.BorderLayout());
+
+        scrollGrille.setBackground(new java.awt.Color(51, 0, 102));
         EcranJeu.add(scrollGrille, java.awt.BorderLayout.CENTER);
 
+        MenuJeu.setBackground(new java.awt.Color(51, 0, 102));
         MenuJeu.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
+        labelTitre4.setBackground(new java.awt.Color(51, 0, 102));
         labelTitre4.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
+        labelTitre4.setForeground(new java.awt.Color(255, 255, 255));
         labelTitre4.setText("✦ GemCrush");
 
+        separateur25.setBackground(new java.awt.Color(51, 0, 102));
+
+        labelLignes4.setBackground(new java.awt.Color(51, 0, 102));
+        labelLignes4.setForeground(new java.awt.Color(255, 255, 255));
         labelLignes4.setText("Lignes :");
 
+        labelColonnes4.setBackground(new java.awt.Color(51, 0, 102));
+        labelColonnes4.setForeground(new java.awt.Color(255, 255, 255));
         labelColonnes4.setText("Colonnes :");
 
+        labelTypes4.setBackground(new java.awt.Color(51, 0, 102));
+        labelTypes4.setForeground(new java.awt.Color(255, 255, 255));
         labelTypes4.setText("Types de tuiles :");
 
+        separateur26.setBackground(new java.awt.Color(51, 0, 102));
+
+        boutonGenerer4.setBackground(new java.awt.Color(0, 204, 0));
         boutonGenerer4.setText("Générer");
         boutonGenerer4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -490,6 +543,7 @@ private void quitterPleinEcran(String ecranCible) {
             }
         });
 
+        boutonNouvellePartie4.setBackground(new java.awt.Color(0, 204, 0));
         boutonNouvellePartie4.setText("Nouvelle partie");
         boutonNouvellePartie4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -497,6 +551,7 @@ private void quitterPleinEcran(String ecranCible) {
             }
         });
 
+        boutonAide4.setBackground(new java.awt.Color(0, 204, 0));
         boutonAide4.setText("Aide (meilleur coup)");
         boutonAide4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -504,6 +559,7 @@ private void quitterPleinEcran(String ecranCible) {
             }
         });
 
+        boutonMeilleurCoup4.setBackground(new java.awt.Color(0, 204, 0));
         boutonMeilleurCoup4.setText("Meilleur coup stat.");
         boutonMeilleurCoup4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -511,8 +567,13 @@ private void quitterPleinEcran(String ecranCible) {
             }
         });
 
+        separateur27.setBackground(new java.awt.Color(51, 0, 102));
+
+        labelIaCoups4.setBackground(new java.awt.Color(51, 0, 102));
+        labelIaCoups4.setForeground(new java.awt.Color(255, 255, 255));
         labelIaCoups4.setText("Coups IA :");
 
+        boutonIaJoue4.setBackground(new java.awt.Color(0, 204, 0));
         boutonIaJoue4.setText("IA joue N coups");
         boutonIaJoue4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -520,24 +581,48 @@ private void quitterPleinEcran(String ecranCible) {
             }
         });
 
+        separateur28.setBackground(new java.awt.Color(51, 0, 102));
+
+        labelScore4.setBackground(new java.awt.Color(51, 0, 102));
         labelScore4.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        labelScore4.setForeground(new java.awt.Color(255, 255, 255));
         labelScore4.setText("Score :");
 
         champScore4.setEditable(false);
+        champScore4.setBackground(new java.awt.Color(51, 0, 102));
+        champScore4.setForeground(new java.awt.Color(255, 255, 255));
         champScore4.setText("0");
 
+        barreScore4.setBackground(new java.awt.Color(51, 0, 102));
+        barreScore4.setForeground(new java.awt.Color(255, 0, 255));
+
+        labelObjectif4.setBackground(new java.awt.Color(51, 0, 102));
+        labelObjectif4.setForeground(new java.awt.Color(255, 255, 255));
         labelObjectif4.setText("Objectif : —");
 
+        labelCoupsMax4.setBackground(new java.awt.Color(51, 0, 102));
+        labelCoupsMax4.setForeground(new java.awt.Color(255, 255, 255));
         labelCoupsMax4.setText("Coups max : —");
 
+        separateur29.setBackground(new java.awt.Color(51, 0, 102));
+
+        labelStatus4.setBackground(new java.awt.Color(51, 0, 102));
+        labelStatus4.setForeground(new java.awt.Color(255, 255, 255));
         labelStatus4.setText("Prêt à jouer…");
 
+        separateur30.setBackground(new java.awt.Color(51, 0, 102));
+
+        scrollMessages4.setBackground(new java.awt.Color(51, 0, 102));
+
         zoneMessages4.setEditable(false);
+        zoneMessages4.setBackground(new java.awt.Color(51, 0, 102));
         zoneMessages4.setColumns(20);
+        zoneMessages4.setForeground(new java.awt.Color(255, 255, 255));
         zoneMessages4.setRows(6);
         zoneMessages4.setText("Messages de jeu…");
         scrollMessages4.setViewportView(zoneMessages4);
 
+        boutonQuitter5.setBackground(new java.awt.Color(0, 204, 0));
         boutonQuitter5.setText("Quitter");
         boutonQuitter5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -545,11 +630,22 @@ private void quitterPleinEcran(String ecranCible) {
             }
         });
 
+        CoupJoue.setBackground(new java.awt.Color(51, 0, 102));
+        CoupJoue.setForeground(new java.awt.Color(255, 255, 255));
+        CoupJoue.setText("Coup Joués : ");
+
+        ChampCoupJoue.setBackground(new java.awt.Color(51, 0, 102));
+        ChampCoupJoue.setForeground(new java.awt.Color(255, 255, 255));
+        ChampCoupJoue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ChampCoupJoueActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout MenuJeuLayout = new javax.swing.GroupLayout(MenuJeu);
         MenuJeu.setLayout(MenuJeuLayout);
         MenuJeuLayout.setHorizontalGroup(
             MenuJeuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(labelTitre4)
             .addComponent(separateur25, 0, 367, Short.MAX_VALUE)
             .addGroup(MenuJeuLayout.createSequentialGroup()
                 .addComponent(labelLignes4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -580,16 +676,25 @@ private void quitterPleinEcran(String ecranCible) {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(champScore4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(barreScore4, 0, 367, Short.MAX_VALUE)
-            .addComponent(labelObjectif4)
-            .addComponent(labelCoupsMax4)
             .addComponent(separateur29, 0, 367, Short.MAX_VALUE)
-            .addComponent(labelStatus4)
             .addComponent(separateur30, 0, 367, Short.MAX_VALUE)
             .addComponent(scrollMessages4, 0, 367, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MenuJeuLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(boutonQuitter5, 0, 355, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(MenuJeuLayout.createSequentialGroup()
+                .addGroup(MenuJeuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelTitre4)
+                    .addComponent(labelObjectif4)
+                    .addComponent(labelCoupsMax4)
+                    .addGroup(MenuJeuLayout.createSequentialGroup()
+                        .addGroup(MenuJeuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(CoupJoue)
+                            .addComponent(labelStatus4))
+                        .addGap(87, 87, 87)
+                        .addComponent(ChampCoupJoue, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         MenuJeuLayout.setVerticalGroup(
             MenuJeuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -641,15 +746,19 @@ private void quitterPleinEcran(String ecranCible) {
                 .addComponent(labelCoupsMax4)
                 .addGap(8, 8, 8)
                 .addComponent(separateur29, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
+                .addGap(18, 18, 18)
+                .addGroup(MenuJeuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(CoupJoue)
+                    .addComponent(ChampCoupJoue, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(13, 13, 13)
                 .addComponent(labelStatus4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
                 .addComponent(separateur30, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(scrollMessages4, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(scrollMessages4, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(boutonQuitter5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(170, 170, 170))
+                .addGap(172, 172, 172))
         );
 
         EcranJeu.add(MenuJeu, java.awt.BorderLayout.EAST);
@@ -679,7 +788,7 @@ private void quitterPleinEcran(String ecranCible) {
     }//GEN-LAST:event_boutonNiveau2ActionPerformed
 
     private void boutonNiveau3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonNiveau3ActionPerformed
-       lancerNiveau(3);
+        lancerNiveau(3);
     }//GEN-LAST:event_boutonNiveau3ActionPerformed
 
     private void boutonNiveau4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonNiveau4ActionPerformed
@@ -695,7 +804,7 @@ private void quitterPleinEcran(String ecranCible) {
     }//GEN-LAST:event_boutonNiveau6ActionPerformed
 
     private void boutonNiveau7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonNiveau7ActionPerformed
-       lancerNiveau(7);
+        lancerNiveau(7);
     }//GEN-LAST:event_boutonNiveau7ActionPerformed
 
     private void boutonNiveau8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonNiveau8ActionPerformed
@@ -703,7 +812,7 @@ private void quitterPleinEcran(String ecranCible) {
     }//GEN-LAST:event_boutonNiveau8ActionPerformed
 
     private void boutonNiveau9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonNiveau9ActionPerformed
-       lancerNiveau(9);
+        lancerNiveau(9);
     }//GEN-LAST:event_boutonNiveau9ActionPerformed
 
     private void boutonRetourNiveauxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonRetourNiveauxActionPerformed
@@ -712,8 +821,8 @@ private void quitterPleinEcran(String ecranCible) {
 
     private void boutonGenerer4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonGenerer4ActionPerformed
         niveauCourant = null;
-        int lig   = (int) spinnerLignes4.getValue();
-        int col   = (int) spinnerColonnes4.getValue();
+        int lig = (int) spinnerLignes4.getValue();
+        int col = (int) spinnerColonnes4.getValue();
         int types = (int) spinnerTypes4.getValue();
         initialiserPlateau(lig, col, types);
     }//GEN-LAST:event_boutonGenerer4ActionPerformed
@@ -727,14 +836,18 @@ private void quitterPleinEcran(String ecranCible) {
     }//GEN-LAST:event_boutonNouvellePartie4ActionPerformed
 
     private void boutonAide4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonAide4ActionPerformed
-        if (plateau == null) return;
+        if (plateau == null) {
+            return;
+        }
         String conseil = panneauJeu.aideOrdiString(plateau);
         labelStatus4.setText("💡 " + conseil);
         logMessage("Aide : " + conseil);
     }//GEN-LAST:event_boutonAide4ActionPerformed
 
     private void boutonMeilleurCoup4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonMeilleurCoup4ActionPerformed
-        if (plateau == null) return;
+        if (plateau == null) {
+            return;
+        }
         labelStatus4.setText("Calcul en cours…");
         new Thread(() -> {
             ArrayList<Coord> coup = ia.obtenirMeilleurCoupStatistique(plateau, 200);
@@ -751,7 +864,9 @@ private void quitterPleinEcran(String ecranCible) {
     }//GEN-LAST:event_boutonMeilleurCoup4ActionPerformed
 
     private void boutonIaJoue4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonIaJoue4ActionPerformed
-        if (plateau == null) return;
+        if (plateau == null) {
+            return;
+        }
         int n = (int) spinnerIaCoups4.getValue();
         labelStatus4.setText("🤖 IA en cours (" + n + " coups)…");
         javax.swing.Timer iaTimer = new javax.swing.Timer(150, null);
@@ -781,11 +896,16 @@ private void quitterPleinEcran(String ecranCible) {
         quitterPleinEcran("MenuPrincipal");
     }//GEN-LAST:event_boutonQuitter5ActionPerformed
 
+    private void ChampCoupJoueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChampCoupJoueActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ChampCoupJoueActionPerformed
+
     // ─────────────────────────────────────────────────────────────────────────
     // UTILITAIRES
     // ─────────────────────────────────────────────────────────────────────────
-
-    /** Ajoute un message dans la zone de texte défilante. */
+    /**
+     * Ajoute un message dans la zone de texte défilante.
+     */
     private void logMessage(String msg) {
         zoneMessages4.append(msg + "\n");
         zoneMessages4.setCaretPosition(zoneMessages4.getDocument().getLength());
@@ -812,6 +932,8 @@ private void quitterPleinEcran(String ecranCible) {
     // VARIABLES (générées par NetBeans – ne pas modifier)
     // ─────────────────────────────────────────────────────────────────────────
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField ChampCoupJoue;
+    private javax.swing.JLabel CoupJoue;
     private javax.swing.JPanel EcranJeu;
     private javax.swing.JPanel MenuJeu;
     private javax.swing.JPanel MenuNiveaux;
