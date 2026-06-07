@@ -490,8 +490,6 @@
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="labelTitre4" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="labelObjectif4" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="labelCoupsMax4" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="1" attributes="0">
                                       <Component id="CoupJoue" min="-2" max="-2" attributes="0"/>
@@ -499,6 +497,10 @@
                                   </Group>
                                   <EmptySpace min="-2" pref="87" max="-2" attributes="0"/>
                                   <Component id="ChampCoupJoue" min="-2" pref="93" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="labelCoupsMax4" alignment="0" pref="175" max="32767" attributes="0"/>
+                                  <Component id="labelObjectif4" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>

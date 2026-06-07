@@ -10,6 +10,7 @@ import Modele.Plateau;
 import Modele.Tuile;
 import Affichage.PanneauJeu;
 import Controleur.Niveau;
+import Sons.Son;
 import Sons.SonManager;
 import java.awt.CardLayout;
 import java.awt.Dimension;
@@ -19,6 +20,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -168,7 +170,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         int coupsMax = niveauCourant.getNbCoupsMax();
 
         labelStatus4.setText("▶ " + nomNiveau);
-        labelObjectif4.setText("Objectif : " + objectif);
+        labelObjectif4.setText("Objectif : " + niveauCourant.getScoreObjectif());
         labelCoupsMax4.setText(coupsMax > 0
                 ? "Coups max : " + coupsMax
                 : "Coups max : illimité");
@@ -176,11 +178,51 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         entrerPleinEcranJeu();
     }
 
+    private boolean verifierFinDePartieNiveau() {
+        if (niveauCourant == null) {
+            return false; 
+        }
+        int scoreActuel = plateau.getScore();
+        int scoreObjectif = niveauCourant.getScoreObjectif();
+        int coupsMax = niveauCourant.getNbCoupsMax();
+
+        if (scoreActuel >= scoreObjectif) {
+            labelStatus4.setText("🏆 VICTOIRE !");
+            SonManager.jouer(Son.GAGNE);
+
+            // Sécurité : on empêche le joueur de re-cliquer pendant l'attente
+            if (panneauJeu != null) {
+                panneauJeu.setEnabled(false);
+            }
+
+            javax.swing.Timer timer = new javax.swing.Timer(3500, e -> {
+                // Cette action s'exécutera après les 2.5 secondes
+                lancerNiveau(niveauCourant.getNumeroNiveau() + 1);
+
+                // On réactive le panneau pour le prochain niveau
+                if (panneauJeu != null) {
+                    panneauJeu.setEnabled(true);
+                }
+            }); 
+
+            timer.setRepeats(false);
+            timer.start();
+            return true;
+
+        } else if (coupsJoues >= coupsMax) {
+            labelStatus4.setText("❌ PLUS DE COUPS !");
+            SonManager.jouer(Son.PERDU);
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * Crée un nouveau plateau et redimensionne le panneau.
      */
     private void initialiserPlateau(int lignes, int colonnes, int types) {
-        coupsJoues = 0; 
+        coupsJoues = 0;
         nbLig = lignes;
         nbCol = colonnes;
         nbTypes = types;
@@ -217,10 +259,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         barreScore4.setValue(Math.min(100, score / 100));
         ChampCoupJoue.setText(String.valueOf(coupsJoues));
 
-        if (niveauCourant != null && score >= niveauCourant.getScoreObjectif()) {
-            labelStatus4.setText("🎉 Objectif atteint ! Score : " + score);
-            logMessage("Niveau terminé avec " + score + " points !");
-        }
+        verifierFinDePartieNiveau();
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -686,14 +725,15 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
             .addGroup(MenuJeuLayout.createSequentialGroup()
                 .addGroup(MenuJeuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelTitre4)
-                    .addComponent(labelObjectif4)
-                    .addComponent(labelCoupsMax4)
                     .addGroup(MenuJeuLayout.createSequentialGroup()
                         .addGroup(MenuJeuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(CoupJoue)
                             .addComponent(labelStatus4))
                         .addGap(87, 87, 87)
-                        .addComponent(ChampCoupJoue, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(ChampCoupJoue, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(MenuJeuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(labelCoupsMax4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                        .addComponent(labelObjectif4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         MenuJeuLayout.setVerticalGroup(

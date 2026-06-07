@@ -238,7 +238,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
 
         // Calcul intelligent des décalages colonne par colonne
         for (int col = 0; col < nbCol; col++) {
-            // 1. On répertorie les lignes qui ont été supprimées dans cette colonne
+            // On répertorie les lignes qui ont été supprimées dans cette colonne
             boolean[] supprDansCol = new boolean[nbLig];
             for (Coord c : aSupprimer) {
                 if (c.getAbscisse() == col) {
@@ -249,7 +249,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
                 }
             }
 
-            // 2. On liste les anciennes lignes qui restent (qui n'ont pas été supprimées)
+            // On liste les anciennes lignes qui restent (qui n'ont pas été supprimées)
             ArrayList<Integer> anciennesLignesRestantes = new ArrayList<>();
             for (int lig = 0; lig < nbLig; lig++) {
                 if (!supprDansCol[lig]) {
@@ -259,7 +259,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
 
             int nbRestantes = anciennesLignesRestantes.size();
 
-            // 3. On applique la position de départ visuelle sur le nouveau plateau nettoyé
+            // On applique la position de départ visuelle sur le nouveau plateau nettoyé
             for (int lig = 0; lig < nbLig; lig++) {
                 if (lig < nbRestantes) {
                     // C'est une ancienne tuile restée ou ayant glissé vers le bas
@@ -391,11 +391,10 @@ public class PanneauJeu extends JPanel implements MouseListener {
      * flash → suppression → chute → cascade.
      */
     private void jouerCoupAvecAnimation(Coord c1, Coord c2) {
-        // 1. On fait un échanger BRUT des deux tuiles dans le modèle pour tester
-        // (Remplacez par le nom de votre méthode qui intervertit juste deux tuiles sans rien calculer d'autre)
+        // On fait un échanger des deux tuiles dans le modèle pour tester
         plateau.echangerTuiles(c1, c2);
 
-        // 2. On regarde si cet échange génère des alignements
+        // On regarde si cet échange génère des alignements
         ArrayList<Coord> premiersMatchs = suppression.collecterToutesLesTuilesASupprimer(plateau);
 
         if (premiersMatchs.isEmpty()) {
@@ -405,7 +404,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
             return;
         }
 
-        // 3. Un match existe ! On lance la chaîne d'animation propre
+        // Un match existe On lance la chaîne d'animation propre
         lancerFlashPuisSupprimerPuisChute(premiersMatchs, () -> {
             if (onCoupJoue != null) {
                 SwingUtilities.invokeLater(onCoupJoue);

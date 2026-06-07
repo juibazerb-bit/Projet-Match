@@ -31,7 +31,7 @@ public class Niveau {
                 nbLignes = 5;
                 nbColonnes = 5;
                 nbTypes = 3;
-                scoreObjectif = 500;
+                scoreObjectif = 1000;
                 nbCoupsMax = 20;
                 nomNiveau ="Niveau 1";
                 break;
@@ -39,7 +39,7 @@ public class Niveau {
                 nbLignes = 6;
                 nbColonnes = 6;
                 nbTypes = 4;
-                scoreObjectif = 1000;
+                scoreObjectif = 4000;
                 nbCoupsMax = 18;
                 nomNiveau ="Niveau 2";
                 break;
@@ -47,7 +47,7 @@ public class Niveau {
                 nbLignes = 7;
                 nbColonnes = 7;
                 nbTypes = 4;
-                scoreObjectif = 2000;
+                scoreObjectif = 8000;
                 nbCoupsMax = 15;
                 nomNiveau ="Niveau 3";
                 break;
@@ -55,7 +55,7 @@ public class Niveau {
                 nbLignes = 8;
                 nbColonnes = 8;
                 nbTypes = 5;
-                scoreObjectif = 3500;
+                scoreObjectif = 12000;
                 nbCoupsMax = 15;
                 nomNiveau ="Niveau 4";
                 break;
@@ -63,7 +63,7 @@ public class Niveau {
                 nbLignes = 9;
                 nbColonnes = 9;
                 nbTypes = 5;
-                scoreObjectif = 5000;
+                scoreObjectif = 15000;
                 nbCoupsMax = 12;
                 nomNiveau ="Niveau 5";
                 break;
@@ -71,7 +71,7 @@ public class Niveau {
                 nbLignes = 10;
                 nbColonnes = 10;
                 nbTypes = 6;
-                scoreObjectif = 7000;
+                scoreObjectif = 17000;
                 nbCoupsMax = 12;
                 nomNiveau ="Niveau 6";
                 break;
@@ -79,7 +79,7 @@ public class Niveau {
                 nbLignes = 11;
                 nbColonnes = 11;
                 nbTypes = 6;
-                scoreObjectif = 10000;
+                scoreObjectif = 20000;
                 nbCoupsMax = 10;
                 nomNiveau ="Niveau 7";
                 break;
@@ -87,7 +87,7 @@ public class Niveau {
                 nbLignes = 12;
                 nbColonnes = 12;
                 nbTypes = 7;
-                scoreObjectif = 15000;
+                scoreObjectif = 25000;
                 nbCoupsMax = 10;
                 nomNiveau ="Niveau 8";
                 break;
@@ -95,7 +95,7 @@ public class Niveau {
                 nbLignes = 13;
                 nbColonnes = 13;
                 nbTypes = 7;
-                scoreObjectif = 20000;
+                scoreObjectif = 30000;
                 nbCoupsMax = 8;
                 nomNiveau ="Niveau 9";
                 break;
