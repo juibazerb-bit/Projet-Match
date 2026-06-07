@@ -212,6 +212,22 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         } else if (coupsJoues >= coupsMax) {
             labelStatus4.setText("❌ PLUS DE COUPS !");
             SonManager.jouer(Son.PERDU);
+            if (panneauJeu != null) {
+                panneauJeu.setEnabled(false);
+            }
+
+            javax.swing.Timer timer = new javax.swing.Timer(2500, e -> {
+                // Cette action s'exécutera après les 2.5 secondes
+                lancerNiveau(niveauCourant.getNumeroNiveau());
+
+                // On réactive le panneau pour le prochain niveau
+                if (panneauJeu != null) {
+                    panneauJeu.setEnabled(true);
+                }
+            }); 
+
+            timer.setRepeats(false);
+            timer.start();
             return true;
         }
 
@@ -251,16 +267,33 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
      * Rafraîchit le champ score et la barre de progression.
      */
     private void mettreAJourScore() {
-        if (plateau == null) {
-            return;
-        }
-        int score = plateau.getScore();
-        champScore4.setText(String.valueOf(score));
-        barreScore4.setValue(Math.min(100, score / 100));
-        ChampCoupJoue.setText(String.valueOf(coupsJoues));
-
-        verifierFinDePartieNiveau();
+    if (plateau == null) {
+        return;
     }
+    
+    int score = plateau.getScore();
+    champScore4.setText(String.valueOf(score));
+    ChampCoupJoue.setText(String.valueOf(coupsJoues));
+
+    // Calcul dynamique de la barre de score
+    if (niveauCourant != null) {
+        int scoreObjectif = niveauCourant.getScoreObjectif();
+        
+        // On s'assure que le maximum de la barre correspond à l'objectif du niveau
+        barreScore4.setMaximum(scoreObjectif);
+        
+        // On donne le score actuel à la barre
+        // Math.min évite que la barre dépasse les 100% si le joueur fait un gros coup à la fin
+        barreScore4.setValue(Math.min(score, scoreObjectif));
+    } else {
+        // Mode libre : objectif fictif à 100000 points pour que la barre bouge quand même
+        barreScore4.setMaximum(100000);
+        barreScore4.setValue(Math.min(score, 100000));
+    }
+
+    // Lance la vérification de fin de partie
+    verifierFinDePartieNiveau();
+}
 
     // ─────────────────────────────────────────────────────────────────────────
     // CODE GÉNÉRÉ PAR NETBEANS – NE PAS MODIFIER MANUELLEMENT
@@ -741,15 +774,17 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
                 .addGroup(MenuJeuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelTitre4)
                     .addGroup(MenuJeuLayout.createSequentialGroup()
-                        .addGroup(MenuJeuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(CoupJoue)
-                            .addComponent(labelStatus4))
+                        .addComponent(CoupJoue)
                         .addGap(87, 87, 87)
                         .addComponent(ChampCoupJoue, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(MenuJeuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(labelCoupsMax4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
                         .addComponent(labelObjectif4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(MenuJeuLayout.createSequentialGroup()
+                .addGap(2, 2, 2)
+                .addComponent(labelStatus4, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         MenuJeuLayout.setVerticalGroup(
             MenuJeuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -806,11 +841,11 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
                     .addComponent(CoupJoue)
                     .addComponent(ChampCoupJoue, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(13, 13, 13)
-                .addComponent(labelStatus4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(separateur30, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(scrollMessages4, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(labelStatus4, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(separateur30, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scrollMessages4, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(boutonQuitter5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(172, 172, 172))
@@ -911,8 +946,9 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
                     labelStatus4.setText("Aucun coup possible !");
                 } else {
                     String txt = coup.get(0) + " ↔ " + coup.get(1);
-                    labelStatus4.setText("📊 Stat : " + txt);
+                    labelStatus4.setText(" Stat : " + txt);
                     logMessage("Meilleur coup stat : " + txt);
+                    
                 }
             });
         }).start();
@@ -923,21 +959,21 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
             return;
         }
         int n = (int) spinnerIaCoups4.getValue();
-        labelStatus4.setText("🤖 IA en cours (" + n + " coups)…");
+        labelStatus4.setText(" IA en cours (" + n + " coups)…");
         javax.swing.Timer iaTimer = new javax.swing.Timer(150, null);
         final int[] restants = {n};
         iaTimer.addActionListener(e -> {
             if (restants[0] <= 0 || panneauJeu.isAnimEnCours()) {
                 if (restants[0] <= 0) {
                     iaTimer.stop();
-                    labelStatus4.setText("🤖 IA terminée. Score : " + plateau.getScore());
+                    labelStatus4.setText(" IA terminée. Score : " + plateau.getScore());
                 }
                 return;
             }
             ArrayList<Coord> coup = ia.aideOrdi(plateau);
             if (coup.isEmpty()) {
                 iaTimer.stop();
-                labelStatus4.setText("🤖 IA bloquée – aucun coup possible.");
+                labelStatus4.setText(" IA bloquée – aucun coup possible.");
                 return;
             }
             panneauJeu.jouerCoup(coup.get(0), coup.get(1));
