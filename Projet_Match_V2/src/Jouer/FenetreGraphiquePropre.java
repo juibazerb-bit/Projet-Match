@@ -277,6 +277,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         labelTitreJeu = new javax.swing.JLabel();
         boutonJouer = new javax.swing.JButton();
         boutonNiveaux = new javax.swing.JButton();
+        boutonQuiterPrincipal = new javax.swing.JButton();
         MenuNiveaux = new javax.swing.JPanel();
         labelTitreNiveaux = new javax.swing.JLabel();
         boutonNiveau1 = new javax.swing.JButton();
@@ -363,29 +364,43 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
             }
         });
 
+        boutonQuiterPrincipal.setBackground(new java.awt.Color(255, 0, 0));
+        boutonQuiterPrincipal.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
+        boutonQuiterPrincipal.setForeground(new java.awt.Color(0, 51, 255));
+        boutonQuiterPrincipal.setText("Arreter de jouer :(");
+        boutonQuiterPrincipal.setToolTipText("");
+        boutonQuiterPrincipal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boutonQuiterPrincipalActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout MenuPrincipalLayout = new javax.swing.GroupLayout(MenuPrincipal);
         MenuPrincipal.setLayout(MenuPrincipalLayout);
         MenuPrincipalLayout.setHorizontalGroup(
             MenuPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MenuPrincipalLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(300, Short.MAX_VALUE)
                 .addGroup(MenuPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(MenuPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                         .addComponent(boutonNiveaux, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(labelTitreJeu, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(labelTitreJeu, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(boutonQuiterPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(boutonJouer, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(300, Short.MAX_VALUE))
         );
         MenuPrincipalLayout.setVerticalGroup(
             MenuPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MenuPrincipalLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(372, Short.MAX_VALUE)
                 .addComponent(labelTitreJeu, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(50, 50, 50)
                 .addComponent(boutonJouer, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addComponent(boutonNiveaux, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(70, 70, 70)
+                .addComponent(boutonQuiterPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(248, Short.MAX_VALUE))
         );
 
         panneauConteneur.add(MenuPrincipal, "MenuPrincipal");
@@ -493,7 +508,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         MenuNiveauxLayout.setHorizontalGroup(
             MenuNiveauxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MenuNiveauxLayout.createSequentialGroup()
-                .addContainerGap(2010, Short.MAX_VALUE)
+                .addContainerGap(240, Short.MAX_VALUE)
                 .addGroup(MenuNiveauxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelTitreNiveaux, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(MenuNiveauxLayout.createSequentialGroup()
@@ -515,7 +530,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
                         .addGap(20, 20, 20)
                         .addComponent(boutonNiveau9, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(boutonRetourNiveaux, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(2010, Short.MAX_VALUE))
+                .addContainerGap(240, Short.MAX_VALUE))
         );
         MenuNiveauxLayout.setVerticalGroup(
             MenuNiveauxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -662,7 +677,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         scrollMessages4.setViewportView(zoneMessages4);
 
         boutonQuitter5.setBackground(new java.awt.Color(0, 204, 0));
-        boutonQuitter5.setText("Quitter");
+        boutonQuitter5.setText("Retour Menu Principal");
         boutonQuitter5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 boutonQuitter5ActionPerformed(evt);
@@ -940,6 +955,10 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_ChampCoupJoueActionPerformed
 
+    private void boutonQuiterPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonQuiterPrincipalActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_boutonQuiterPrincipalActionPerformed
+
     // ─────────────────────────────────────────────────────────────────────────
     // UTILITAIRES
     // ─────────────────────────────────────────────────────────────────────────
@@ -995,6 +1014,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
     private javax.swing.JButton boutonNiveau9;
     private javax.swing.JButton boutonNiveaux;
     private javax.swing.JButton boutonNouvellePartie4;
+    private javax.swing.JButton boutonQuiterPrincipal;
     private javax.swing.JButton boutonQuitter5;
     private javax.swing.JButton boutonRetourNiveaux;
     private javax.swing.JTextField champScore4;
