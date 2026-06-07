@@ -1,4 +1,4 @@
-package Test;
+package Jouer;
 
 import Affichage.Animation;
 import Affichage.DessinPlateau;
@@ -22,7 +22,7 @@ import java.util.Random;
  * Point d'entrée du jeu en mode niveaux avec FenetreGraphique. Gère la boucle
  * de jeu, les animations et la progression entre niveaux.
  */
-public class TestNiveau {
+public class JouerAvecNiveaux {
 
     // Services partagés (instanciés une seule fois)
     private static final DessinPlateau dessin = new DessinPlateau();
