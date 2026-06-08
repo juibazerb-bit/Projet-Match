@@ -105,7 +105,7 @@ public class TypesCombinaisons {
 // -------------------------------------------------------------------------
     private void appliquerMatchsLignes(Plateau plateau, ArrayList<Coord> tuiles, ArrayList<Coord> aSupprimer, ArrayList<Coord> dejaTraitees, boolean estVertical, boolean silencieux) {
 
-        // 1. Déclaration du dictionnaire pour regrouper les tuiles par ligne ou colonne Cle et valeur associé
+        // Déclaration du dictionnaire pour regrouper les tuiles par ligne ou colonne Cle et valeur associé
         java.util.HashMap<Integer, ArrayList<Integer>> parAxe = new java.util.HashMap<>();
 
         // Remplissage de la HashMap : on classe la position de la tuile selon son axe
@@ -251,7 +251,6 @@ public class TypesCombinaisons {
             if (!silencieux) {
                 SonManager.jouer(Son.MATCH_SIMPLE);
             }
-            SonManager.jouer(Son.MATCH_SIMPLE);
             for (int pos = debut; pos <= fin; pos++) {
                 Coord t = estVertical ? new Coord(axe, pos) : new Coord(pos, axe);
                 ajouterSiAbsent(aSupprimer, t);

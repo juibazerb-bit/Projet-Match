@@ -34,7 +34,7 @@ public class JouerAvecFenetreGraphique {
     private static final GestionIA ia = new GestionIA();
 
     public static void main(String[] args) {
-        int nbLig = 10, nbCol = 15;
+        int nbLig = 5, nbCol = 5;
         Plateau plateau = new Plateau(nbCol, nbLig, NB_TYPES, 0, false);
         FenetreGraphique fenetre = creerFenetre(nbLig, nbCol);
         Animation.clearConsole();

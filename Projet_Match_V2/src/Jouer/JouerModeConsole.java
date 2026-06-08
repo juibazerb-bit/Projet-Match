@@ -13,7 +13,7 @@ import Modele.Plateau;
 public class JouerModeConsole {
 
     public static void main(String[] args) {
-        int nbLignes = 10, nbCol = 10, nbTypes = 7;
+        int nbLignes = 5, nbCol = 5, nbTypes = 7;
 
         Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes,false);
         GestionIA ia = new GestionIA();
