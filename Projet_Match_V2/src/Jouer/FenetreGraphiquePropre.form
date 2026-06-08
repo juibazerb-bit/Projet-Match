@@ -511,9 +511,9 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="labelTitre4" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="CoupJoue" min="-2" max="-2" attributes="0"/>
+                                  <Component id="coupJoue" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="87" max="-2" attributes="0"/>
-                                  <Component id="ChampCoupJoue" min="-2" pref="93" max="-2" attributes="0"/>
+                                  <Component id="champCoupJoue" min="-2" pref="93" max="-2" attributes="0"/>
                               </Group>
                               <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                                   <Component id="labelCoupsMax4" alignment="0" pref="175" max="32767" attributes="0"/>
@@ -598,8 +598,8 @@
                           <Component id="separateur29" min="-2" pref="2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="CoupJoue" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="ChampCoupJoue" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
+                              <Component id="coupJoue" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="champCoupJoue" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
                           <Component id="labelStatus4" min="-2" pref="34" max="-2" attributes="0"/>
@@ -875,7 +875,7 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boutonQuitter5ActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JLabel" name="CoupJoue">
+                <Component class="javax.swing.JLabel" name="coupJoue">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="66" green="0" red="33" type="rgb"/>
@@ -886,7 +886,7 @@
                     <Property name="text" type="java.lang.String" value="Coup Jou&#xe9;s : "/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="ChampCoupJoue">
+                <Component class="javax.swing.JTextField" name="champCoupJoue">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="dc" green="6c" red="6b" type="rgb"/>
@@ -896,7 +896,7 @@
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ChampCoupJoueActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="champCoupJoueActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="labelTypes5">

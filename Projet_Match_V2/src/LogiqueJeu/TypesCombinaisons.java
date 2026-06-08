@@ -5,6 +5,8 @@ import Modele.Plateau;
 import Sons.Son;
 import Sons.SonManager;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TypesCombinaisons {
 
@@ -106,7 +108,7 @@ public class TypesCombinaisons {
     private void appliquerMatchsLignes(Plateau plateau, ArrayList<Coord> tuiles, ArrayList<Coord> aSupprimer, ArrayList<Coord> dejaTraitees, boolean estVertical, boolean silencieux) {
 
         // Déclaration du dictionnaire pour regrouper les tuiles par ligne ou colonne Cle et valeur associé
-        java.util.HashMap<Integer, ArrayList<Integer>> parAxe = new java.util.HashMap<>();
+        Map<Integer, ArrayList<Integer>> parAxe = new HashMap<>();
 
         // Remplissage de la HashMap : on classe la position de la tuile selon son axe
         for (Coord t : tuiles) {
@@ -117,8 +119,8 @@ public class TypesCombinaisons {
             parAxe.computeIfAbsent(axe, k -> new ArrayList<>()).add(pos);
         }
 
-        // 2. Parcours de la HashMap axe par axe
-        for (java.util.Map.Entry<Integer, ArrayList<Integer>> entree : parAxe.entrySet()) {
+        // Parcours de la HashMap axe par axe
+        for (Map.Entry<Integer, ArrayList<Integer>> entree : parAxe.entrySet()) {
             int axe = entree.getKey();                  // Numéro de la ligne/colonne
             ArrayList<Integer> positions = entree.getValue(); // Liste des positions sur cet axe
 
@@ -167,10 +169,9 @@ public class TypesCombinaisons {
                 };
 
                 boolean toutesTraitees = true;
-                for (Coord coin : coins) {
-                    if (!contient(dejaTraitees, coin)) {
+                for (int k = 0; k < coins.length && toutesTraitees; k++) {
+                    if (!contient(dejaTraitees, coins[k])) {
                         toutesTraitees = false;
-                        break;
                     }
                 }
                 if (toutesTraitees) {

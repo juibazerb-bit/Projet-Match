@@ -289,7 +289,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
     
     int score = plateau.getScore();
     champScore4.setText(String.valueOf(score));
-    ChampCoupJoue.setText(String.valueOf(coupsJoues));
+    champCoupJoue.setText(String.valueOf(coupsJoues));
 
     // Calcul dynamique de la barre de score
     if (niveauCourant != null) {
@@ -370,8 +370,8 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         scrollMessages4 = new javax.swing.JScrollPane();
         zoneMessages4 = new javax.swing.JTextArea();
         boutonQuitter5 = new javax.swing.JButton();
-        CoupJoue = new javax.swing.JLabel();
-        ChampCoupJoue = new javax.swing.JTextField();
+        coupJoue = new javax.swing.JLabel();
+        champCoupJoue = new javax.swing.JTextField();
         labelTypes5 = new javax.swing.JLabel();
         TailleTuiles = new javax.swing.JSpinner();
 
@@ -729,15 +729,15 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
             }
         });
 
-        CoupJoue.setBackground(new java.awt.Color(51, 0, 102));
-        CoupJoue.setForeground(new java.awt.Color(255, 255, 255));
-        CoupJoue.setText("Coup Joués : ");
+        coupJoue.setBackground(new java.awt.Color(51, 0, 102));
+        coupJoue.setForeground(new java.awt.Color(255, 255, 255));
+        coupJoue.setText("Coup Joués : ");
 
-        ChampCoupJoue.setBackground(new java.awt.Color(107, 108, 220));
-        ChampCoupJoue.setForeground(new java.awt.Color(255, 255, 255));
-        ChampCoupJoue.addActionListener(new java.awt.event.ActionListener() {
+        champCoupJoue.setBackground(new java.awt.Color(107, 108, 220));
+        champCoupJoue.setForeground(new java.awt.Color(255, 255, 255));
+        champCoupJoue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ChampCoupJoueActionPerformed(evt);
+                champCoupJoueActionPerformed(evt);
             }
         });
 
@@ -785,9 +785,9 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
                 .addGroup(MenuJeuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelTitre4)
                     .addGroup(MenuJeuLayout.createSequentialGroup()
-                        .addComponent(CoupJoue)
+                        .addComponent(coupJoue)
                         .addGap(87, 87, 87)
-                        .addComponent(ChampCoupJoue, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(champCoupJoue, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(MenuJeuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(labelCoupsMax4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
                         .addComponent(labelObjectif4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -858,8 +858,8 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
                 .addComponent(separateur29, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(MenuJeuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CoupJoue)
-                    .addComponent(ChampCoupJoue, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(coupJoue)
+                    .addComponent(champCoupJoue, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(13, 13, 13)
                 .addComponent(labelStatus4, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -988,9 +988,9 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         quitterPleinEcran("MenuPrincipal");
     }//GEN-LAST:event_boutonQuitter5ActionPerformed
 
-    private void ChampCoupJoueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChampCoupJoueActionPerformed
+    private void champCoupJoueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_champCoupJoueActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_ChampCoupJoueActionPerformed
+    }//GEN-LAST:event_champCoupJoueActionPerformed
 
     private void boutonQuiterPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonQuiterPrincipalActionPerformed
         System.exit(0);
@@ -1028,8 +1028,6 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
     // VARIABLES (générées par NetBeans – ne pas modifier)
     // ─────────────────────────────────────────────────────────────────────────
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField ChampCoupJoue;
-    private javax.swing.JLabel CoupJoue;
     private javax.swing.JPanel EcranJeu;
     private javax.swing.JPanel MenuJeu;
     private javax.swing.JPanel MenuNiveaux;
@@ -1054,7 +1052,9 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
     private javax.swing.JButton boutonQuiterPrincipal;
     private javax.swing.JButton boutonQuitter5;
     private javax.swing.JButton boutonRetourNiveaux;
+    private javax.swing.JTextField champCoupJoue;
     private javax.swing.JTextField champScore4;
+    private javax.swing.JLabel coupJoue;
     private javax.swing.Box.Filler filler2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel6;
