@@ -12,7 +12,7 @@ import java.util.Random;
  */
 public class Tuile {
 
-    public static final int TAILLE = 50;
+    public static int TAILLE = 50;
 
     private int type;
     private double posYVisuelle = -1; // -1 = pas encore d'animation en cours

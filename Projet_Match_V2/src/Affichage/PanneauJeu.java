@@ -6,7 +6,6 @@ import LogiqueJeu.SuppressionMatchs;
 import Modele.Coord;
 import Modele.Plateau;
 import Modele.Tuile;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -24,13 +23,10 @@ import Sons.SonManager;
 public class PanneauJeu extends JPanel implements MouseListener {
 
     // ── Palette dark ──────────────────────────────────────────────────
-    private static final Color BG_GRILLE = new Color(0x12121E);
     private static final Color GRID_COLOR = new Color(0x2A2A40);
-    private static final Color SEL_FILL = new Color(0xFFFF00, true);  // jaune semi-transparent
     private static final Color SEL_BORDER = new Color(0xFFFF00);
-    private static final Color IA_FILL = new Color(0x4466FF, true);
     private static final Color IA_BORDER = new Color(0x6699FF);
-    private static final Color FLASH_COLOR = Color.BLACK; // Modification : Clignotement en noir
+    private static final Color FLASH_COLOR = Color.BLACK;
 
     // ── Constantes animation ──────────────────────────────────────────
     private static final int FPS = 60;
@@ -45,9 +41,9 @@ public class PanneauJeu extends JPanel implements MouseListener {
     private Coord premierClic = null;
     private Runnable onCoupJoue;
     private ArrayList<Coord> surbrillanceIA = new ArrayList<>();
+    private int tailleTuile = Tuile.TAILLE;
 
     // ── Animation chute ───────────────────────────────────────────────
-    // posY[col][lig] = position Y visuelle courante (-1 = pas d'anim)
     private double[][] posY;
     private boolean animEnCours = false;
     private Timer animTimer;
@@ -61,7 +57,6 @@ public class PanneauJeu extends JPanel implements MouseListener {
 
     // ── Services ──────────────────────────────────────────────────────
     private final GestionClics gestionClics = new GestionClics();
-    private final GestionPartie gestionPartie = new GestionPartie();
     private final SuppressionMatchs suppression = new SuppressionMatchs();
 
     private int margeX = 20, margeY = 20;
@@ -87,7 +82,18 @@ public class PanneauJeu extends JPanel implements MouseListener {
             flashTimer = null;
         }
         initialiserPosY();
-        revalidate(); // recalcule preferredSize après changement de plateau
+        revalidate();
+        repaint();
+    }
+
+    public int getTailleTuile() {
+        return tailleTuile;
+    }
+
+    public void setTailleTuile(int taille) {
+        this.tailleTuile = taille;
+        initialiserPosY();
+        revalidate();
         repaint();
     }
 
@@ -96,16 +102,15 @@ public class PanneauJeu extends JPanel implements MouseListener {
         if (plateau == null) {
             return new Dimension(400, 400);
         }
-        // paintComponent trace la grille de margeY+TAILLE à margeY+(nbLig+1)*TAILLE en Y
-        // et de offsetX à offsetX+nbCol*TAILLE en X, avec offsetX = margeX+TAILLE
-        int w = margeX + Tuile.TAILLE + plateau.getNbCol() * Tuile.TAILLE + margeX;
-        int h = margeY + (plateau.getNbLig() + 1) * Tuile.TAILLE + margeY;
+        int w = margeX + tailleTuile + plateau.getNbCol() * tailleTuile + margeX;
+        int h = margeY + (plateau.getNbLig() + 1) * tailleTuile + margeY;
         return new Dimension(w, h);
     }
 
     // ══════════════════════════════════════════════════════════════════
     // DESSIN
     // ══════════════════════════════════════════════════════════════════
+    // ══ paintComponent ═══════════════════════════════════════════════
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -115,13 +120,14 @@ public class PanneauJeu extends JPanel implements MouseListener {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        int offsetX = margeX + Tuile.TAILLE;
+        int offsetX = margeX;
+        int offsetY = margeY;
+
         int nbLig = plateau.getNbLig();
         int nbCol = plateau.getNbCol();
-        int hPlateau = nbLig * Tuile.TAILLE;
-        int lPlateau = nbCol * Tuile.TAILLE;
+        int hPlateau = nbLig * tailleTuile;
+        int lPlateau = nbCol * tailleTuile;
 
-        // Tuiles
         for (int lig = nbLig - 1; lig >= 0; lig--) {
             for (int col = 0; col < nbCol; col++) {
                 Tuile t = plateau.getTuile(col, lig);
@@ -129,101 +135,79 @@ public class PanneauJeu extends JPanel implements MouseListener {
                     continue;
                 }
 
-                int posX = offsetX + col * Tuile.TAILLE;
-                int cibleY = margeY + (nbLig - lig) * Tuile.TAILLE;
+                int posX = offsetX + col * tailleTuile;
+                int cibleY = offsetY + (nbLig - 1 - lig) * tailleTuile;
 
-                // Position Y : animée ou statique
                 int drawY;
-                if (animEnCours && posY != null && col < posY.length && lig < posY[col].length
+                if (animEnCours && posY != null
+                        && col < posY.length && lig < posY[col].length
                         && posY[col][lig] != -9999) {
                     drawY = (int) posY[col][lig];
                 } else {
                     drawY = cibleY;
                 }
 
-                // Clip pour ne pas déborder au-dessus de la grille
-                g2.setClip(offsetX, margeY + Tuile.TAILLE, lPlateau, hPlateau);
+                g2.setClip(offsetX, offsetY, lPlateau, hPlateau);
                 t.dessiner(posX, drawY, g2);
                 g2.setClip(null);
 
-                // Flash clignotant noir (effet disparition)
                 if (flashVisible && contientCoord(tuilesAClignote, col, lig)) {
                     g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.85f));
                     g2.setColor(FLASH_COLOR);
-                    g2.fillRect(posX, cibleY, Tuile.TAILLE, Tuile.TAILLE);
+                    g2.fillRect(posX, cibleY, tailleTuile, tailleTuile);
                     g2.setComposite(AlphaComposite.SrcOver);
                 }
             }
         }
 
-        // Surbrillance sélection (jaune)
+        // Surbrillance sélection
         if (premierClic != null) {
-            int px = offsetX + premierClic.getAbscisse() * Tuile.TAILLE;
-            int py = margeY + (nbLig - premierClic.getOrdonnee()) * Tuile.TAILLE;
+            int px = offsetX + premierClic.getAbscisse() * tailleTuile;
+            // ← CORRIGÉ : même formule que cibleY
+            int py = offsetY + (nbLig - 1 - premierClic.getOrdonnee()) * tailleTuile;
             g2.setColor(new Color(255, 255, 0, 70));
-            g2.fillRect(px, py, Tuile.TAILLE, Tuile.TAILLE);
+            g2.fillRect(px, py, tailleTuile, tailleTuile);
             g2.setColor(SEL_BORDER);
             g2.setStroke(new BasicStroke(3f));
-            g2.drawRect(px + 2, py + 2, Tuile.TAILLE - 4, Tuile.TAILLE - 4);
+            g2.drawRect(px + 2, py + 2, tailleTuile - 4, tailleTuile - 4);
             g2.setStroke(new BasicStroke(1f));
         }
 
-        // Surbrillance IA (bleu pulsé)
+        // Surbrillance IA
         for (int i = 0; i + 1 < surbrillanceIA.size(); i += 2) {
-            dessinerSurbrillanceIA(g2, surbrillanceIA.get(i), offsetX, nbLig, i == 0);
-            dessinerSurbrillanceIA(g2, surbrillanceIA.get(i + 1), offsetX, nbLig, false);
+            dessinerSurbrillanceIA(g2, surbrillanceIA.get(i), offsetX, offsetY, nbLig, true);
+            dessinerSurbrillanceIA(g2, surbrillanceIA.get(i + 1), offsetX, offsetY, nbLig, false);
         }
 
         // Grille
         g2.setColor(GRID_COLOR);
         g2.setStroke(new BasicStroke(0.8f));
         for (int i = 0; i <= nbLig; i++) {
-            int y = margeY + (i + 1) * Tuile.TAILLE;
+            int y = offsetY + i * tailleTuile;
             g2.drawLine(offsetX, y, offsetX + lPlateau, y);
         }
         for (int j = 0; j <= nbCol; j++) {
-            int x = offsetX + j * Tuile.TAILLE;
-            g2.drawLine(x, margeY + Tuile.TAILLE, x, margeY + hPlateau + Tuile.TAILLE);
+            int x = offsetX + j * tailleTuile;
+            g2.drawLine(x, offsetY, x, offsetY + hPlateau);
         }
 
         g2.dispose();
     }
 
-    private void dessinerSurbrillanceIA(Graphics2D g2, Coord c, int offsetX, int nbLig, boolean isPrimary) {
-        int px = offsetX + c.getAbscisse() * Tuile.TAILLE;
-        int py = margeY + (nbLig - c.getOrdonnee()) * Tuile.TAILLE;
+// ── dessinerSurbrillanceIA ────────────────────────────────────────
+    private void dessinerSurbrillanceIA(Graphics2D g2, Coord c,
+            int offsetX, int offsetY, int nbLig, boolean isPrimary) {
+        int px = offsetX + c.getAbscisse() * tailleTuile;
+        int py = offsetY + (nbLig - 1 - c.getOrdonnee()) * tailleTuile;
         g2.setColor(new Color(68, 102, 255, isPrimary ? 100 : 60));
-        g2.fillRect(px, py, Tuile.TAILLE, Tuile.TAILLE);
+        g2.fillRect(px, py, tailleTuile, tailleTuile);
         g2.setColor(isPrimary ? new Color(0x88AAFF) : IA_BORDER);
         g2.setStroke(new BasicStroke(isPrimary ? 2.5f : 1.5f));
-        g2.drawRect(px + 1, py + 1, Tuile.TAILLE - 2, Tuile.TAILLE - 2);
+        g2.drawRect(px + 1, py + 1, tailleTuile - 2, tailleTuile - 2);
         g2.setStroke(new BasicStroke(1f));
     }
 
-    // ══════════════════════════════════════════════════════════════════
-    // ANIMATION CHUTE
-    // ══════════════════════════════════════════════════════════════════
-    /**
-     * Initialise les positions visuelles Y à leur valeur "au repos".
-     */
-    private void initialiserPosY() {
-        if (plateau == null) {
-            return;
-        }
-        int nbCol = plateau.getNbCol();
-        int nbLig = plateau.getNbLig();
-        posY = new double[nbCol][nbLig];
-        for (int col = 0; col < nbCol; col++) {
-            for (int lig = 0; lig < nbLig; lig++) {
-                posY[col][lig] = -9999;
-            }
-        }
-    }
-
-    /**
-     * Lance l'animation de chute de manière ciblée après une suppression.
-     * Seules les tuiles affectées ou nouvelles s'animent.
-     */
+// ══ lancerAnimationChute ═════════════════════════════════════════
     public void lancerAnimationChute(ArrayList<Coord> aSupprimer, Runnable apresAnimation) {
         if (plateau == null) {
             if (apresAnimation != null) {
@@ -231,14 +215,13 @@ public class PanneauJeu extends JPanel implements MouseListener {
             }
             return;
         }
-
         int nbCol = plateau.getNbCol();
         int nbLig = plateau.getNbLig();
         posY = new double[nbCol][nbLig];
 
-        // Calcul intelligent des décalages colonne par colonne
+        int localOffsetY = margeY;
+
         for (int col = 0; col < nbCol; col++) {
-            // On répertorie les lignes qui ont été supprimées dans cette colonne
             boolean[] supprDansCol = new boolean[nbLig];
             for (Coord c : aSupprimer) {
                 if (c.getAbscisse() == col) {
@@ -248,40 +231,31 @@ public class PanneauJeu extends JPanel implements MouseListener {
                     }
                 }
             }
-
-            // On liste les anciennes lignes qui restent (qui n'ont pas été supprimées)
             ArrayList<Integer> anciennesLignesRestantes = new ArrayList<>();
             for (int lig = 0; lig < nbLig; lig++) {
                 if (!supprDansCol[lig]) {
                     anciennesLignesRestantes.add(lig);
                 }
             }
-
             int nbRestantes = anciennesLignesRestantes.size();
 
-            // On applique la position de départ visuelle sur le nouveau plateau nettoyé
             for (int lig = 0; lig < nbLig; lig++) {
                 if (lig < nbRestantes) {
-                    // C'est une ancienne tuile restée ou ayant glissé vers le bas
                     int ancienneLig = anciennesLignesRestantes.get(lig);
                     if (ancienneLig == lig) {
-                        // Elle n'a pas bougé du tout -> Pas d'animation
                         posY[col][lig] = -9999;
                     } else {
-                        // Elle a glissé. Sa position de départ visuelle correspond à son ancienne hauteur
-                        posY[col][lig] = margeY + (nbLig - ancienneLig) * Tuile.TAILLE;
+                        posY[col][lig] = localOffsetY + (nbLig - 1 - ancienneLig) * tailleTuile;
                     }
                 } else {
-                    // C'veut dire que c'est une NOUVELLE tuile apparue en haut du plateau
                     int indexNouvelle = lig - nbRestantes;
-                    // On l'empile de manière fluide juste au-dessus de la grille
-                    posY[col][lig] = margeY - indexNouvelle * Tuile.TAILLE;
+                    // Nouvelles tuiles arrivent du haut (y négatif)
+                    posY[col][lig] = localOffsetY - (indexNouvelle + 1) * tailleTuile;
                 }
             }
         }
 
         animEnCours = true;
-
         if (animTimer != null) {
             animTimer.stop();
         }
@@ -290,10 +264,12 @@ public class PanneauJeu extends JPanel implements MouseListener {
             boolean encoreMouvement = false;
             int nbL = plateau.getNbLig();
             int nbC = plateau.getNbCol();
+            int currentOffsetY = margeY;
+
             for (int col = 0; col < nbC; col++) {
                 for (int lig = 0; lig < nbL; lig++) {
-                    if (posY[col][lig] != -9999) { // On n'anime que celles concernées
-                        int cible = margeY + (nbL - lig) * Tuile.TAILLE;
+                    if (posY[col][lig] != -9999) {
+                        int cible = currentOffsetY + (nbL - 1 - lig) * tailleTuile;
                         if (posY[col][lig] < cible) {
                             double vitesse = GRAVITE + (nbL - lig) * BOOST_LENTE;
                             posY[col][lig] = Math.min(cible, posY[col][lig] + vitesse);
@@ -318,10 +294,23 @@ public class PanneauJeu extends JPanel implements MouseListener {
         animTimer.start();
     }
 
-    /**
-     * Anime le clignotement de {@code coordsAFlasher}, puis appelle
-     * {@code suite}.
-     */
+    // ══════════════════════════════════════════════════════════════════
+    // ANIMATION CHUTE
+    // ══════════════════════════════════════════════════════════════════
+    private void initialiserPosY() {
+        if (plateau == null) {
+            return;
+        }
+        int nbCol = plateau.getNbCol();
+        int nbLig = plateau.getNbLig();
+        posY = new double[nbCol][nbLig];
+        for (int col = 0; col < nbCol; col++) {
+            for (int lig = 0; lig < nbLig; lig++) {
+                posY[col][lig] = -9999;
+            }
+        }
+    }
+
     public void lancerFlash(ArrayList<Coord> coordsAFlasher, Runnable suite) {
         if (coordsAFlasher == null || coordsAFlasher.isEmpty()) {
             if (suite != null) {
@@ -360,12 +349,12 @@ public class PanneauJeu extends JPanel implements MouseListener {
     // ══════════════════════════════════════════════════════════════════
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (plateau == null || animEnCours || flashTimer != null && flashTimer.isRunning()) {
+        if (plateau == null || animEnCours || (flashTimer != null && flashTimer.isRunning())) {
             return;
         }
 
-        int offsetX = Tuile.TAILLE; // décalage du clicVersCoord
-        Coord clic = gestionClics.clicVersCoord(plateau, e.getX() - offsetX, e.getY(), margeX, margeY);
+        // clicVersCoord soustrait lui-même margeX/margeY → on passe les coords brutes
+        Coord clic = gestionClics.clicVersCoord(plateau, e.getX(), e.getY() + tailleTuile, margeX, margeY);
         if (clic == null) {
             return;
         }
@@ -386,25 +375,16 @@ public class PanneauJeu extends JPanel implements MouseListener {
         }
     }
 
-    /**
-     * Tente l'échange c1↔c2. Séquence : échange visuel → collecte matchs →
-     * flash → suppression → chute → cascade.
-     */
     private void jouerCoupAvecAnimation(Coord c1, Coord c2) {
-        // On fait un échanger des deux tuiles dans le modèle pour tester
         plateau.echangerTuiles(c1, c2);
-
-        // On regarde si cet échange génère des alignements
         ArrayList<Coord> premiersMatchs = suppression.collecterToutesLesTuilesASupprimer(plateau);
 
         if (premiersMatchs.isEmpty()) {
-            // Aucun match créé : le coup est invalide, on annule l'échange (on re-swap)
             plateau.echangerTuiles(c2, c1);
             repaint();
             return;
         }
 
-        // Un match existe On lance la chaîne d'animation propre
         lancerFlashPuisSupprimerPuisChute(premiersMatchs, () -> {
             if (onCoupJoue != null) {
                 SwingUtilities.invokeLater(onCoupJoue);
@@ -412,10 +392,6 @@ public class PanneauJeu extends JPanel implements MouseListener {
         });
     }
 
-    /**
-     * Flash les tuiles marquées, les supprime, anime la chute, puis relance une
-     * cascade si de nouveaux matchs apparaissent.
-     */
     private void lancerFlashPuisSupprimerPuisChute(ArrayList<Coord> aSupprimer, Runnable apres) {
         lancerFlash(aSupprimer, () -> {
             suppression.supprimerCoords(plateau, aSupprimer, new Random());
@@ -423,10 +399,6 @@ public class PanneauJeu extends JPanel implements MouseListener {
         });
     }
 
-    /**
-     * Boucle de cascade : collecte les matchs, flash, supprime, anime la chute,
-     * recommence jusqu'à plus rien.
-     */
     public void lancerCascade(Runnable apres) {
         ArrayList<Coord> aSupprimer = suppression.collecterToutesLesTuilesASupprimer(plateau);
         if (aSupprimer.isEmpty()) {
@@ -439,10 +411,6 @@ public class PanneauJeu extends JPanel implements MouseListener {
         lancerFlashPuisSupprimerPuisChute(aSupprimer, apres);
     }
 
-    /**
-     * Méthode publique pour que l'IA puisse déclencher un coup directement sans
-     * simuler des événements souris.
-     */
     public void jouerCoup(Coord c1, Coord c2) {
         if (plateau == null || isAnimEnCours()) {
             return;
