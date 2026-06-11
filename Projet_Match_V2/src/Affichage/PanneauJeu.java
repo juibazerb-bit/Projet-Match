@@ -1,7 +1,6 @@
 package Affichage;
 
 import Controleur.GestionClics;
-import LogiqueJeu.GestionPartie;
 import LogiqueJeu.SuppressionMatchs;
 import Modele.Coord;
 import Modele.Plateau;
@@ -12,7 +11,6 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
 import LogiqueJeu.GestionIA;
-import Sons.SonManager;
 
 /**
  * Panneau de jeu Swing avec : - Animation de chute des tuiles ciblée (Timer
@@ -112,7 +110,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
     // ══════════════════════════════════════════════════════════════════
     // ══ paintComponent ═══════════════════════════════════════════════
     @Override
-    protected void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (plateau == null) {
             return;
@@ -195,8 +193,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
     }
 
 // ── dessinerSurbrillanceIA ────────────────────────────────────────
-    private void dessinerSurbrillanceIA(Graphics2D g2, Coord c,
-            int offsetX, int offsetY, int nbLig, boolean isPrimary) {
+    public void dessinerSurbrillanceIA(Graphics2D g2, Coord c,int offsetX, int offsetY, int nbLig, boolean isPrimary) {
         int px = offsetX + c.getAbscisse() * tailleTuile;
         int py = offsetY + (nbLig - 1 - c.getOrdonnee()) * tailleTuile;
         g2.setColor(new Color(68, 102, 255, isPrimary ? 100 : 60));
@@ -297,7 +294,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
     // ══════════════════════════════════════════════════════════════════
     // ANIMATION CHUTE
     // ══════════════════════════════════════════════════════════════════
-    private void initialiserPosY() {
+    public void initialiserPosY() {
         if (plateau == null) {
             return;
         }
@@ -375,7 +372,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
         }
     }
 
-    private void jouerCoupAvecAnimation(Coord c1, Coord c2) {
+    public void jouerCoupAvecAnimation(Coord c1, Coord c2) {
         plateau.echangerTuiles(c1, c2);
         ArrayList<Coord> premiersMatchs = suppression.collecterToutesLesTuilesASupprimer(plateau);
 
@@ -392,7 +389,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
         });
     }
 
-    private void lancerFlashPuisSupprimerPuisChute(ArrayList<Coord> aSupprimer, Runnable apres) {
+    public void lancerFlashPuisSupprimerPuisChute(ArrayList<Coord> aSupprimer, Runnable apres) {
         lancerFlash(aSupprimer, () -> {
             suppression.supprimerCoords(plateau, aSupprimer, new Random());
             lancerAnimationChute(aSupprimer, () -> lancerCascade(apres));
@@ -438,8 +435,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
         return animEnCours || (flashTimer != null && flashTimer.isRunning());
     }
 
-    // ── Utils ─────────────────────────────────────────────────────────
-    private boolean contientCoord(ArrayList<Coord> liste, int col, int lig) {
+    public boolean contientCoord(ArrayList<Coord> liste, int col, int lig) {
         for (Coord c : liste) {
             if (c.getAbscisse() == col && c.getOrdonnee() == lig) {
                 return true;

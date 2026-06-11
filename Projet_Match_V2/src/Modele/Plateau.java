@@ -86,7 +86,7 @@ public class Plateau {
     /**
      * Constructeur privé vide — utilisé uniquement par copy().
      */
-    private Plateau(int nbColonnes, int nbLignes, int nbTypes, boolean vide, boolean infini) {
+    public Plateau(int nbColonnes, int nbLignes, int nbTypes, boolean vide, boolean infini) {
         SonManager.desactiver();
         if (infini) {
             validerPlateauInfini(nbTypes, nbLignes, nbColonnes);
@@ -221,7 +221,7 @@ public class Plateau {
     // -------------------------------------------------------------------------
     // VALIDATION
     // -------------------------------------------------------------------------
-    private static void validerPlateauPetit(int nbTypes, int nbLignes, int nbCol) {
+    public static void validerPlateauPetit(int nbTypes, int nbLignes, int nbCol) {
         if ((nbTypes < NB_TYPES_MIN || nbTypes > NB_TYPES_MAX)
                 || (nbLignes < NB_LIG_MIN || nbLignes > NB_LIG_MAX)
                 || (nbCol < NB_COL_MIN || nbCol > NB_COL_MAX)) {
@@ -233,7 +233,7 @@ public class Plateau {
 
     private static final int[] TAILLE_MAX_PAR_TYPE = {0, 0, 7, 12, 19, 28, 36, 43, 50, 57, 64, 71, 78, 85, 92};
 
-    private static void validerPlateauInfini(int nbTypes, int nbLignes, int nbCol) {
+    public static void validerPlateauInfini(int nbTypes, int nbLignes, int nbCol) {
         if (nbTypes < NB_TYPES_MIN || nbTypes > NB_TYPES_MAX) {
             throw new IllegalArgumentException(
                     "Le nombre de types de tuiles doit être entre "

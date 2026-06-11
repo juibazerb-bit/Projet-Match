@@ -115,7 +115,7 @@ public class GestionIA {
      */
     public int simulerMatchsDeterministe(Plateau plateau) {
         int total = 0;
-        ArrayList<Coord> aSupprimer = collecterAvecNullGuard(plateau);
+        ArrayList<Coord> aSupprimer = collecterAvecNullProtection(plateau);
 
         while (!aSupprimer.isEmpty()) {
             total += aSupprimer.size();
@@ -131,7 +131,7 @@ public class GestionIA {
             }
 
             // Mise à jour de la condition de boucle
-            aSupprimer = collecterAvecNullGuard(plateau);
+            aSupprimer = collecterAvecNullProtection(plateau);
         }
         return total;
     }
@@ -253,7 +253,7 @@ public class GestionIA {
     /**
      * Teste un échange et l'ajoute à matchs s'il crée un match (puis annule).
      */
-    private void testerEchange(Plateau plateau, ArrayList<Coord> matchs, Coord c1, Coord c2) {
+    public void testerEchange(Plateau plateau, ArrayList<Coord> matchs, Coord c1, Coord c2) {
         plateau.echangerTuiles(c1, c2);
         if (detection.existeMatchVertical(plateau, c1)
                 || detection.existeMatchVertical(plateau, c2)
@@ -267,7 +267,7 @@ public class GestionIA {
         plateau.echangerTuiles(c1, c2);
     }
 
-    private boolean paireDejaPresente(ArrayList<Coord> liste, Coord c1, Coord c2) {
+    public boolean paireDejaPresente(ArrayList<Coord> liste, Coord c1, Coord c2) {
         boolean trouve = false;
 
         // Suppression du 'return true' précoce : parcours contrôlé par le booléen trouve
@@ -279,7 +279,7 @@ public class GestionIA {
         return trouve;
     }
 
-    private StatCoup trouverOuCreerStat(ArrayList<StatCoup> stats, Coord c1, Coord c2) {
+    public StatCoup trouverOuCreerStat(ArrayList<StatCoup> stats, Coord c1, Coord c2) {
         StatCoup cible = null;
 
         // Suppression du 'return s' précoce : on cherche l'élément s'il existe
@@ -300,7 +300,7 @@ public class GestionIA {
      * Collecte les tuiles à supprimer en ignorant les cases null (produites par
      * simulerMatchsDeterministe).
      */
-    private ArrayList<Coord> collecterAvecNullGuard(Plateau plateau) {
+    public ArrayList<Coord> collecterAvecNullProtection(Plateau plateau) {
         ArrayList<Coord> res = new ArrayList<>();
         ArrayList<Coord> candidats = suppression.collecterToutesLesTuilesASupprimerSilencieux(plateau);
         for (Coord c : candidats) {
@@ -315,7 +315,7 @@ public class GestionIA {
     /**
      * Place null à la position (c) dans le plateau de simulation.
      */
-    private void remplacerParNull(Plateau plateau, Coord c) {
+    public void remplacerParNull(Plateau plateau, Coord c) {
         plateau.getLesColonnes()[c.getAbscisse()].setTuileNull(c.getOrdonnee());
     }
 
@@ -323,7 +323,7 @@ public class GestionIA {
      * Compacte une colonne : déplace toutes les tuiles non-null vers le bas et
      * laisse null en haut. Conserve la taille de la colonne.
      */
-    private void compacterColonne(Plateau plateau, int col) {
+    public void compacterColonne(Plateau plateau, int col) {
         int nbLig = plateau.getNbLig();
         ArrayList<Modele.Tuile> tuiles = plateau.getLesColonnes()[col].getTuiles();
 

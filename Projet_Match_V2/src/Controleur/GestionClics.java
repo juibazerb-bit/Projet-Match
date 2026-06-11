@@ -64,7 +64,7 @@ public class GestionClics {
     // -------------------------------------------------------------------------
     // INTERPRÉTATION D'UN CLIC
     // -------------------------------------------------------------------------
-    private ActionJoueur interpreterClic(Plateau plateau, int boutonX,int clicX, int clicY, int margeX, int margeY) {
+    public ActionJoueur interpreterClic(Plateau plateau, int boutonX,int clicX, int clicY, int margeX, int margeY) {
 
         // Boutons fixes (Y, largeur=160, hauteur=30)
         if (surBouton(clicX, clicY, boutonX, 60, 160, 30)) {

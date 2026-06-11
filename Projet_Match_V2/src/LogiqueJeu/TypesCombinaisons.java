@@ -105,7 +105,7 @@ public class TypesCombinaisons {
     // -------------------------------------------------------------------------
 // MATCHS EN LIGNE (x3, x4, x5+) 
 // -------------------------------------------------------------------------
-    private void appliquerMatchsLignes(Plateau plateau, ArrayList<Coord> tuiles, ArrayList<Coord> aSupprimer, ArrayList<Coord> dejaTraitees, boolean estVertical, boolean silencieux) {
+    public void appliquerMatchsLignes(Plateau plateau, ArrayList<Coord> tuiles, ArrayList<Coord> aSupprimer, ArrayList<Coord> dejaTraitees, boolean estVertical, boolean silencieux) {
 
         // Déclaration du dictionnaire pour regrouper les tuiles par ligne ou colonne Cle et valeur associé
         Map<Integer, ArrayList<Integer>> parAxe = new HashMap<>();
@@ -153,7 +153,7 @@ public class TypesCombinaisons {
     // -------------------------------------------------------------------------
     // CARRÉ 2×2
     // -------------------------------------------------------------------------
-    private void appliquerCarres(Plateau plateau, ArrayList<Coord> aSupprimer, ArrayList<Coord> dejaTraitees, boolean silencieux) {
+    public void appliquerCarres(Plateau plateau, ArrayList<Coord> aSupprimer, ArrayList<Coord> dejaTraitees, boolean silencieux) {
 
         for (int col = 0; col < plateau.getNbCol() - 1; col++) {
             for (int lig = 0; lig < plateau.getNbLig() - 1; lig++) {
@@ -198,7 +198,7 @@ public class TypesCombinaisons {
     // -------------------------------------------------------------------------
     // EFFET PAR TAILLE
     // -------------------------------------------------------------------------
-    private void appliquerEffet(Plateau plateau, int axe, int debut, int fin, int taille, boolean estVertical, ArrayList<Coord> aSupprimer, ArrayList<Coord> dejaTraitees, boolean silencieux) {
+    public void appliquerEffet(Plateau plateau, int axe, int debut, int fin, int taille, boolean estVertical, ArrayList<Coord> aSupprimer, ArrayList<Coord> dejaTraitees, boolean silencieux) {
 
         if (taille >= 5) {
             // Supprime toutes les tuiles du même type
@@ -317,7 +317,7 @@ public class TypesCombinaisons {
      * Étend un match jusqu'à ce qu'il n'y ait plus de tuile identique dans la
      * direction.
      */
-    private int etendreMatch(Plateau plateau, int debutAxe, int ligneDepart, boolean estVertical) {
+    public int etendreMatch(Plateau plateau, int debutAxe, int ligneDepart, boolean estVertical) {
         int fin = (estVertical ? ligneDepart : debutAxe) + 2;
         boolean continuer = true;
 
@@ -362,7 +362,7 @@ public class TypesCombinaisons {
     // -------------------------------------------------------------------------
     // UTILITAIRES
     // -------------------------------------------------------------------------
-    private boolean estUnCarre(Plateau plateau, int col, int lig) {
+    public boolean estUnCarre(Plateau plateau, int col, int lig) {
         Modele.Tuile t00 = plateau.getTuile(col, lig);
         Modele.Tuile t10 = plateau.getTuile(col + 1, lig);
         Modele.Tuile t01 = plateau.getTuile(col, lig + 1);
@@ -374,7 +374,7 @@ public class TypesCombinaisons {
         return t10.getType() == type && t01.getType() == type && t11.getType() == type;
     }
 
-    private void ajouterZoneRayon(Plateau plateau, Coord centre, int rayon, ArrayList<Coord> liste) {
+    public void ajouterZoneRayon(Plateau plateau, Coord centre, int rayon, ArrayList<Coord> liste) {
         for (int c = centre.getAbscisse() - rayon; c <= centre.getAbscisse() + rayon; c++) {
             for (int l = centre.getOrdonnee() - rayon; l <= centre.getOrdonnee() + rayon; l++) {
                 if (c >= 0 && c < plateau.getNbCol() && l >= 0 && l < plateau.getNbLig()) {
@@ -384,7 +384,7 @@ public class TypesCombinaisons {
         }
     }
 
-    private boolean toutesDejaTraitees(int axe, int debut, int fin,
+    public boolean toutesDejaTraitees(int axe, int debut, int fin,
             boolean estVertical, ArrayList<Coord> dejaTraitees) {
         for (int pos = debut; pos <= fin; pos++) {
             Coord t = estVertical ? new Coord(axe, pos) : new Coord(pos, axe);
@@ -404,7 +404,7 @@ public class TypesCombinaisons {
         return false;
     }
 
-    private void ajouterSiAbsent(ArrayList<Coord> liste, Coord c) {
+    public void ajouterSiAbsent(ArrayList<Coord> liste, Coord c) {
         if (!contient(liste, c)) {
             liste.add(c);
         }
