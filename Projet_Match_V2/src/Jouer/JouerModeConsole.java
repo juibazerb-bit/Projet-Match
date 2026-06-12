@@ -15,7 +15,7 @@ public class JouerModeConsole {
     public static void main(String[] args) {
         int nbLignes = 5, nbCol = 5, nbTypes = 7;
 
-        Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes,false);
+        Plateau plateau = new Plateau(nbLignes, nbCol, nbTypes,0,false);
         GestionIA ia = new GestionIA();
         GestionPartie gestionPartie = new GestionPartie();
 
@@ -54,6 +54,7 @@ public class JouerModeConsole {
                     continuer = false;
                     System.out.println("Au revoir !");
                     break;
+
             }
         }
     }

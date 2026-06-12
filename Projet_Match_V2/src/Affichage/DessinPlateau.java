@@ -14,9 +14,6 @@ import java.util.ArrayList;
 /**
  * Responsable de tout le rendu graphique du plateau dans une FenetreGraphique.
  *
- * IMPORTANT – cohérence boutons :
- *   boutonX = margeX + nbCol * TAILLE + BOUTON_OFFSET
- *   Cette constante est la même ici (dessin) et dans GestionClics (détection).
  *
  * Méthodes principales :
  *  - afficherPlateau()                → dessin complet (tuiles + grille + boutons)
@@ -119,7 +116,7 @@ public class DessinPlateau {
         int x2 = margeX + c2.getAbscisse() * Tuile.TAILLE;
         int y2 = margeY + hauteurPlateau - c2.getOrdonnee() * Tuile.TAILLE;
 
-        g.setStroke(new BasicStroke(4));
+        g.setStroke(new BasicStroke(4)); // epaisseur
         g.setColor(Color.GREEN);
         g.drawRoundRect(x1 + 3, y1 + 3, Tuile.TAILLE - 6, Tuile.TAILLE - 6, 8, 8);
         g.setColor(Color.CYAN);
