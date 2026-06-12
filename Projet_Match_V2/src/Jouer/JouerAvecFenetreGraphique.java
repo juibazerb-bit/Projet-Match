@@ -51,16 +51,19 @@ public class JouerAvecFenetreGraphique {
                 case COUPS_POSSIBLES:
                     System.out.println(ia.listMatchsTexte(plateau));
                     premierClic = null;
+                    break;
 
                 case NOUVELLE_PARTIE:
                     plateau = new Plateau(nbCol, nbLig, NB_TYPES, false);
                     dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
                     verifierFinDePartie(plateau);
                     premierClic = null;
+                    break;
 
                 case QUITTER:
                     continuer = false;
                     fenetre.dispose();
+                    break;
 
                 case MEILLEUR_COUP:
                     ArrayList<Coord> coup = ia.obtenirMeilleurCoupStatistique(plateau, 200);
@@ -70,10 +73,12 @@ public class JouerAvecFenetreGraphique {
                         dessin.afficherPlateauAvecAide(plateau, fenetre, MARGE_X, MARGE_Y, coup);
                     }
                     premierClic = null;
+                    break;
 
                 case ORDI_JOUE:
                     jouerIANCoups(plateau, fenetre, 10);
                     premierClic = null;
+                    break;
 
                 case DELTA_LIGNES:
 
@@ -84,6 +89,7 @@ public class JouerAvecFenetreGraphique {
                     dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
                     verifierFinDePartie(plateau);
                     premierClic = null;
+                    break;
 
                 case DELTA_COLONNES:
                     nbCol = Math.max(3, nbCol + action.delta);
@@ -93,6 +99,7 @@ public class JouerAvecFenetreGraphique {
                     dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
                     verifierFinDePartie(plateau);
                     premierClic = null;
+                    break;
 
                 case TUILE_SELECTIONNEE:
                     if (premierClic == null) {
@@ -125,7 +132,7 @@ public class JouerAvecFenetreGraphique {
                         }
                         premierClic = null;
                     }
-
+                break;
             }
         }
     }

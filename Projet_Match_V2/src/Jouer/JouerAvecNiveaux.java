@@ -66,12 +66,14 @@ public class JouerAvecNiveaux {
                     case COUPS_POSSIBLES:
                         System.out.println(ia.listMatchsTexte(plateau));
                         premierClic = null;
+                        break;
 
                     case NOUVELLE_PARTIE:
                         plateau = new Plateau(niveau.getNbColonnes(), niveau.getNbLignes(), niveau.getNbTypes(),false);
                         coupsJoues = 0;
                         premierClic = null;
                         dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
+                        break;
 
                     case QUITTER:
                         fenetre.dispose();
@@ -85,10 +87,12 @@ public class JouerAvecNiveaux {
                             dessin.afficherPlateauAvecAide(plateau, fenetre, MARGE_X, MARGE_Y, coup);
                         }
                         premierClic = null;
+                        break;
 
                     case ORDI_JOUE:
                         // ignoré ici (pas de compteur de coups pour l'IA en mode niveau)
                         premierClic = null;
+                        break;
 
                     case DELTA_LIGNES:
                     case DELTA_COLONNES:
@@ -135,6 +139,7 @@ public class JouerAvecNiveaux {
                             }
                             premierClic = null;
                         }
+                        break;
                 }
             }
         }

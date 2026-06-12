@@ -56,9 +56,9 @@ public class GestionIA {
         String resultat;
 
         if (matchs.isEmpty()) {
-            resultat = "Aucun échange possible.";
+            resultat = "Aucun echange possible.";
         } else {
-            StringBuilder sb = new StringBuilder("Échanges possibles :");
+            StringBuilder sb = new StringBuilder("Echanges possibles :");
             for (int i = 0; i < matchs.size(); i += 2) {
                 sb.append("\n  ").append(matchs.get(i)).append(" ↔ ").append(matchs.get(i + 1));
             }
@@ -209,9 +209,9 @@ public class GestionIA {
             System.out.printf("Tuiles moyennes: %.2f%n", moyTuiles);
             System.out.printf("Ecart-type     : %.2f pts%n", ecartType);
             if (ecartType < 50) {
-                System.out.println("=> Coup TRÈS STABLE.");
+                System.out.println("=> Coup TRES STABLE.");
             } else if (ecartType < 200) {
-                System.out.println("=> Coup MODÉRÉ.");
+                System.out.println("=> Coup MODERE.");
             } else {
                 System.out.println("=> Coup INSTABLE / CHANCEUX.");
             }
