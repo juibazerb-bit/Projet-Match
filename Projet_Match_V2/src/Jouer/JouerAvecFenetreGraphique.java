@@ -34,8 +34,8 @@ public class JouerAvecFenetreGraphique {
     private static final GestionIA ia = new GestionIA();
 
     public static void main(String[] args) {
-        int nbLig = 10, nbCol = 15;
-        Plateau plateau = new Plateau(nbCol, nbLig, NB_TYPES, 0);
+        int nbLig = 5, nbCol = 5;
+        Plateau plateau = new Plateau(nbCol, nbLig, NB_TYPES, 0, false);
         FenetreGraphique fenetre = creerFenetre(nbLig, nbCol);
         Animation.clearConsole();
         dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
@@ -54,12 +54,10 @@ public class JouerAvecFenetreGraphique {
                     break;
 
                 case NOUVELLE_PARTIE:
-                    SonManager.desactiver();
-                    plateau = new Plateau(nbCol, nbLig, NB_TYPES);    
+                    plateau = new Plateau(nbCol, nbLig, NB_TYPES, false);
                     dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
                     verifierFinDePartie(plateau);
                     premierClic = null;
-                    SonManager.activer();
                     break;
 
                 case QUITTER:
@@ -87,7 +85,7 @@ public class JouerAvecFenetreGraphique {
                     nbLig = Math.max(3, nbLig + action.delta);
                     fenetre.dispose();
                     fenetre = creerFenetre(nbLig, nbCol);
-                    plateau = new Plateau(nbCol, nbLig, NB_TYPES);
+                    plateau = new Plateau(nbCol, nbLig, NB_TYPES, false);
                     dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
                     verifierFinDePartie(plateau);
                     premierClic = null;
@@ -97,7 +95,7 @@ public class JouerAvecFenetreGraphique {
                     nbCol = Math.max(3, nbCol + action.delta);
                     fenetre.dispose();
                     fenetre = creerFenetre(nbLig, nbCol);
-                    plateau = new Plateau(nbCol, nbLig, NB_TYPES);
+                    plateau = new Plateau(nbCol, nbLig, NB_TYPES, false);
                     dessin.afficherPlateau(plateau, fenetre, MARGE_X, MARGE_Y);
                     verifierFinDePartie(plateau);
                     premierClic = null;
@@ -134,7 +132,7 @@ public class JouerAvecFenetreGraphique {
                         }
                         premierClic = null;
                     }
-                    break;
+                break;
             }
         }
     }
@@ -163,19 +161,20 @@ public class JouerAvecFenetreGraphique {
 
     private static void jouerIANCoups(Plateau plateau, FenetreGraphique fenetre, int n) {
         Random rand = new Random();
-        for (int i = 0; i < n; i++) {
+        boolean coupPossible = true;
+        for (int i = 0; i < n && coupPossible; i++) {
             ArrayList<Coord> coup = ia.aideOrdi(plateau);
             if (coup.isEmpty()) {
                 System.out.println("IA bloquee apres " + i + " coups.");
-                break;
+                coupPossible = false;
+            } else {
+                System.out.println("IA coup " + (i + 1) + " : " + coup.get(0) + " ↔ " + coup.get(1));
+                animation.fixerPositionsActuelles(plateau, MARGE_Y);
+                plateau.echangerTuiles(coup.get(0), coup.get(1));
+                jouerCascade(plateau, fenetre);
+                fenetre.attendre(0.8);
+                System.out.println("Score : " + plateau.getScore());
             }
-
-            System.out.println("IA coup " + (i + 1) + " : " + coup.get(0) + " ↔ " + coup.get(1));
-            animation.fixerPositionsActuelles(plateau, MARGE_Y);
-            plateau.echangerTuiles(coup.get(0), coup.get(1));
-            jouerCascade(plateau, fenetre);
-            fenetre.attendre(0.8);
-            System.out.println("Score : " + plateau.getScore());
         }
     }
 

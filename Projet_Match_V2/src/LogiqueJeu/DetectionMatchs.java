@@ -97,7 +97,7 @@ public class DetectionMatchs {
      * Retourne le type de la tuile en (col, lig) si la case est valide, sinon
      * retourne la valeur par défaut fournie.
      */
-    private int typeOu(Plateau plateau, int col, int lig, int defaut) {
+    public int typeOu(Plateau plateau, int col, int lig, int defaut) {
         if (col < 0 || col >= plateau.getNbCol()) {
             return defaut;
         }

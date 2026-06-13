@@ -1,10 +1,10 @@
 package Affichage;
 
+import Controleur.Niveau;
 import FenetreGraphique.FenetreGraphique;
 import Modele.Coord;
 import Modele.Plateau;
 import Modele.Tuile;
-import Plateau.Niveau;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -14,9 +14,6 @@ import java.util.ArrayList;
 /**
  * Responsable de tout le rendu graphique du plateau dans une FenetreGraphique.
  *
- * IMPORTANT – cohérence boutons :
- *   boutonX = margeX + nbCol * TAILLE + BOUTON_OFFSET
- *   Cette constante est la même ici (dessin) et dans GestionClics (détection).
  *
  * Méthodes principales :
  *  - afficherPlateau()                → dessin complet (tuiles + grille + boutons)
@@ -52,8 +49,7 @@ public class DessinPlateau {
      *
      * @param selection coordonnée de la tuile sélectionnée (null = pas de sélection)
      */
-    public void afficherPlateauAvecSelection(Plateau plateau, FenetreGraphique fenetre,
-            int margeX, int margeY, Coord selection) {
+    public void afficherPlateauAvecSelection(Plateau plateau, FenetreGraphique fenetre,int margeX, int margeY, Coord selection) {
         fenetre.effacer();
         Graphics2D g = fenetre.getGraphics2D();
         dessinerTuiles(plateau, g, margeX, margeY);
@@ -90,8 +86,7 @@ public class DessinPlateau {
     // -------------------------------------------------------------------------
 
     /** Affiche le plateau puis noircit les tuiles de la liste si enNoir=true. */
-    public void afficherPlateauClignotant(Plateau plateau, FenetreGraphique fenetre,
-            int margeX, int margeY, ArrayList<Coord> aNoircir, boolean enNoir) {
+    public void afficherPlateauClignotant(Plateau plateau, FenetreGraphique fenetre,int margeX, int margeY, ArrayList<Coord> aNoircir, boolean enNoir) {
         afficherPlateau(plateau, fenetre, margeX, margeY);
         if (enNoir) {
             Graphics2D g = fenetre.getGraphics2D();
@@ -107,8 +102,7 @@ public class DessinPlateau {
     }
 
     /** Affiche le plateau et surligne le meilleur coup avec une flèche. */
-    public void afficherPlateauAvecAide(Plateau plateau, FenetreGraphique fenetre,
-            int margeX, int margeY, ArrayList<Coord> meilleurCoup) {
+    public void afficherPlateauAvecAide(Plateau plateau, FenetreGraphique fenetre,int margeX, int margeY, ArrayList<Coord> meilleurCoup) {
         afficherPlateau(plateau, fenetre, margeX, margeY);
         if (meilleurCoup == null || meilleurCoup.size() < 2) return;
 
@@ -122,7 +116,7 @@ public class DessinPlateau {
         int x2 = margeX + c2.getAbscisse() * Tuile.TAILLE;
         int y2 = margeY + hauteurPlateau - c2.getOrdonnee() * Tuile.TAILLE;
 
-        g.setStroke(new BasicStroke(4));
+        g.setStroke(new BasicStroke(4)); // epaisseur
         g.setColor(Color.GREEN);
         g.drawRoundRect(x1 + 3, y1 + 3, Tuile.TAILLE - 6, Tuile.TAILLE - 6, 8, 8);
         g.setColor(Color.CYAN);
@@ -172,7 +166,7 @@ public class DessinPlateau {
     // SOUS-MÉTHODES INTERNES
     // -------------------------------------------------------------------------
 
-    private void dessinerTuiles(Plateau plateau, Graphics2D g, int margeX, int margeY) {
+    public void dessinerTuiles(Plateau plateau, Graphics2D g, int margeX, int margeY) {
         int hauteurPlateau = plateau.getNbLig() * Tuile.TAILLE;
         for (int lig = plateau.getNbLig() - 1; lig >= 0; lig--) {
             for (int col = 0; col < plateau.getNbCol(); col++) {
@@ -186,7 +180,7 @@ public class DessinPlateau {
         }
     }
 
-    private void dessinerGrille(Plateau plateau, Graphics2D g, int margeX, int margeY) {
+    public void dessinerGrille(Plateau plateau, Graphics2D g, int margeX, int margeY) {
         g.setColor(Color.BLACK);
         g.setStroke(new BasicStroke(1));
         int largeur = plateau.getNbCol() * Tuile.TAILLE;
@@ -202,7 +196,7 @@ public class DessinPlateau {
         }
     }
 
-    private void dessinerBoutons(Plateau plateau, FenetreGraphique fenetre, int margeX) {
+    public void dessinerBoutons(Plateau plateau, FenetreGraphique fenetre, int margeX) {
         // boutonX = même calcul que dans GestionClics.attendreAction
         int bx = margeX + plateau.getNbCol() * Tuile.TAILLE + BOUTON_OFFSET;
         dessinBoutons.dessinerBouton(fenetre, "Coups possibles",           bx, 60,  160, 30);
@@ -216,7 +210,7 @@ public class DessinPlateau {
         dessinBoutons.dessinerCompteur(fenetre, bx, 390, 160, 90, "Colonnes", plateau.getNbCol());
     }
 
-    private void dessinerPointeDefleche(Graphics2D g, int x1, int y1, int x2, int y2) {
+    public void dessinerPointeDefleche(Graphics2D g, int x1, int y1, int x2, int y2) {
         double angle = Math.atan2(y2 - y1, x2 - x1);
         int taille = 10;
         int px1 = (int) (x2 - taille * Math.cos(angle - Math.PI / 6));

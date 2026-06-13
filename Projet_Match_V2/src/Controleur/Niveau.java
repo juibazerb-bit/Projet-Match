@@ -15,6 +15,7 @@ public class Niveau {
     private int nbTypes;
     private int scoreObjectif;
     private int nbCoupsMax;
+    private String nomNiveau;
 
     public Niveau(int numeroNiveau) {
         this.numeroNiveau = numeroNiveau;
@@ -30,72 +31,73 @@ public class Niveau {
                 nbLignes = 5;
                 nbColonnes = 5;
                 nbTypes = 3;
-                scoreObjectif = 500;
+                scoreObjectif = 1000;
                 nbCoupsMax = 20;
-                break;
+                nomNiveau ="Niveau 1";
             case 2:
                 nbLignes = 6;
                 nbColonnes = 6;
                 nbTypes = 4;
-                scoreObjectif = 1000;
+                scoreObjectif = 4000;
                 nbCoupsMax = 18;
-                break;
+                nomNiveau ="Niveau 2";
             case 3:
                 nbLignes = 7;
                 nbColonnes = 7;
                 nbTypes = 4;
-                scoreObjectif = 2000;
+                scoreObjectif = 8000;
                 nbCoupsMax = 15;
-                break;
+                nomNiveau ="Niveau 3";
             case 4:
                 nbLignes = 8;
                 nbColonnes = 8;
                 nbTypes = 5;
-                scoreObjectif = 3500;
+                scoreObjectif = 12000;
                 nbCoupsMax = 15;
-                break;
+                nomNiveau ="Niveau 4";
             case 5:
                 nbLignes = 9;
                 nbColonnes = 9;
                 nbTypes = 5;
-                scoreObjectif = 5000;
+                scoreObjectif = 15000;
                 nbCoupsMax = 12;
-                break;
+                nomNiveau ="Niveau 5";
             case 6:
                 nbLignes = 10;
                 nbColonnes = 10;
                 nbTypes = 6;
-                scoreObjectif = 7000;
+                scoreObjectif = 17000;
                 nbCoupsMax = 12;
-                break;
+                nomNiveau ="Niveau 6";
             case 7:
                 nbLignes = 11;
                 nbColonnes = 11;
                 nbTypes = 6;
-                scoreObjectif = 10000;
+                scoreObjectif = 20000;
                 nbCoupsMax = 10;
-                break;
+                nomNiveau ="Niveau 7";
             case 8:
                 nbLignes = 12;
                 nbColonnes = 12;
                 nbTypes = 7;
-                scoreObjectif = 15000;
+                scoreObjectif = 25000;
                 nbCoupsMax = 10;
+                nomNiveau ="Niveau 8";
                 break;
             case 9:
                 nbLignes = 13;
                 nbColonnes = 13;
                 nbTypes = 7;
-                scoreObjectif = 20000;
+                scoreObjectif = 30000;
                 nbCoupsMax = 8;
-                break;
+                nomNiveau ="Niveau 9";
             default:
                 nbLignes = Math.min(20, 13 + (numeroNiveau - 9));
                 nbColonnes = Math.min(20, 13 + (numeroNiveau - 9));
                 nbTypes = 7;
                 scoreObjectif = 20000 + (numeroNiveau - 9) * 5000;
                 nbCoupsMax = Math.max(5, 8 - (numeroNiveau - 9));
-                break;
+                nomNiveau ="Niveau Basique";
         }
     }
 
@@ -139,6 +141,10 @@ public class Niveau {
 
     public int getNbCoupsMax() {
         return nbCoupsMax;
+    }
+
+    public String getNomNiveau() {
+        return nomNiveau;
     }
 
     @Override

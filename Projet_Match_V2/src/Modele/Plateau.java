@@ -36,9 +36,13 @@ public class Plateau {
      * Crée un plateau aléatoire sans graine fixe. Les matchs initiaux sont
      * supprimés automatiquement.
      */
-    public Plateau(int nbColonnes, int nbLignes, int nbTypes) {
+    public Plateau(int nbColonnes, int nbLignes, int nbTypes, boolean infini) {
         SonManager.desactiver();
-        validerPlateau(nbTypes,nbLignes,nbColonnes);
+        if (infini) {
+            validerPlateauInfini(nbTypes, nbLignes, nbColonnes);
+        } else {
+            validerPlateauPetit(nbTypes, nbLignes, nbColonnes);
+        }
         this.nbCol = nbColonnes;
         this.nbLig = nbLignes;
         this.nbTypesTuile = nbTypes;
@@ -48,7 +52,7 @@ public class Plateau {
         for (int i = 0; i < nbColonnes; i++) {
             lesColonnes[i] = new Colonne(nbLignes, nbTypes);
         }
-        new SuppressionMatchs().supprimerTousLesMatchs(this, new Random());
+        new SuppressionMatchs().supprimerTousLesMatchsSilencieux(this, new Random());
         this.score = 0; // remet à 0 après la suppression initiale
         SonManager.activer();
     }
@@ -57,9 +61,13 @@ public class Plateau {
      * Crée un plateau avec une graine fixe (reproductible). Utile pour les
      * tests et les niveaux déterministes.
      */
-    public Plateau(int nbColonnes, int nbLignes, int nbTypes, long seed) {
+    public Plateau(int nbColonnes, int nbLignes, int nbTypes, long seed, boolean infini) {
         SonManager.desactiver();
-        validerPlateau(nbTypes,nbLignes,nbColonnes);
+        if (infini) {
+            validerPlateauInfini(nbTypes, nbLignes, nbColonnes);
+        } else {
+            validerPlateauPetit(nbTypes, nbLignes, nbColonnes);
+        }
         this.nbCol = nbColonnes;
         this.nbLig = nbLignes;
         this.nbTypesTuile = nbTypes;
@@ -70,7 +78,7 @@ public class Plateau {
         for (int i = 0; i < nbColonnes; i++) {
             lesColonnes[i] = new Colonne(nbLignes, nbTypes, rand);
         }
-        new SuppressionMatchs().supprimerTousLesMatchs(this, rand);
+        new SuppressionMatchs().supprimerTousLesMatchsSilencieux(this,rand);
         this.score = 0;
         SonManager.activer();
     }
@@ -78,8 +86,13 @@ public class Plateau {
     /**
      * Constructeur privé vide — utilisé uniquement par copy().
      */
-    private Plateau(int nbColonnes, int nbLignes, int nbTypes, boolean vide) {
+    public Plateau(int nbColonnes, int nbLignes, int nbTypes, boolean vide, boolean infini) {
         SonManager.desactiver();
+        if (infini) {
+            validerPlateauInfini(nbTypes, nbLignes, nbColonnes);
+        } else {
+            validerPlateauPetit(nbTypes, nbLignes, nbColonnes);
+        }
         this.nbCol = nbColonnes;
         this.nbLig = nbLignes;
         this.nbTypesTuile = nbTypes;
@@ -208,15 +221,31 @@ public class Plateau {
     // -------------------------------------------------------------------------
     // VALIDATION
     // -------------------------------------------------------------------------
-    private static void validerPlateau(int nbTypes,int nbLignes,int nbCol) {
+    public static void validerPlateauPetit(int nbTypes, int nbLignes, int nbCol) {
         if ((nbTypes < NB_TYPES_MIN || nbTypes > NB_TYPES_MAX)
-                ||(nbLignes < NB_LIG_MIN || nbLignes > NB_LIG_MAX)
-                ||(nbCol < NB_COL_MIN || nbCol > NB_COL_MAX)) {
+                || (nbLignes < NB_LIG_MIN || nbLignes > NB_LIG_MAX)
+                || (nbCol < NB_COL_MIN || nbCol > NB_COL_MAX)) {
             throw new IllegalArgumentException(
                     "Le nombre de types de tuiles doit etre entre "
                     + NB_TYPES_MIN + " et " + NB_TYPES_MAX + ".");
         }
     }
-    
-    
+
+    private static final int[] TAILLE_MAX_PAR_TYPE = {0, 0, 7, 12, 19, 28, 36, 43, 50, 57, 64, 71, 78, 85, 92};
+
+    public static void validerPlateauInfini(int nbTypes, int nbLignes, int nbCol) {
+        if (nbTypes < NB_TYPES_MIN || nbTypes > NB_TYPES_MAX) {
+            throw new IllegalArgumentException(
+                    "Le nombre de types de tuiles doit être entre "
+                    + NB_TYPES_MIN + " et " + NB_TYPES_MAX + ".");
+        }
+        int tailleMax = TAILLE_MAX_PAR_TYPE[nbTypes];
+        if (nbLignes < NB_LIG_MIN || nbCol < NB_COL_MIN
+                || nbLignes > tailleMax || nbCol > tailleMax) {
+            throw new IllegalArgumentException(
+                    "Avec " + nbTypes + " types, le plateau ne peut pas dépasser "
+                    + tailleMax + "×" + tailleMax + ".");
+        }
+    }
+
 }
