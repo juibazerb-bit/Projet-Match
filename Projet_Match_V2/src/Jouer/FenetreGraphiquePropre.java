@@ -974,11 +974,21 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         javax.swing.Timer iaTimer = new javax.swing.Timer(150, null);
         final int[] restants = {n};
         iaTimer.addActionListener(e -> {
-            if (restants[0] <= 0 || panneauJeu.isAnimEnCours()) {
-                if (restants[0] <= 0) {
-                    iaTimer.stop();
-                    labelStatus4.setText(" IA terminée. Score : " + plateau.getScore());
-                }
+            if (panneauJeu == null || !panneauJeu.isEnabled()) {
+                iaTimer.stop();
+                return;
+            }
+            if (panneauJeu.isAnimEnCours()) {
+                return; // attendre la fin de l'animation en cours avant de continuer ou de stopper
+            }
+            if (restants[0] <= 0) {
+                iaTimer.stop();
+                labelStatus4.setText(" IA terminée. Score : " + plateau.getScore());
+                return;
+            }
+            if (niveauCourant != null && coupsJoues >= niveauCourant.getNbCoupsMax()) {
+                iaTimer.stop();
+                labelStatus4.setText(" IA arrêtée : plus de coups.");
                 return;
             }
             ArrayList<Coord> coup = ia.aideOrdi(plateau);

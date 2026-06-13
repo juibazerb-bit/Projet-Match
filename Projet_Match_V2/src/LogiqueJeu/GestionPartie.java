@@ -37,20 +37,4 @@ public class GestionPartie {
         System.out.println("Score : " + plateau.getScore());
         return true;
     }
-
-    public boolean jouerUnCoup1(Plateau plateau, Coord c1, Coord c2) {
-        // 1. Simuler ou intervertir temporairement les deux tuiles
-        plateau.echangerTuiles(c1, c2);
-
-        // 2. Vérifier si cet échange crée au moins un alignement (match)
-        SuppressionMatchs suppression = new SuppressionMatchs();
-        if (!suppression.collecterToutesLesTuilesASupprimer(plateau).isEmpty()) {
-            // L'échange est valide ! On laisse les tuiles échangées ET l'alignement sur le plateau.
-            return true;
-        }
-
-        // 3. Si aucun match n'est créé, le coup est invalide : on annule l'échange
-        plateau.echangerTuiles(c1, c2);
-        return false;
-    }
 }
