@@ -34,6 +34,7 @@ public class Niveau {
                 scoreObjectif = 1000;
                 nbCoupsMax = 20;
                 nomNiveau ="Niveau 1";
+                break;
             case 2:
                 nbLignes = 6;
                 nbColonnes = 6;
@@ -41,6 +42,7 @@ public class Niveau {
                 scoreObjectif = 4000;
                 nbCoupsMax = 18;
                 nomNiveau ="Niveau 2";
+                break;
             case 3:
                 nbLignes = 7;
                 nbColonnes = 7;
@@ -48,6 +50,7 @@ public class Niveau {
                 scoreObjectif = 8000;
                 nbCoupsMax = 15;
                 nomNiveau ="Niveau 3";
+                break;
             case 4:
                 nbLignes = 8;
                 nbColonnes = 8;
@@ -55,6 +58,7 @@ public class Niveau {
                 scoreObjectif = 12000;
                 nbCoupsMax = 15;
                 nomNiveau ="Niveau 4";
+                break;
             case 5:
                 nbLignes = 9;
                 nbColonnes = 9;
@@ -62,6 +66,7 @@ public class Niveau {
                 scoreObjectif = 15000;
                 nbCoupsMax = 12;
                 nomNiveau ="Niveau 5";
+                break;
             case 6:
                 nbLignes = 10;
                 nbColonnes = 10;
@@ -69,6 +74,7 @@ public class Niveau {
                 scoreObjectif = 17000;
                 nbCoupsMax = 12;
                 nomNiveau ="Niveau 6";
+                break;
             case 7:
                 nbLignes = 11;
                 nbColonnes = 11;
@@ -76,6 +82,7 @@ public class Niveau {
                 scoreObjectif = 20000;
                 nbCoupsMax = 10;
                 nomNiveau ="Niveau 7";
+                break;
             case 8:
                 nbLignes = 12;
                 nbColonnes = 12;
@@ -91,6 +98,7 @@ public class Niveau {
                 scoreObjectif = 30000;
                 nbCoupsMax = 8;
                 nomNiveau ="Niveau 9";
+                break;
             default:
                 nbLignes = Math.min(20, 13 + (numeroNiveau - 9));
                 nbColonnes = Math.min(20, 13 + (numeroNiveau - 9));
@@ -98,6 +106,7 @@ public class Niveau {
                 scoreObjectif = 20000 + (numeroNiveau - 9) * 5000;
                 nbCoupsMax = Math.max(5, 8 - (numeroNiveau - 9));
                 nomNiveau ="Niveau Basique";
+                break;
         }
     }
 
