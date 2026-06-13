@@ -68,7 +68,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
     /**
      * Configure les modèles de valeurs des spinners (variables suffixe 4).
      */
-    private void configurerSpinners() {
+    public void configurerSpinners() {
         spinnerLignes4.setModel(new javax.swing.SpinnerNumberModel(nbLig, 3, 92, 1));
         spinnerColonnes4.setModel(new javax.swing.SpinnerNumberModel(nbCol, 3, 92, 1));
         spinnerTypes4.setModel(new javax.swing.SpinnerNumberModel(nbTypes, 2, 14, 1));
@@ -79,7 +79,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
     /**
      * Crée et intègre le PanneauJeu au centre de scrollGrille.
      */
-    private void configurerPanneauJeu() {
+    public void configurerPanneauJeu() {
         panneauJeu = new PanneauJeu();
 
         //Créer un conteneur intermédiaire qui va forcer le centrage
@@ -114,7 +114,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
     /**
      * Affiche l'écran identifié par sa clé CardLayout.
      */
-    private void afficherEcran(String cle) {
+    public void afficherEcran(String cle) {
         ((CardLayout) panneauConteneur.getLayout()).show(panneauConteneur, cle);
     }
 
@@ -123,7 +123,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
      * dispose() AVANT setUndecorated() pour éviter
      * IllegalComponentStateException sur les fenêtres déjà affichées.
      */
-    private void entrerPleinEcranJeu() {
+    public void entrerPleinEcranJeu() {
         if (gd.isFullScreenSupported()) {
             dispose();
             setUndecorated(true);
@@ -140,7 +140,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         panneauConteneur.repaint();
     }
 
-    private void quitterPleinEcran(String ecranCible) {
+    public void quitterPleinEcran(String ecranCible) {
         if (gd.getFullScreenWindow() == this) {
             gd.setFullScreenWindow(null);
             dispose();
@@ -160,7 +160,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
     /**
      * Mode libre : lance une partie sans contrainte de niveau.
      */
-    private void lancerModeLibre() {
+    public void lancerModeLibre() {
         niveauCourant = null;
         initialiserPlateau(10, 10, 5, 50);
         entrerPleinEcranJeu();
@@ -169,7 +169,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
     /**
      * Charge un niveau prédéfini puis lance la partie.
      */
-    private void lancerNiveau(int numero) {
+    public void lancerNiveau(int numero) {
         niveauCourant = new Niveau(numero);
 
         int lig = niveauCourant.getNbLignes();
@@ -191,7 +191,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         entrerPleinEcranJeu();
     }
 
-    private boolean verifierFinDePartieNiveau() {
+    public boolean verifierFinDePartieNiveau() {
         if (niveauCourant == null) {
             return false;
         }
@@ -250,7 +250,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
     /**
      * Crée un nouveau plateau et redimensionne le panneau.
      */
-    private void initialiserPlateau(int lignes, int colonnes, int types, int taill) {
+    public void initialiserPlateau(int lignes, int colonnes, int types, int taill) {
         coupsJoues = 0;
         nbLig = lignes;
         nbCol = colonnes;
@@ -282,7 +282,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
     /**
      * Rafraîchit le champ score et la barre de progression.
      */
-    private void mettreAJourScore() {
+    public void mettreAJourScore() {
         if (plateau == null) {
             return;
         }

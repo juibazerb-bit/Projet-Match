@@ -81,7 +81,7 @@ public class GestionIA {
 
         if (!matchs.isEmpty()) {
             int meilleurScore = -1;
-            int meilleurTuiles = -1;
+            int meilleurTuiles = -1; 
 
             for (int i = 0; i < matchs.size(); i += 2) {
                 Coord c1 = matchs.get(i);
@@ -248,7 +248,7 @@ public class GestionIA {
     }
 
     // -------------------------------------------------------------------------
-    // UTILITAIRES PRIVÉS
+    // UTILITAIRES
     // -------------------------------------------------------------------------
     /**
      * Teste un échange et l'ajoute à matchs s'il crée un match (puis annule).
