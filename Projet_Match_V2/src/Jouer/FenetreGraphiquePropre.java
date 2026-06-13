@@ -51,7 +51,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
     private int nbTypes = 5;
     private Niveau niveauCourant = null;
     private int coupsJoues = 0;
-    private int taille =Tuile.TAILLE;
+    private int taille = Tuile.TAILLE;
 
     // ─────────────────────────────────────────────────────────────────────────
     // CONSTRUCTEUR
@@ -60,7 +60,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         initComponents();
         configurerSpinners();
         configurerPanneauJeu();
-        initialiserPlateau(nbLig, nbCol, nbTypes,taille);
+        initialiserPlateau(nbLig, nbCol, nbTypes, taille);
         pack();
         setLocationRelativeTo(null);
     }
@@ -104,7 +104,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
             Tuile.TAILLE = t;                     // synchronise l'interface legacy
             panneauJeu.setTailleTuile(t);          // met à jour PanneauJeu
             int largeur = (nbCol + 2) * t;
-            int hauteur  = (nbLig + 2) * t;
+            int hauteur = (nbLig + 2) * t;
             panneauJeu.setPreferredSize(new Dimension(largeur, hauteur));
             panneauJeu.revalidate();
             panneauJeu.repaint();
@@ -125,10 +125,10 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
      */
     private void entrerPleinEcranJeu() {
         if (gd.isFullScreenSupported()) {
-            dispose();                      
-            setUndecorated(true);          
-            gd.setFullScreenWindow(this);   
-            setVisible(true);              
+            dispose();
+            setUndecorated(true);
+            gd.setFullScreenWindow(this);
+            setVisible(true);
         } else {
             setExtendedState(MAXIMIZED_BOTH);
             setVisible(true);
@@ -142,12 +142,12 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
 
     private void quitterPleinEcran(String ecranCible) {
         if (gd.getFullScreenWindow() == this) {
-            gd.setFullScreenWindow(null);   
-            dispose();                     
-            setUndecorated(false);         
+            gd.setFullScreenWindow(null);
+            dispose();
+            setUndecorated(false);
             pack();
             setLocationRelativeTo(null);
-            setVisible(true);             
+            setVisible(true);
         } else {
             setExtendedState(NORMAL);
         }
@@ -162,7 +162,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
      */
     private void lancerModeLibre() {
         niveauCourant = null;
-        initialiserPlateau(10, 10, 5,50);
+        initialiserPlateau(10, 10, 5, 50);
         entrerPleinEcranJeu();
     }
 
@@ -176,7 +176,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         int col = niveauCourant.getNbColonnes();
         int types = niveauCourant.getNbTypes();
 
-        initialiserPlateau(lig, col, types,taille);
+        initialiserPlateau(lig, col, types, taille);
 
         String nomNiveau = niveauCourant.getNomNiveau();
         int objectif = niveauCourant.getNumeroNiveau();
@@ -193,7 +193,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
 
     private boolean verifierFinDePartieNiveau() {
         if (niveauCourant == null) {
-            return false; 
+            return false;
         }
         int scoreActuel = plateau.getScore();
         int scoreObjectif = niveauCourant.getScoreObjectif();
@@ -216,7 +216,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
                 if (panneauJeu != null) {
                     panneauJeu.setEnabled(true);
                 }
-            }); 
+            });
 
             timer.setRepeats(false);
             timer.start();
@@ -237,7 +237,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
                 if (panneauJeu != null) {
                     panneauJeu.setEnabled(true);
                 }
-            }); 
+            });
 
             timer.setRepeats(false);
             timer.start();
@@ -250,7 +250,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
     /**
      * Crée un nouveau plateau et redimensionne le panneau.
      */
-    private void initialiserPlateau(int lignes, int colonnes, int types,int taill) {
+    private void initialiserPlateau(int lignes, int colonnes, int types, int taill) {
         coupsJoues = 0;
         nbLig = lignes;
         nbCol = colonnes;
@@ -263,7 +263,7 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         panneauJeu.setPlateau(plateau);
 
         int largeur = (colonnes + 2) * taill;
-        int hauteur  = (lignes  + 2) * taill;
+        int hauteur = (lignes + 2) * taill;
         panneauJeu.setPreferredSize(new Dimension(largeur, hauteur));
         panneauJeu.revalidate();
         panneauJeu.repaint();
@@ -283,33 +283,33 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
      * Rafraîchit le champ score et la barre de progression.
      */
     private void mettreAJourScore() {
-    if (plateau == null) {
-        return;
-    }
-    
-    int score = plateau.getScore();
-    champScore4.setText(String.valueOf(score));
-    champCoupJoue.setText(String.valueOf(coupsJoues));
+        if (plateau == null) {
+            return;
+        }
 
-    // Calcul dynamique de la barre de score
-    if (niveauCourant != null) {
-        int scoreObjectif = niveauCourant.getScoreObjectif();
-        
-        // On s'assure que le maximum de la barre correspond à l'objectif du niveau
-        barreScore4.setMaximum(scoreObjectif);
-        
-        // On donne le score actuel à la barre
-        // Math.min évite que la barre dépasse les 100% si le joueur fait un gros coup à la fin
-        barreScore4.setValue(Math.min(score, scoreObjectif));
-    } else {
-        // Mode libre : objectif fictif à 100000 points pour que la barre bouge quand même
-        barreScore4.setMaximum(100000);
-        barreScore4.setValue(Math.min(score, 100000));
-    }
+        int score = plateau.getScore();
+        champScore4.setText(String.valueOf(score));
+        champCoupJoue.setText(String.valueOf(coupsJoues));
 
-    // Lance la vérification de fin de partie
-    verifierFinDePartieNiveau();
-}
+        // Calcul dynamique de la barre de score
+        if (niveauCourant != null) {
+            int scoreObjectif = niveauCourant.getScoreObjectif();
+
+            // On s'assure que le maximum de la barre correspond à l'objectif du niveau
+            barreScore4.setMaximum(scoreObjectif);
+
+            // On donne le score actuel à la barre
+            // Math.min évite que la barre dépasse les 100% si le joueur fait un gros coup à la fin
+            barreScore4.setValue(Math.min(score, scoreObjectif));
+        } else {
+            // Mode libre : objectif fictif à 100000 points pour que la barre bouge quand même
+            barreScore4.setMaximum(100000);
+            barreScore4.setValue(Math.min(score, 100000));
+        }
+
+        // Lance la vérification de fin de partie
+        verifierFinDePartieNiveau();
+    }
 
     // ─────────────────────────────────────────────────────────────────────────
     // CODE GÉNÉRÉ PAR NETBEANS – NE PAS MODIFIER MANUELLEMENT
@@ -935,14 +935,14 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
         int col = (int) spinnerColonnes4.getValue();
         int types = (int) spinnerTypes4.getValue();
         int taill = (int) TailleTuiles.getValue();
-        initialiserPlateau(lig, col, types,taill);
+        initialiserPlateau(lig, col, types, taill);
     }//GEN-LAST:event_boutonGenerer4ActionPerformed
 
     private void boutonNouvellePartie4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonNouvellePartie4ActionPerformed
         if (niveauCourant != null) {
             lancerNiveau(niveauCourant.getNumeroNiveau());
         } else {
-            initialiserPlateau(nbLig, nbCol, nbTypes,taille);
+            initialiserPlateau(nbLig, nbCol, nbTypes, taille);
         }
     }//GEN-LAST:event_boutonNouvellePartie4ActionPerformed
 
@@ -960,6 +960,16 @@ public class FenetreGraphiquePropre extends javax.swing.JFrame {
             return;
         }
         int n = (int) spinnerIaCoups4.getValue();
+
+        if (niveauCourant != null) {
+            int coupsRestants = niveauCourant.getNbCoupsMax() - coupsJoues;
+            n = Math.min(n, Math.max(0, coupsRestants));
+            if (n <= 0) {
+                labelStatus4.setText(" Plus de coups disponibles pour l'IA.");
+                return;
+            }
+        }
+
         labelStatus4.setText(" IA en cours (" + n + " coups)…");
         javax.swing.Timer iaTimer = new javax.swing.Timer(150, null);
         final int[] restants = {n};
