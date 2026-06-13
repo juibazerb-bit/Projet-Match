@@ -102,7 +102,7 @@ public class GestionIA {
             }
 
             if (!meilleur.isEmpty()) {
-                System.out.println("Meilleur coup : " + meilleur.get(0) + " ↔ " + meilleur.get(1)
+                System.out.println("Meilleur coup : " + meilleur.get(0) + " et " + meilleur.get(1)
                         + " | Score : " + meilleurScore + " | Tuiles : " + meilleurTuiles);
             }
         }

@@ -428,7 +428,7 @@ public class PanneauJeu extends JPanel implements MouseListener {
         surbrillanceIA.clear();
         surbrillanceIA.addAll(matchs);
         repaint();
-        return matchs.isEmpty() ? "Aucun coup possible" : matchs.get(0) + " ↔ " + matchs.get(1);
+        return matchs.isEmpty() ? "Aucun coup possible" : matchs.get(0) + " et " + matchs.get(1);
     }
 
     public boolean isAnimEnCours() {
