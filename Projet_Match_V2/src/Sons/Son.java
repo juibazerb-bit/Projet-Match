@@ -16,11 +16,11 @@ public enum Son {
     CLIC("clic.wav"),
     MATCH_SIMPLE("match.wav"),
     EXPLOSION("explosion.wav"),
-    BONUS_FUSEE("fusee.wav"),
+    BONUS_FUSEE("Ligne.wav"),
     PERDU("game_over.wav"),
     GAGNE("gagne.wav"),
     HIROSHIMA("hiroshima_alert.wav"),
-    RACISME("Racisme.wav");
+    RACISME("x5.wav");
 
     private Clip clip;
 
