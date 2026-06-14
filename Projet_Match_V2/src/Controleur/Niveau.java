@@ -25,7 +25,7 @@ public class Niveau {
     // -------------------------------------------------------------------------
     // CONFIGURATION
     // -------------------------------------------------------------------------
-    private void configurerNiveau() {
+    public void configurerNiveau() {
         switch (numeroNiveau) {
             case 1:
                 nbLignes = 5;
